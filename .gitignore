@@ -1,0 +1,59 @@
+# ==========================
+# BACKEND (Django)
+# ==========================
+**/__pycache__/
+**/*.py[cod]
+*.sqlite3
+*.log
+
+# Virtual Envs
+env/
+venv/
+ENV/
+.venv/
+.Python
+
+# Django secret/config files
+*.env
+*.secret
+*.key
+settings_local.py
+local_settings.py
+
+# Django static & media (if generated)
+backend/backend/staticfiles/
+backend/backend/media/
+
+# Optional: Ignore all migration files (uncomment if needed)
+# **/migrations/
+# !**/migrations/__init__.py
+
+# ==========================
+# FRONTEND (React - CRA)
+# ==========================
+# ==========================
+# REACT (CRA) - Adjusted for frontend/frontend/
+# ==========================
+
+# dependencies
+/frontend/frontend/node_modules/
+/frontend/frontend/.pnp
+/frontend/frontend/.pnp.js
+
+# testing
+/frontend/frontend/coverage
+
+# production
+/frontend/frontend/build
+
+# misc
+/frontend/frontend/.DS_Store
+/frontend/frontend/.env.local
+/frontend/frontend/.env.development.local
+/frontend/frontend/.env.test.local
+/frontend/frontend/.env.production.local
+
+/frontend/frontend/npm-debug.log*
+/frontend/frontend/yarn-debug.log*
+/frontend/frontend/yarn-error.log*
+
