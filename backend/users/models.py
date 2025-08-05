@@ -46,7 +46,7 @@ class CustomAccountManager(BaseUserManager):
 
 class NewUser(AbstractBaseUser, PermissionsMixin):
     # Auth & Account
-    id = models.SlugField(primary_key=True, default=uuid.uuid4)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(_('email address'), unique=True, db_index=True)
     username = models.CharField(max_length=150, unique=True, blank=True, null=True)
     provider = models.CharField(max_length=200, default='email')
@@ -87,7 +87,6 @@ class NewUser(AbstractBaseUser, PermissionsMixin):
     otp = models.CharField(max_length=6, default='000000')
     otp_created_at = models.DateTimeField(blank=True, null=True)
     otp_used = models.BooleanField(default=False)
-    otp1 = models.CharField(max_length=6, blank=True, null=True)
 
     # Events & Teams
     interest = models.ManyToManyField("competitions.Module", related_name="interested_users", blank=True)
@@ -113,13 +112,16 @@ class NewUser(AbstractBaseUser, PermissionsMixin):
 # ---- Team Member Model ----
 
 class TeamMembers(models.Model):
-    id = models.SlugField(primary_key=True, default=uuid.uuid4)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     memberid = models.CharField(max_length=255, default="MEM-XXXX-XXXX")
     img = models.ImageField(upload_to="image_uploads/userdp/%Y/%m/%d/", default='user-default.png')
     email = models.EmailField()
     name = models.CharField(max_length=150, blank=True)
     phone = PhoneNumberField()
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, default='M')
+    collegename = models.CharField(max_length=150)
+    city = models.CharField(max_length=150, blank=True)
+    state = models.CharField(max_length=200, blank=True)
     accommodation = models.BooleanField(default=False, blank=True)
     days_stay = models.IntegerField(default=0)
     accommodation_type = models.CharField(max_length=14, default='none')
@@ -131,7 +133,7 @@ class TeamMembers(models.Model):
 # ---- Team Model ----
 
 class Team(models.Model):
-    id = models.SlugField(primary_key=True, default=uuid.uuid4)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=150, blank=True, null=True)
     accommodation = models.CharField(max_length=1, choices=ACCOMMODATION_CHOICES, default='N', null=True, blank=True)
     blankets = models.IntegerField(default=0)
@@ -140,17 +142,7 @@ class Team(models.Model):
     leader = models.OneToOneField(settings.AUTH_USER_MODEL, related_name="team", on_delete=models.CASCADE)
     members = models.ManyToManyField(TeamMembers, related_name="teams")
     def __str__(self): return str(self.leader)
-
-# ---- Team Info Model ----
-
-class Teaminfo(models.Model):
-    collegename = models.CharField(max_length=150)
-    city = models.CharField(max_length=150, blank=True)
-    state = models.CharField(max_length=200, blank=True)
-    teamname = models.CharField(max_length=150, blank=True, null=True)
-    leader = models.ForeignKey(NewUser, on_delete=models.CASCADE, related_name='team_infos')
-    def __str__(self): return self.teamname or "No Team Name"
-
+    
 # ---- Price History Model ----
 
 class Price(models.Model):
