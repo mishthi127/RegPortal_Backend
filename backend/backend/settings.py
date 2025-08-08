@@ -24,12 +24,18 @@ SECRET_KEY = 'django-insecure--3g&z!gqf%c#1=mpd3&(+_i^90ej1gep(%8=u9xk(=r!#se5&9
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+SITE_ID = 1
 
 ALLOWED_HOSTS = []
+CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
 
+AUTH_USER_MODEL = 'users.NewUser'
 
 # Application definition
-
+SITE_ID = 1
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -39,9 +45,30 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users',
     'rest_framework',
+    'corsheaders',
+    'dj_rest_auth',
+ 'dj_rest_auth.registration',
+'django.contrib.sites',
+'allauth',
+'allauth.account',
+'allauth.socialaccount',
+'allauth.socialaccount.providers.google',
+'rest_framework.authtoken',
+
 ]
 
+SOCIALACCOUNT_PROVIDERS = {
+    "google" : {
+        "SCOPE" : [
+            "profile",
+            "email"
+        ],
+        "AUTH_PARAMS" : {"access_type" : "online"}
+    }
+}
+
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -49,6 +76,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "allauth.account.middleware.AccountMiddleware",
+
 ]
 
 ROOT_URLCONF = 'backend.urls'
@@ -122,3 +151,36 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+}
+
+ #Setup Email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+# EMAIL_HOST_USER = os.environ.get('email')
+# EMAIL_HOST_PASSWORD = os.environ.get('password')
+EMAIL_HOST_USER = 'alcheringa2026@gmail.com'
+EMAIL_HOST_PASSWORD = 'xfiq nzoq aiyr eeyj'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+# INSTALLED_APPS += ['corsheaders']
+# MIDDLEWARE = ['corsheaders.middleware.CorsMiddleware'] + MIDDLEWARE
+# CORS_ALLOW_ALL_ORIGINS = True  # or restrict to your React app origin in production
+
+
+AUTH_USER_MODEL = 'users.NewUser'  # your custom user model
+#INSTALLED_APPS += ['corsheaders']
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',  # Default
+    'allauth.account.auth_backends.AuthenticationBackend',  # Needed for allauth
+)
+
+# Optional: Configure the login redirect and logout redirect
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
