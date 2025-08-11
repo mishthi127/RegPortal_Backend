@@ -1,44 +1,52 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+
+const BASE_URL = 'http://localhost:8000';
 
 function Profile() {
   const [profile, setProfile] = useState(null);
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        setMessage('You are not logged in.');
-        return;
-      }
+    const token = localStorage.getItem('access');
+    if (!token) {
+      setMessage('You are not logged in.');
+      return;
+    }
 
-      const response = await fetch('http://127.0.0.1:8000/profile/', {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setProfile(data);
-      } else {
-        setMessage('Failed to load profile.');
-      }
-    };
-
-    fetchProfile();
+    axios
+      .get(`${BASE_URL}/profile/`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => setProfile(res.data))
+      .catch(() => setMessage('Failed to load profile.'));
   }, []);
 
-  if (message) return <p>{message}</p>;
+  const handleLogout = () => {
+    localStorage.removeItem('access');
+    localStorage.removeItem('refresh');
+    window.location.href = '/login';
+  };
 
+  if (message) return <p>{message}</p>;
   if (!profile) return <p>Loading...</p>;
 
   return (
-    <>
-      <h2>Your Profile</h2>
-      <p>Email: {profile.email}</p>
-      {/* Replace with fields your API provides */}
-    </>
+    <div>
+      <h2>My Profile</h2>
+      <p><strong>Full Name:</strong> {profile.fullname}</p>
+      <p><strong>Email:</strong> {profile.email}</p>
+      <p><strong>Username:</strong> {profile.username}</p>
+      <p><strong>Phone:</strong> {profile.phone_number}</p>
+      <p><strong>Alternate Phone:</strong> {profile.alternate_phone || '—'}</p>
+      <p><strong>College:</strong> {profile.collegename}</p>
+      <p><strong>City:</strong> {profile.city}</p>
+      <p><strong>State:</strong> {profile.state}</p>
+
+      <button onClick={handleLogout} style={{ marginTop: '1rem' }}>
+        Logout
+      </button>
+    </div>
   );
 }
 

@@ -10,6 +10,14 @@ from django.conf import settings
 from django.utils import timezone
 from datetime import timedelta
 
+from allauth.socialaccount.models import SocialAccount
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from google.oauth2 import id_token
+from google.auth.transport import requests as grequests
+
+
+
 
 def clean_old_unverified_users():
     cutoff = timezone.now() - timedelta(minutes=5)
@@ -81,7 +89,85 @@ class ProfileView(generics.RetrieveAPIView):
     permission_classes = [permissions.IsAuthenticated]
     def get_object(self):
         return self.request.user
+    
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def google_complete_profile(request):
+    user = request.user
+    profile_data = ProfileSerializer(user).data
+    refresh = RefreshToken.for_user(user)
+    needs_completion = any([
+        not user.phone_number,
+        not user.collegename,
+        not user.city,
+        not user.state
+    ])
+    return Response({
+        'refresh': str(refresh),
+        'access': str(refresh.access_token),
+        'user': profile_data,
+        'needs_completion': needs_completion
+    })
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def complete_profile(request):
+    user = request.user
+    user.fullname = request.data.get('fullname', user.fullname)
+    user.phone_number = request.data.get('phone_number', user.phone_number)
+    user.alternate_phone = request.data.get('alternate_phone', user.alternate_phone)  # Add this line
+    user.collegename = request.data.get('collegename', user.collegename)
+    user.city = request.data.get('city', user.city)
+    user.state = request.data.get('state', user.state)
+    user.save()
+    return Response({'detail': 'Profile updated', 'user': ProfileSerializer(user).data})
+
 
 from django.http import HttpResponse
 def homepage(request):
     return HttpResponse("Welcome to the homepage!")
+
+@api_view(['POST'])
+def google_login(request):
+    token = request.data.get('token')
+    if not token:
+        return Response({'detail': 'No token provided'}, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        # Verify token with Google
+        idinfo = id_token.verify_oauth2_token(token, grequests.Request(), "719905784477-e7cc0nhv3vd6v8r1cmr87asn42bc77uc.apps.googleusercontent.com")
+        email = idinfo['email']
+        name = idinfo.get('name', '')
+
+        # Get or create the user
+        user, created = NewUser.objects.get_or_create(
+            email=email,
+            defaults={
+                'fullname': name,
+                'username': email.split('@')[0],
+                'provider': 'google',
+                'is_active': True,  # Google verified email
+                'verified_email': True
+            }
+        )
+
+        # Generate refresh & access tokens
+        refresh = RefreshToken.for_user(user)
+
+        # Check for profile completion
+        needs_completion = any([
+            not user.phone_number,
+            not user.collegename,
+            not user.city,
+            not user.state
+        ])
+
+        return Response({
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
+            'user': ProfileSerializer(user).data,
+            'needs_completion': needs_completion
+        })
+
+    except ValueError:
+        return Response({'detail': 'Invalid token'}, status=status.HTTP_400_BAD_REQUEST)

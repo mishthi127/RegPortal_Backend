@@ -10,3 +10,4 @@ django-allauth
 djangorestframework-simplejwt
 requests
 cryptography
+google-auth
