@@ -67,6 +67,9 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
+LOGIN_REDIRECT_URL = '/api/auth/google/complete/'
+SOCIALACCOUNT_LOGIN_ON_GET = True              
+
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
