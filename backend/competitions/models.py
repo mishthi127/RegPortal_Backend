@@ -72,3 +72,21 @@ class SubmitPerformance(models.Model):
         CompTeam, related_name="compteams2", on_delete=models.CASCADE)
     link = models.CharField(max_length=2000, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
+
+
+class Participant(models.Model):
+    GENDER_CHOICES = [
+        ('M', 'Male'),
+        ('F', 'Female'),
+        ('O', 'Other'),
+    ]
+
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
+    phone = models.CharField(max_length=20) 
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.name} ({self.email})"
