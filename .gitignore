@@ -6,6 +6,11 @@
 *.sqlite3
 *.log
 
+*.pyc
+__pycache__/
+db.sqlite3
+
+
 # Virtual Envs
 env/
 venv/
