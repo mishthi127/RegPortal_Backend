@@ -18,8 +18,15 @@ export function AddMember() {
 
     // Remove member
     const removeDiv = (id, tempId) => {
-        setMembers(members.filter(item => item.id !== id));
+        setMembers(members.filter(item => {
+            if (id) {
+                return item.id !== id;
+            } else {
+                return item.tempId !== tempId;
+            }
+        }));
     };
+
 
     const removemember = async(id, tempId) => {
         if (id) {
@@ -58,6 +65,14 @@ export function AddMember() {
 
     // Submit to backend
     const submit = async () => {
+        // Check if any field is empty
+        for (let member of members) {
+            if (!member.name.trim() || !member.email.trim() || !member.phone.trim()) {
+                alert("Please fill in all fields before submitting.");
+                return; // Stop execution
+            }
+        }
+
         try {
             await Promise.all(
                 members.map(async (member) => {
@@ -99,66 +114,71 @@ export function AddMember() {
 
 
     return (
-        <div>
-            <button onClick={addDiv}>Add</button>
-            {members.map((item, index) => (
-                <div key={item.tempId} >
-                    <div>Member {index + 1}</div>
-                    <ul>
-                        <li>
-                            <label>Name</label>
-                            <input
-                                type="text"
-                                value={item.name}
-                                onChange={(e) => handleChange(item.id, item.tempId, "name", e.target.value)}
-                                
-                            />
-                        </li>
-                        <li>
-                            <label>Email</label>
-                            <input
-                                type="email"
-                                value={item.email}
-                                onChange={(e) => handleChange(item.id, item.tempId, "email", e.target.value)}
-                                
-                            />
-                        </li>
-                        <li>
-                            <label>Gender</label>
-                            <select
-                                value={item.gender}
-                                onChange={(e) => handleChange(item.id, item.tempId, "gender", e.target.value)}
-                                
-                            >
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                                <option value="Other">Other</option>
-                            </select>
-                        </li>
-                        <li>
-                            <label>Phone Number</label>
-                            <input
-                                type="number"
-                                value={item.phone}
-                                onChange={(e) => handleChange(item.id, item.tempId, "phone", e.target.value)}
-                                
-                            />
-                        </li>
-                    </ul>
-                    <button onClick={() => removeDiv(item.id, item.tempId)}>Remove</button>
+        <div className='page'>
+            <div className='addParticipant'>
+                <div className='addParticipantForms'>
+                    <button className='addForm' onClick={addDiv}>Add</button>
+                    <div className='verticalForm'>
+                        {members.map((item, index) => (
+                            <div className='form' key={item.tempId} >
+                                <p>Member {index + 1}</p>
+                                <ul>
+                                    <li>
+                                        <label>Name</label>
+                                        <input
+                                            type="text"
+                                            value={item.name}
+                                            onChange={(e) => handleChange(item.id, item.tempId, "name", e.target.value)}
+                                            
+                                        />
+                                    </li>
+                                    <li>
+                                        <label>Email</label>
+                                        <input
+                                            type="email"
+                                            value={item.email}
+                                            onChange={(e) => handleChange(item.id, item.tempId, "email", e.target.value)}
+                                            
+                                        />
+                                    </li>
+                                    <li>
+                                        <label>Gender</label>
+                                        <select
+                                            value={item.gender}
+                                            onChange={(e) => handleChange(item.id, item.tempId, "gender", e.target.value)}
+                                            
+                                        >
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </li>
+                                    <li>
+                                        <label>Phone Number</label>
+                                        <input
+                                            type="number"
+                                            value={item.phone}
+                                            onChange={(e) => handleChange(item.id, item.tempId, "phone", e.target.value)}
+                                            
+                                        />
+                                    </li>
+                                </ul>
+                                <button onClick={() => removeDiv(item.id, item.tempId)} className='removeParticipantForm'>Remove</button>
+                            </div>
+                        ))}
+                    </div>
+                    <button className='submitForm' onClick={submit}>Submit</button>
                 </div>
-            ))}
-            <button onClick={submit}>Submit</button>
-
-            <div>
-                { names && 
-                    names.map((item) => (
-                        <div key={item.tempId}>
-                            <p>{item.name}</p>
-                            <button onClick={() => removemember(item.id, item.tempId)}>r</button>
-                        </div>
-                    ))
-                }
+                <div className='nameList'>
+                    { names && 
+                        names.map((item) => (
+                            <div className='participantName' key={item.tempId}>
+                                <p>{item.name}</p>
+                                <button onClick={() => removemember(item.id, item.tempId)} className='removeParticipant'>r</button>
+                            </div>
+                        ))
+                    }
+                </div>
             </div>
         </div>
     );

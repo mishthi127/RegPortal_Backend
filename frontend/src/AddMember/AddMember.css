@@ -1,0 +1,117 @@
+.page{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.addParticipant{
+    border: 1px solid black;
+    display: flex;
+    height: 500px;
+    border-radius: 10px;
+    width: 700px;
+}
+
+.addParticipantForms{
+    border: 1px solid rgb(255, 0, 0);
+    width: 50%;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.nameList{
+    border: 1px solid rgb(77, 255, 0);
+    width: 50%;
+}
+
+.addForm{
+    position: absolute;
+    height: 30px;
+    width: 90px;
+    background-color: transparent;
+    border: 2px solid black;
+    border-radius: 5px;
+    top: 5px;
+    left: 5px;
+}
+
+.verticalForm {
+    display: flex;
+    flex-direction: column; /* Stack vertically */
+    overflow-y: auto; /* Scroll vertically */
+    scroll-behavior: smooth;
+    padding: 20px;
+    gap: 10px;
+    max-height: 70%; /* Set a limit so scrolling works */
+    border: 1px solid black;
+    height: 90%;
+    width: 100%;
+}
+
+/* Hide scrollbars (optional) */
+.verticalForm::-webkit-scrollbar {
+    display: none;
+}
+.verticalForm {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* Individual form divs */
+.form {
+    flex: 0 0 auto; /* Keep height fixed */
+    height: auto;
+    border-radius: 10px;
+    border: 1px solid black;
+}
+
+.form ul li{
+    list-style-type: none;
+    margin-bottom: 10px;
+}
+
+
+
+.form input{
+    width: 240px;
+    border: none;
+    border-bottom: 1px solid black;
+    outline: none;
+}
+
+.form select{
+
+}
+
+.form p{
+    font-size: 20px;
+    margin-left: 10px;
+}
+
+.form label{
+    display: block;
+    font-weight: 500;
+}
+
+.removeParticipantForm{
+    height: 30px;
+    width: 90px;
+    background-color: transparent;
+    border: 2px solid black;
+    border-radius: 5px;
+    bottom: 5px;
+    left: 5px;
+    margin-left: 10px;
+}
+
+.submitForm{
+    position: absolute;
+    height: 30px;
+    width: 90px;
+    background-color: transparent;
+    border: 2px solid black;
+    border-radius: 5px;
+    bottom: 5px;
+    left: 5px;
+}
