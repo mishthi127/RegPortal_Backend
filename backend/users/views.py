@@ -1,8 +1,9 @@
 from rest_framework import generics, status, permissions
+from rest_framework import viewsets
 from rest_framework.response import Response
 from django.contrib.auth import authenticate
-from .models import NewUser
-from .serializers import RegisterSerializer, VerifyOTPSerializer, LoginSerializer, ProfileSerializer
+from .models import RegistrationSession, NewUser, TeamMembers, Team, Price
+from .serializers import RegisterSerializer, VerifyOTPSerializer, LoginSerializer, ProfileSerializer , TeamMembersSerializer, TeamSerializer, PriceSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.core.mail import send_mail
 from django.conf import settings
@@ -13,6 +14,7 @@ from datetime import timedelta
 from allauth.socialaccount.models import SocialAccount
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAdminUser
 from google.oauth2 import id_token
 from google.auth.transport import requests as grequests
 
@@ -90,6 +92,24 @@ class ProfileView(generics.RetrieveAPIView):
     def get_object(self):
         return self.request.user
     
+class TeamMembersViewSet(viewsets.ModelViewSet):
+    queryset = TeamMembers.objects.all()
+    serializer_class = TeamMembersSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class TeamViewSet(viewsets.ModelViewSet):
+    queryset = Team.objects.all()
+    serializer_class = TeamSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class PriceViewSet(viewsets.ModelViewSet):
+    queryset = Price.objects.all()
+    serializer_class = PriceSerializer
+    permission_classes = [IsAdminUser]  # only admin can manage prices
+
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def google_complete_profile(request):
