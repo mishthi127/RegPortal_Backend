@@ -10,54 +10,57 @@ from users.models import NewUser,TeamMembers
 # Create your models here.
 
 
+
 class Module(models.Model):
-    id = models.SlugField(primary_key=True, default=uuid.uuid4)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     module = models.CharField(max_length=127)
-    module_query_name_without_spaces_all_small = models.CharField(
-        max_length=127)
+    module_query_name_without_spaces_all_small = models.CharField(max_length=127)
     module_icon = models.ImageField(
-        upload_to="image_uploads/moduleicons/", default='module_icon_default.png')
+        upload_to="image_uploads/moduleicons/",
+        default="image_uploads/moduleicons/module_icon_default.png"
+    )
     module_icon_active = models.ImageField(
-        upload_to="image_uploads/moduleicons/active/", default='module_icon_default.png')
+        upload_to="image_uploads/moduleicons/active/",
+        default="image_uploads/moduleicons/active/module_icon_default.png"
+    )
 
     def __str__(self):
-        return str(self.module)
-    
+        return self.module
 
         
 
+
 class Competition(models.Model):
-    id = models.SlugField(primary_key=True, default=uuid.uuid4)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     module = models.ForeignKey(
-        Module, related_name='modulename', on_delete=models.CASCADE)
+        Module, related_name='modulename', on_delete=models.CASCADE
+    )
     event_name = models.CharField(max_length=255)
-    event_short= models.CharField(max_length=255, null=True, blank=True)
-    event_tags= models.CharField(max_length=255, null=True, blank=True)
+    event_short = models.CharField(max_length=255, null=True, blank=True)
+    event_tags = models.CharField(max_length=255, null=True, blank=True)
     event_desc = models.CharField(max_length=500)
     event_rules = models.TextField()
-    solo_or_group = models.CharField(max_length=10,default="")
-#   event_rules_pdf = models.FileField(upload_to="image_uploads/rulebooks/", validators=[validate_file_extension],  blank=True, null=True)
+    solo_or_group = models.CharField(max_length=10, default="")
     min_members = models.IntegerField(default=1)
     max_members = models.IntegerField(default=1)
     prize_worth = models.CharField(max_length=255)
-    online = models.BooleanField(default = True)
+    online = models.BooleanField(default=True)
     image = models.ImageField(
-        upload_to="image_uploads/event_pics/", default='event_default.png')
+        upload_to="image_uploads/event_pics/",
+        default="image_uploads/event_pics/event_default.png"
+    )
     showPeformanceLink = models.BooleanField(default=True)
-    portalUrl = models.CharField(max_length=50, default='',blank=True)
-
+    portalUrl = models.CharField(max_length=50, default='', blank=True)
 
     def __str__(self):
-        return str(self.event_name)
-    
+        return self.event_name
+
 
 
 class CompTeam(models.Model):
-    id = models.SlugField(primary_key=True, default=uuid.uuid4)
-    event = models.ForeignKey(
-        Competition, related_name="event_name1", on_delete=models.CASCADE)
-    leader = models.ForeignKey(
-        settings.AUTH_USER_MODEL, related_name="teams_leader", on_delete=models.CASCADE)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    event = models.ForeignKey(Competition, related_name="event_name1", on_delete=models.CASCADE)
+    leader = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="teams_leader", on_delete=models.CASCADE)
     team_name=models.CharField(max_length=255,default="undefined")
     members = models.ManyToManyField(TeamMembers)
 
@@ -70,5 +73,6 @@ class SubmitPerformance(models.Model):
         Competition, related_name="event_name2", on_delete=models.CASCADE)
     team = models.ForeignKey(
         CompTeam, related_name="compteams2", on_delete=models.CASCADE)
-    link = models.CharField(max_length=2000, null=True, blank=True)
+    link = models.URLField(max_length=2000, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
+    

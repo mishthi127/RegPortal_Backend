@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import RegistrationForm from './RegistrationForm';
 import LoginForm from './LoginForm'; // (See below for a sample login form)
 import HomePage from './HomePage';
+import CompetitionsList from './CompetitionsPage'; // Import the CompetitionsList component
 
 function App() {
   return (
@@ -13,11 +14,13 @@ function App() {
         <Link to="/" style={{ marginRight: "1.5rem" }}>Home</Link>
         <Link to="/register" style={{ marginRight: "1.5rem" }}>Register</Link>
         <Link to="/login">Login</Link>
+        <Link to="/api/competitions">Competitions</Link>
       </nav>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/register" element={<RegistrationForm />} />
         <Route path="/login" element={<LoginForm />} />
+        <Route path="/api/competitions" element={<CompetitionsList />} />
       </Routes>
     </Router>
   );
