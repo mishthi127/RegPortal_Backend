@@ -11,7 +11,3 @@ djangorestframework-simplejwt
 requests
 cryptography
 
-<<<<<<< HEAD
-# install requirement and the migrate and then runserver and also install the dependency
-=======
->>>>>>> dbc5024af44f28d5e0113f7b6a4d9e4e38ac8287
