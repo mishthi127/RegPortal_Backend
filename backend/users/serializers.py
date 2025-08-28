@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import NewUser
+from .models import RegistrationSession, NewUser, TeamMembers, Team, Price
 
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, min_length=6)
@@ -13,6 +13,10 @@ class RegisterSerializer(serializers.ModelSerializer):
             'collegename', 'city', 'state',
             'password', 'confirm_password'
         )
+
+    def validate_password(self, value):
+        validate_password(value)  # uses Django's built-in validators
+        return value
 
     def validate(self, data):
         if data['password'] != data['confirm_password']:
@@ -51,3 +55,22 @@ class ProfileSerializer(serializers.ModelSerializer):
         exclude = [
             'password', 'otp', 'otp_created_at', 'otp_used', 'password_reset_token', 'password_reset_expiry'
         ]
+
+class TeamMembersSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TeamMembers
+        fields = "__all__"
+
+
+class TeamSerializer(serializers.ModelSerializer):
+    members = TeamMembersSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Team
+        fields = "__all__"
+
+
+class PriceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Price
+        fields = "__all__"
