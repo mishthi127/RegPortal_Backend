@@ -1,117 +1,159 @@
-.page{
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.page {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  font-family: Arial, sans-serif;
 }
 
-.addParticipant{
-    border: 1px solid black;
-    display: flex;
-    height: 500px;
-    border-radius: 10px;
-    width: 700px;
+.addParticipant {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  max-width: 1200px;
 }
 
-.addParticipantForms{
-    border: 1px solid rgb(255, 0, 0);
-    width: 50%;
-    position: relative;
-    display: flex;
-    align-items: center;
+.addParticipantForms {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.nameList{
-    border: 1px solid rgb(77, 255, 0);
-    width: 50%;
+/* Add button */
+.addForm {
+  background: #28a745;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.addForm:hover {
+  background: #218838;
 }
 
-.addForm{
-    position: absolute;
-    height: 30px;
-    width: 90px;
-    background-color: transparent;
-    border: 2px solid black;
-    border-radius: 5px;
-    top: 5px;
-    left: 5px;
-}
-
+/* Vertical scroll form container */
 .verticalForm {
-    display: flex;
-    flex-direction: column; /* Stack vertically */
-    overflow-y: auto; /* Scroll vertically */
-    scroll-behavior: smooth;
-    padding: 20px;
-    gap: 10px;
-    max-height: 70%; /* Set a limit so scrolling works */
-    border: 1px solid black;
-    height: 90%;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  max-height: 530px; /* limit height */
+  overflow-y: auto;
+  padding-right: 5px;
 }
 
-/* Hide scrollbars (optional) */
+/* Hide scrollbar (optional) */
 .verticalForm::-webkit-scrollbar {
-    display: none;
+  width: 0;
 }
 .verticalForm {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
-/* Individual form divs */
+/* Single form */
 .form {
-    flex: 0 0 auto; /* Keep height fixed */
-    height: auto;
-    border-radius: 10px;
-    border: 1px solid black;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  border: 1px solid #ddd;
 }
 
-.form ul li{
-    list-style-type: none;
-    margin-bottom: 10px;
+.form p {
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 
-
-
-.form input{
-    width: 240px;
-    border: none;
-    border-bottom: 1px solid black;
-    outline: none;
+.form ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-.form select{
-
+.form li {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
 }
 
-.form p{
-    font-size: 20px;
-    margin-left: 10px;
+.form label {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 4px;
 }
 
-.form label{
-    display: block;
-    font-weight: 500;
+.form input,
+.form select {
+  padding: 6px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  outline: none;
 }
 
-.removeParticipantForm{
-    height: 30px;
-    width: 90px;
-    background-color: transparent;
-    border: 2px solid black;
-    border-radius: 5px;
-    bottom: 5px;
-    left: 5px;
-    margin-left: 10px;
+.form input:focus,
+.form select:focus {
+  border-color: #007bff;
 }
 
-.submitForm{
-    position: absolute;
-    height: 30px;
-    width: 90px;
-    background-color: transparent;
-    border: 2px solid black;
-    border-radius: 5px;
-    bottom: 5px;
-    left: 5px;
+/* Remove button inside form */
+.removeParticipantForm {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.removeParticipantForm:hover {
+  background: #c82333;
+}
+
+/* Submit button */
+.submitForm {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.submitForm:hover {
+  background: #0056b3;
+}
+
+/* Right side name list */
+.nameList {
+  flex: 1;
+  background: #f1f1f1;
+  border-radius: 10px;
+  padding: 10px;
+  overflow-y: auto;
+  max-height: 500px;
+}
+
+.participantName {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.participantName p {
+  margin: 0;
+}
+
+.removeParticipant {
+  background: #ff4d4d;
+  border: none;
+  color: white;
+  border-radius: 50%;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+.removeParticipant:hover {
+  background: #cc0000;
 }

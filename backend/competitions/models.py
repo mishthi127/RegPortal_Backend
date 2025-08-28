@@ -74,6 +74,7 @@ class SubmitPerformance(models.Model):
     description = models.TextField(null=True, blank=True)
 
 
+# this participent model should be in users app model and it should be from team member model
 class Participant(models.Model):
     GENDER_CHOICES = [
         ('Male', 'Male'),

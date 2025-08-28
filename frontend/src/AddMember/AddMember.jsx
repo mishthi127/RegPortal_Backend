@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './AddMember.css';
 
 export function AddMember() {
     const [members, setMembers] = useState([
-        { id: null, tempId: crypto.randomUUID(), name: "", email: "", gender: "Male", phone: "" }
+        { id: null, tempId: crypto.randomUUID(), name: "", email: "", gender: "Male", phone: "", collegeName:"", cityName:"", state:"" }
     ]);
 
     const [names, setNames] = useState([]);
@@ -12,7 +12,7 @@ export function AddMember() {
     const addDiv = () => {
         setMembers([
             ...members,
-            { id: null, tempId: crypto.randomUUID(), name: "", email: "", gender: "Male", phone: "" }
+            { id: null, tempId: crypto.randomUUID(), name: "", email: "", gender: "Male", phone: "", collegeName:"", cityName:"", state:"" }
         ]);
     };
 
@@ -67,7 +67,7 @@ export function AddMember() {
     const submit = async () => {
         // Check if any field is empty
         for (let member of members) {
-            if (!member.name.trim() || !member.email.trim() || !member.phone.trim()) {
+            if (!member.name.trim() || !member.email.trim() || !member.phone.trim() || !member.collegeName.trim() || !member.cityName.trim() || !member.state.trim()) {
                 alert("Please fill in all fields before submitting.");
                 return; // Stop execution
             }
@@ -83,7 +83,10 @@ export function AddMember() {
                             name: member.name,
                             email: member.email,
                             gender: member.gender,
-                            phone: member.phone
+                            phone: member.phone,
+                            collegeName: member.collegeName,
+                            cityName: member.cityName,
+                            state: member.state,
                         })
                     });
 
@@ -95,12 +98,16 @@ export function AddMember() {
 
             alert("All members saved successfully!");
             setMembers([
-                { id: null, tempId: crypto.randomUUID(), name: "", email: "", gender: "Male", phone: "" }
+                { id: null, tempId: crypto.randomUUID(), name: "", email: "", gender: "Male", phone: "", collegeName:"", cityName:"", state:""  }
             ]);
         } catch (err) {
             console.error(err);
         }
 
+        displayNames();        
+    };
+
+    const displayNames = async() => {
         const response = await fetch("http://127.0.0.1:8000/Participantdata/Participant/");
         const data = await response.json();
 
@@ -110,7 +117,9 @@ export function AddMember() {
             name: item.name
         }));
         setNames(names);
-    };
+    }
+
+    useEffect(()=>{displayNames()},[]);
 
 
     return (
@@ -159,6 +168,33 @@ export function AddMember() {
                                             type="number"
                                             value={item.phone}
                                             onChange={(e) => handleChange(item.id, item.tempId, "phone", e.target.value)}
+                                            
+                                        />
+                                    </li>
+                                    <li>
+                                        <label>College Name</label>
+                                        <input
+                                            type="text"
+                                            value={item.collegeName}
+                                            onChange={(e) => handleChange(item.id, item.tempId, "collegeName", e.target.value)}
+                                            
+                                        />
+                                    </li>
+                                    <li>
+                                        <label>City Name</label>
+                                        <input
+                                            type="text"
+                                            value={item.cityName}
+                                            onChange={(e) => handleChange(item.id, item.tempId, "cityName", e.target.value)}
+                                            
+                                        />
+                                    </li>
+                                    <li>
+                                        <label>state</label>
+                                        <input
+                                            type="text"
+                                            value={item.state}
+                                            onChange={(e) => handleChange(item.id, item.tempId, "state", e.target.value)}
                                             
                                         />
                                     </li>
