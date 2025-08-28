@@ -1,7 +1,6 @@
 from django.contrib import admin
-from .models import Participant
-# Register your models here.
-@admin.register(Participant)
-class ParticipantAdmin(admin.ModelAdmin):
-    list_display = ('name', 'email', 'phone','gender','created_at')
-    search_fields = ('name', 'email','phone','gender','created_at')
+from .models import Competition  , Module
+
+
+admin.site.register(Competition)
+admin.site.register(Module)

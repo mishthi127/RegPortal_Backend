@@ -39,7 +39,7 @@ CORS_ALLOWED_ORIGINS = [
 AUTH_USER_MODEL = 'users.NewUser'
 
 # Application definition
-SITE_ID = 1
+SITE_ID = 2
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -70,6 +70,9 @@ SOCIALACCOUNT_PROVIDERS = {
         "AUTH_PARAMS" : {"access_type" : "online"}
     }
 }
+
+LOGIN_REDIRECT_URL = '/api/auth/google/complete/'
+SOCIALACCOUNT_LOGIN_ON_GET = True              
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -146,6 +149,10 @@ USE_I18N = True
 
 USE_TZ = True
 
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
+CORS_ALLOW_CREDENTIALS = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/

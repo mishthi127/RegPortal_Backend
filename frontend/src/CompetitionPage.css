@@ -1,0 +1,32 @@
+.competitions{
+    border:5px solid rgb(50, 22, 22);
+    padding :10px;
+    margin:20px;
+    color:rgb(57, 39, 4);
+    width:260px;
+    height:260px;
+    background-color: rgb(226, 195, 136);
+}
+.modules-list {
+    list-style-type: none;
+    padding: 0;
+}
+.modules-list li {
+    display: flex;
+    flex-direction:  column;
+    cursor: pointer;
+    width:300px;
+    height:100px;
+    margin-left:100px;
+    padding: 8px 12px;
+    margin-top: 10px;;
+    border-bottom: 1px solid #eee;
+    border:1px solid black;
+    color:brown;
+    font-size: large;
+    font-weight:800;
+    text-align: center;
+}
+.modules-list li:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}

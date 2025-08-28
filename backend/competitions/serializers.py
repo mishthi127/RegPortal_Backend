@@ -1,7 +1,33 @@
 from rest_framework import serializers
-from .models import  Participant
+from .models import Module, Competition, CompTeam, SubmitPerformance, TeamMembers
 
-class  ParticipantSerializer(serializers.ModelSerializer):
+class ModuleSerializer(serializers.ModelSerializer):
     class Meta:
-        model =  Participant
-        fields = ['id', 'name', 'email', 'gender', 'phone', 'created_at']
+        model = Module
+        fields = "__all__"
+
+class CompetitionSerializer(serializers.ModelSerializer):
+    module = ModuleSerializer()  # nested
+    class Meta:
+        model = Competition
+        fields = "__all__"
+
+class TeamMembersSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TeamMembers
+        fields = "__all__"
+
+class CompTeamSerializer(serializers.ModelSerializer):
+    event = CompetitionSerializer()
+    leader_name = serializers.CharField(source="leader.username", read_only=True)
+    members = TeamMembersSerializer(many=True)
+    class Meta:
+        model = CompTeam
+        fields = "__all__"
+
+class SubmitPerformanceSerializer(serializers.ModelSerializer):
+    event = CompetitionSerializer()
+    team = CompTeamSerializer()
+    class Meta:
+        model = SubmitPerformance
+        fields = "__all__"
