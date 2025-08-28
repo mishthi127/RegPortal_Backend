@@ -11,6 +11,16 @@ from django.utils import timezone
 from datetime import timedelta
 
 
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from rest_framework import viewsets
+from rest_framework.permissions import AllowAny
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login as auth_login, logout
+from .models import  TeamMembers
+from .serializers import ParticipantSerializer
+
+
 def clean_old_unverified_users():
     cutoff = timezone.now() - timedelta(minutes=5)
     NewUser.objects.filter(
@@ -85,3 +95,16 @@ class ProfileView(generics.RetrieveAPIView):
 from django.http import HttpResponse
 def homepage(request):
     return HttpResponse("Welcome to the homepage!")
+
+#User adding page
+
+@api_view(['GET'])
+@login_required
+def competition_list(request):
+    return Response({"message": "List of competitions"})
+
+
+class ParticipantviewSet(viewsets.ModelViewSet):
+    queryset =  TeamMembers.objects.all()
+    serializer_class =  ParticipantSerializer
+    permission_classes = [AllowAny] 
