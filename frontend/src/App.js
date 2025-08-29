@@ -8,6 +8,7 @@ import HomePage from './HomePage';
 import Profile from './Profile';
 import CompleteProfile from './CompleteProfile';
 import CompetitionsList from './CompetitionsPage';
+import RegisterPage from "./RegisterPage";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/complete-profile" element={<CompleteProfile />} />
         <Route path="/competitions" element={<CompetitionsList />} />
+        <Route path="/register/:id" element={<RegisterPage />} />
       </Routes>
     </Router>
   );
