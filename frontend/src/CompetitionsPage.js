@@ -140,6 +140,7 @@ function CompetitionsList() {
             <p><strong>Module:</strong> {selectedComp.module?.module}</p>
             {/* add more fields here if needed */}
             <button onClick={() => setSelectedComp(null)}>Close</button>
+            
           </div>
         </div>
       )}
