@@ -7,6 +7,7 @@ function CompetitionsList() {
   const [selectedModule, setSelectedModule] = useState("all"); 
   const [searchTerm, setSearchTerm] = useState("");
   const [modeFilter, setModeFilter] = useState("all"); // New state for mode filter
+  const [selectedComp, setSelectedComp] = useState(null);
 
   useEffect(() => {
     fetch("http://127.0.0.1:8000/api/competitions/", {
@@ -112,10 +113,15 @@ function CompetitionsList() {
           Offline
         </button>
       </div>
-      <ul>
+     <ul>
         {filteredData.length > 0 ? (
           filteredData.map((comp) => (
-            <li key={comp.id} className="competitions">
+            <li
+              key={comp.id}
+              className="competitions"
+              style={{ cursor: "pointer" }}
+              onClick={() => setSelectedComp(comp)} // open modal
+            >
               {comp.event_name}, {comp.solo_or_group}, {comp.event_mode},{" "}
               {comp.event_rules}
             </li>
@@ -124,6 +130,19 @@ function CompetitionsList() {
           <p>No competitions found.</p>
         )}
       </ul>
+       {selectedComp && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2>{selectedComp.event_name}</h2>
+            <p><strong>Mode:</strong> {selectedComp.event_mode}</p>
+            <p><strong>Type:</strong> {selectedComp.solo_or_group}</p>
+            <p><strong>Rules:</strong> {selectedComp.event_rules}</p>
+            <p><strong>Module:</strong> {selectedComp.module?.module}</p>
+            {/* add more fields here if needed */}
+            <button onClick={() => setSelectedComp(null)}>Close</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
