@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import "./CompetitionPage.css";
+import { Link } from "react-router-dom";
+
 
 function CompetitionsList() {
   const [data, setData] = useState([]);
@@ -132,17 +134,24 @@ function CompetitionsList() {
       </ul>
        {selectedComp && (
         <div className="modal-overlay">
-          <div className="modal-content">
-            <h2>{selectedComp.event_name}</h2>
-            <p><strong>Mode:</strong> {selectedComp.event_mode}</p>
-            <p><strong>Type:</strong> {selectedComp.solo_or_group}</p>
-            <p><strong>Rules:</strong> {selectedComp.event_rules}</p>
-            <p><strong>Module:</strong> {selectedComp.module?.module}</p>
-            {/* add more fields here if needed */}
-            <button onClick={() => setSelectedComp(null)}>Close</button>
-            
-          </div>
-        </div>
+  <div className="modal-content">
+    <h2>{selectedComp.event_name}</h2>
+    <p><strong>Mode:</strong> {selectedComp.event_mode}</p>
+    <p><strong>Type:</strong> {selectedComp.solo_or_group}</p>
+    <p><strong>Rules:</strong> {selectedComp.event_rules}</p>
+    <p><strong>Module:</strong> {selectedComp.module?.module}</p>
+    {/* add more fields here if needed */}
+    
+    {/* Buttons Section */}
+    <div className="modal-buttons">
+      <button onClick={() => setSelectedComp(null)}>Close</button>
+      <Link to={`/register/${selectedComp.id}`}>
+        <button>Register</button>
+      </Link>
+    </div>
+  </div>
+</div>
+
       )}
     </div>
   );
