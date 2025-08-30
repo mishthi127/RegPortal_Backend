@@ -147,13 +147,12 @@
 }
 
 .removeParticipant {
-  background: #ff4d4d;
+  background: black;
+  height: 25px;
+  width: 25px;
+  border-radius: 12.5px;
   border: none;
   color: white;
-  border-radius: 50%;
-  padding: 4px 8px;
   cursor: pointer;
 }
-.removeParticipant:hover {
-  background: #cc0000;
-}
+

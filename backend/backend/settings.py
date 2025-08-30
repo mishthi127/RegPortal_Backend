@@ -39,7 +39,7 @@ CORS_ALLOWED_ORIGINS = [
 AUTH_USER_MODEL = 'users.NewUser'
 
 # Application definition
-SITE_ID = 2
+# SITE_ID = 2
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
