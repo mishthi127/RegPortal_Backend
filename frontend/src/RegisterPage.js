@@ -1,15 +1,17 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 const RegisterPage = () => {
   const { id } = useParams(); // competition id from URL
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     teamName: "",
     teamVideo: "",
     college: "",
-    teamMembers: "",
   });
+
+  const [teamMembers, setTeamMembers] = useState([""]); // start with 1 empty input
 
   const handleChange = (e) => {
     setFormData({
@@ -18,33 +20,33 @@ const RegisterPage = () => {
     });
   };
 
+  const handleMemberChange = (index, value) => {
+    const updated = [...teamMembers];
+    updated[index] = value;
+    setTeamMembers(updated);
+  };
+
+  const addMember = () => {
+    setTeamMembers([...teamMembers, ""]);
+  };
+
+  const removeMember = (index) => {
+    const updated = [...teamMembers];
+    updated.splice(index, 1);
+    setTeamMembers(updated);
+  };
+
   const handleSubmit = (e) => {
-  e.preventDefault();
-  const finalData = { ...formData, teamMembers };
-  console.log("Form submitted:", finalData);
-  // Later: send finalData to Django backend
-};
+    e.preventDefault();
 
+    const finalData = { ...formData, teamMembers, competitionId: id };
+    console.log("Form submitted:", finalData);
 
-  // Add this inside RegisterPage component (above return):
-const [teamMembers, setTeamMembers] = useState([""]); // start with 1 empty input
+    // TODO: send finalData to backend API using fetch/axios
 
-const handleMemberChange = (index, value) => {
-  const updated = [...teamMembers];
-  updated[index] = value;
-  setTeamMembers(updated);
-};
-
-const addMember = () => {
-  setTeamMembers([...teamMembers, ""]);
-};
-
-const removeMember = (index) => {
-  const updated = [...teamMembers];
-  updated.splice(index, 1);
-  setTeamMembers(updated);
-};
-
+    // Redirect to ProfilePage with data
+    navigate("/profile", { state: finalData });
+  };
 
   return (
     <div className="register-page p-6">
@@ -96,39 +98,39 @@ const removeMember = (index) => {
         </div>
 
         {/* Team Members */}
-<div className="col-span-2">
-  <label className="block font-medium mb-2">Team Members</label>
+        <div className="col-span-2">
+          <label className="block font-medium mb-2">Team Members</label>
 
-  {teamMembers.map((member, index) => (
-    <div key={index} className="flex items-center gap-2 mb-2">
-      <input
-        type="text"
-        value={member}
-        onChange={(e) => handleMemberChange(index, e.target.value)}
-        className="w-full border rounded p-2"
-        placeholder={`Member ${index + 1} Name`}
-        required
-      />
-      {teamMembers.length > 1 && (
-        <button
-          type="button"
-          onClick={() => removeMember(index)}
-          className="bg-red-500 text-white px-3 py-1 rounded"
-        >
-          –
-        </button>
-      )}
-    </div>
-  ))}
+          {teamMembers.map((member, index) => (
+            <div key={index} className="flex items-center gap-2 mb-2">
+              <input
+                type="text"
+                value={member}
+                onChange={(e) => handleMemberChange(index, e.target.value)}
+                className="w-full border rounded p-2"
+                placeholder={`Member ${index + 1} Name`}
+                required
+              />
+              {teamMembers.length > 1 && (
+                <button
+                  type="button"
+                  onClick={() => removeMember(index)}
+                  className="bg-red-500 text-white px-3 py-1 rounded"
+                >
+                  –
+                </button>
+              )}
+            </div>
+          ))}
 
-  <button
-    type="button"
-    onClick={addMember}
-    className="bg-green-500 text-white px-3 py-1 rounded mt-2"
-  >
-    + Add Member
-  </button>
-</div>
+          <button
+            type="button"
+            onClick={addMember}
+            className="bg-green-500 text-white px-3 py-1 rounded mt-2"
+          >
+            + Add Member
+          </button>
+        </div>
 
         {/* Submit Button */}
         <div className="col-span-2 text-right">
