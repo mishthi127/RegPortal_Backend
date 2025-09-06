@@ -44,7 +44,7 @@ class Competition(models.Model):
     min_members = models.IntegerField(default=1)
     max_members = models.IntegerField(default=1)
     prize_worth = models.CharField(max_length=255)
-    online = models.BooleanField(default=True)
+    event_mode = models.CharField(max_length=10, default="true")
     image = models.ImageField(
         upload_to="image_uploads/event_pics/",
         default="image_uploads/event_pics/event_default.png"
