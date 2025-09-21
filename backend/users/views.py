@@ -30,6 +30,16 @@ from .serializers import ParticipantSerializer
 
 
 
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from rest_framework import viewsets
+from rest_framework.permissions import AllowAny
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login as auth_login, logout
+from .models import  TeamMembers
+from .serializers import ParticipantSerializer
+
+
 def clean_old_unverified_users():
     cutoff = timezone.now() - timedelta(minutes=5)
     NewUser.objects.filter(
@@ -156,6 +166,7 @@ from django.http import HttpResponse
 def homepage(request):
     return HttpResponse("Welcome to the homepage!")
 
+<<<<<<< HEAD
 @api_view(['POST'])
 def google_login(request):
     token = request.data.get('token')
@@ -201,6 +212,9 @@ def google_login(request):
     except ValueError:
         return Response({'detail': 'Invalid token'}, status=status.HTTP_400_BAD_REQUEST)
 
+=======
+#User adding page
+>>>>>>> 6a0f9059bd768190e527d6bb4aed772f55c36b4a
 
 @api_view(['GET'])
 @login_required
@@ -211,4 +225,8 @@ def competition_list(request):
 class ParticipantviewSet(viewsets.ModelViewSet):
     queryset =  TeamMembers.objects.all()
     serializer_class =  ParticipantSerializer
+<<<<<<< HEAD
     permission_classes= [AllowAny]
+=======
+    permission_classes = [AllowAny] 
+>>>>>>> 6a0f9059bd768190e527d6bb4aed772f55c36b4a
