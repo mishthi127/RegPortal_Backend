@@ -166,7 +166,6 @@ from django.http import HttpResponse
 def homepage(request):
     return HttpResponse("Welcome to the homepage!")
 
-<<<<<<< HEAD
 @api_view(['POST'])
 def google_login(request):
     token = request.data.get('token')
@@ -212,9 +211,6 @@ def google_login(request):
     except ValueError:
         return Response({'detail': 'Invalid token'}, status=status.HTTP_400_BAD_REQUEST)
 
-=======
-#User adding page
->>>>>>> 6a0f9059bd768190e527d6bb4aed772f55c36b4a
 
 @api_view(['GET'])
 @login_required
@@ -225,8 +221,4 @@ def competition_list(request):
 class ParticipantviewSet(viewsets.ModelViewSet):
     queryset =  TeamMembers.objects.all()
     serializer_class =  ParticipantSerializer
-<<<<<<< HEAD
     permission_classes= [AllowAny]
-=======
-    permission_classes = [AllowAny] 
->>>>>>> 6a0f9059bd768190e527d6bb4aed772f55c36b4a
