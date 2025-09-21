@@ -1,10 +1,25 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
+from .views import RegisterView, VerifyOTPView, LoginView, ProfileView, homepage, ParticipantviewSet
+
 from .views import (
     RegisterView, VerifyOTPView, LoginView, ProfileView,
     homepage, google_complete_profile, complete_profile, google_login,
     TeamMembersViewSet, TeamViewSet, PriceViewSet
 )
+
+Participant_list =  ParticipantviewSet.as_view({
+    'get': 'list',
+    'post': 'create'
+})
+
+Participant_detail =  ParticipantviewSet.as_view({
+    'get': 'retrieve',
+    'put': 'update',
+    'patch': 'partial_update',
+    'delete': 'destroy'
+})
+
 
 # Router for ViewSets (DRF auto-generates list, create, retrieve, update, delete endpoints)
 router = DefaultRouter()
@@ -29,4 +44,7 @@ urlpatterns = [
 
     # DRF router endpoints
     path('', include(router.urls)),
+    path('Participant/',  Participant_list, name=' Participant-list'),
+    path('Participant/<uuid:pk>/',  Participant_detail, name=' Participant-detail'),
+
 ]
