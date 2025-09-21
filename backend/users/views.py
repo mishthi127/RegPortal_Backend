@@ -166,6 +166,51 @@ from django.http import HttpResponse
 def homepage(request):
     return HttpResponse("Welcome to the homepage!")
 
+@api_view(['POST'])
+def google_login(request):
+    token = request.data.get('token')
+    if not token:
+        return Response({'detail': 'No token provided'}, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        # Verify token with Google
+        idinfo = id_token.verify_oauth2_token(token, grequests.Request(), "719905784477-e7cc0nhv3vd6v8r1cmr87asn42bc77uc.apps.googleusercontent.com")
+        email = idinfo['email']
+        name = idinfo.get('name', '')
+
+        # Get or create the user
+        user, created = NewUser.objects.get_or_create(
+            email=email,
+            defaults={
+                'fullname': name,
+                'username': email.split('@')[0],
+                'provider': 'google',
+                'is_active': True,  # Google verified email
+                'verified_email': True
+            }
+        )
+
+        # Generate refresh & access tokens
+        refresh = RefreshToken.for_user(user)
+
+        # Check for profile completion
+        needs_completion = any([
+            not user.phone_number,
+            not user.collegename,
+            not user.city,
+            not user.state
+        ])
+
+        return Response({
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
+            'user': ProfileSerializer(user).data,
+            'needs_completion': needs_completion
+        })
+
+    except ValueError:
+        return Response({'detail': 'Invalid token'}, status=status.HTTP_400_BAD_REQUEST)
+
 #User adding page
 
 @api_view(['GET'])
