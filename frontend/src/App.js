@@ -9,6 +9,7 @@ import Profile from './Profile';
 import CompleteProfile from './CompleteProfile';
 import CompetitionsList from './CompetitionsPage';
 import RegisterPage from "./RegisterPage";
+import { AddMember } from './AddMember/AddMember';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Link to="/login" style={{ marginRight: '1rem' }}>Login</Link>
         <Link to="/profile" style={{ marginRight: '1rem' }}>My Profile</Link>
         <Link to="/competitions" style={{ marginRight: '1rem' }}>Competitions</Link>
+        <Link to="/addmember">addmember</Link>
       </nav>
 
       <Routes>
@@ -29,6 +31,7 @@ function App() {
         <Route path="/complete-profile" element={<CompleteProfile />} />
         <Route path="/competitions" element={<CompetitionsList />} />
         <Route path="/register/:id" element={<RegisterPage />} />
+        <Route path="/addmember" element={<AddMember />} />
       </Routes>
     </Router>
   );
