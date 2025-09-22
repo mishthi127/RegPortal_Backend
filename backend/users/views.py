@@ -211,7 +211,6 @@ def google_login(request):
     except ValueError:
         return Response({'detail': 'Invalid token'}, status=status.HTTP_400_BAD_REQUEST)
 
-#User adding page
 
 @api_view(['GET'])
 @login_required
