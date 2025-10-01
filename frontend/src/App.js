@@ -12,15 +12,22 @@ import RegisterPage from "./RegisterPage";
 import { AddMember } from './AddMember/AddMember';
 
 function App() {
+  const token = localStorage.getItem("access"); // check login
+
   return (
     <Router>
       <nav style={{ marginBottom: '1rem' }}>
         <Link to="/" style={{ marginRight: '1rem' }}>Home</Link>
-        <Link to="/register" style={{ marginRight: '1rem' }}>Register</Link>
+        {!token && <Link to="/register" style={{ marginRight: '1rem' }}>Register</Link>}
+        {!token && <Link to="/login" style={{ marginRight: '1rem' }}>Login</Link>}
+        {token && <Link to="/profile" style={{ marginRight: '1rem' }}>My Profile</Link>}
+        {token && <Link to="/competitions" style={{ marginRight: '1rem' }}>Competitions</Link>}
+        {token && <Link to="/addmember">Add Member</Link>}
+        {/* <Link to="/register" style={{ marginRight: '1rem' }}>Register</Link>
         <Link to="/login" style={{ marginRight: '1rem' }}>Login</Link>
         <Link to="/profile" style={{ marginRight: '1rem' }}>My Profile</Link>
         <Link to="/competitions" style={{ marginRight: '1rem' }}>Competitions</Link>
-        <Link to="/addmember">addmember</Link>
+        <Link to="/addmember">addmember</Link> */}
       </nav>
 
       <Routes>

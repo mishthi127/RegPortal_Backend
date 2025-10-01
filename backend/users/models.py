@@ -8,6 +8,8 @@ from django.conf import settings
 from phonenumber_field.modelfields import PhoneNumberField
 from django.utils.crypto import get_random_string
 
+from django.contrib.postgres.fields import ArrayField #rohit
+from django.db.models import JSONField #rohit
 class RegistrationSession(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     # Profile fields
@@ -80,6 +82,7 @@ class CustomAccountManager(BaseUserManager):
 class NewUser(AbstractBaseUser, PermissionsMixin):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(_('email address'), unique=True, db_index=True)
+    pixel_highlight = models.JSONField(default=list, blank=True) #rohit
     username = models.CharField(max_length=150, unique=True, blank=True, null=True)
     provider = models.CharField(max_length=200, default='email')
     is_staff = models.BooleanField(default=False)
@@ -193,7 +196,7 @@ class Team(models.Model):
     dues = models.IntegerField(default=0)
     total_paid = models.IntegerField(default=0)
     leader = models.OneToOneField(settings.AUTH_USER_MODEL, related_name="team", on_delete=models.CASCADE)
-    members = models.ManyToManyField(TeamMembers, related_name="teams")
+    members = models.ManyToManyField(TeamMembers, related_name="teams") #rohit
 
     def __str__(self):
         return str(self.leader)
