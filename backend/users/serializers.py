@@ -21,9 +21,9 @@ class RegisterSerializer(serializers.ModelSerializer):
             'password', 'confirm_password'
         )
 
-    def validate_password(self, value):
-        validate_password(value)  # uses Django's built-in validators
-        return value
+    #def validate_password(self, value):
+        #validate_password(value)  # uses Django's built-in validators
+       # return value
 
     def validate(self, data):
         if data['password'] != data['confirm_password']:
