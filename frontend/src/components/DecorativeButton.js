@@ -1,6 +1,6 @@
 // src/components/DecorativeButton.js
 
-import React from 'react';
+//import React from 'react';
 import { Link } from 'react-router-dom';
 
 // Assumes assets are in 'src/assets/' and this file is in 'src/components/'

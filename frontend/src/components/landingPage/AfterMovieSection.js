@@ -1,6 +1,6 @@
 // src/components/landingPage/AfterMovieSection.js
 
-import React from 'react';
+//import React from 'react';
 import { motion } from 'framer-motion';
 
 import headingIconRed from '../../assets/heading-icon-red.svg';

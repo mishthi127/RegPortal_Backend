@@ -9,3 +9,9 @@
 body {
   @apply bg-alch-cream;
 }
+
+/* ADD THIS RULE FOR THE SWIPER FIX */
+.swiper-wrapper {
+  /* This forcefully ensures all slides stretch to match the tallest one */
+  align-items: stretch !important;
+}
