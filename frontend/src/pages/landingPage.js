@@ -6,6 +6,9 @@ import HeroSection from '../components/landingPage/heroSection';
 import Preloader from '../components/Preloader';
 import AfterMovieSection from '../components/landingPage/AfterMovieSection';
 import TestimonialsSection from '../components/landingPage/TestimonialsSection';
+import { Pixel } from '../components/landingPage/Pixel';
+import { Footer } from '../components/landingPage/Footer';
+import { FAQS } from '../components/landingPage/FAQS';
 
 import DecorativeButton from '../components/DecorativeButton';
 import logo from '../assets/logo.svg';
@@ -76,8 +79,21 @@ const LandingPage = () => {
       
       {/* Page Content */}
       <HeroSection />
+      <Pixel />
       <AfterMovieSection />
       <TestimonialsSection />
+      
+        <div
+          className='bg-[rgba(238,236,217,1)]'
+          style={{
+              backgroundImage: "url('/whitevector.png')",
+              
+              backgroundRepeat: "repeat",
+          }}   
+        >
+          <FAQS />
+          <Footer />
+        </div>
     </div>
   );
 };

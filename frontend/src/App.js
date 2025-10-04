@@ -14,6 +14,8 @@ import RegisterPage from "./RegisterPage";
 import { AddMember } from './AddMember/AddMember';
 
 function App() {
+  const token = localStorage.getItem("access"); // check login
+
   return (
     <Router>
       {/* The old <nav> element has been removed */}

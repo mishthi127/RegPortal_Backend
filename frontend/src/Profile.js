@@ -18,7 +18,7 @@ function Profile() {
       .get(`${BASE_URL}/profile/`, {
         headers: { Authorization: `Bearer ${token}` },
       })
-      .then((res) => setProfile(res.data))
+      .then((res) => {setProfile(res.data); console.log(res.data)})
       .catch(() => setMessage('Failed to load profile.'));
   }, []);
 

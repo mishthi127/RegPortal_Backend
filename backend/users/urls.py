@@ -22,10 +22,18 @@ Participant_detail =  ParticipantviewSet.as_view({
 
 
 # Router for ViewSets (DRF auto-generates list, create, retrieve, update, delete endpoints)
+# router = DefaultRouter()
+# router.register(r"team-members", TeamMembersViewSet)
+# router.register(r"teams", TeamViewSet)
+# router.register(r"prices", PriceViewSet)
+
+# rohit
+
 router = DefaultRouter()
-router.register(r"team-members", TeamMembersViewSet)
-router.register(r"teams", TeamViewSet)
-router.register(r"prices", PriceViewSet)
+router.register(r"team-members", TeamMembersViewSet, basename="team-member")
+router.register(r"teams", TeamViewSet, basename="team")
+router.register(r"prices", PriceViewSet)  # PriceViewSet has a queryset, no basename needed
+
 
 urlpatterns = [
     path('', homepage, name='homepage'),
