@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import axios from 'axios';
 import './AddMember.css';
 
 export function AddMember() {
@@ -7,6 +8,8 @@ export function AddMember() {
     ]);
 
     const [names, setNames] = useState([]);
+    const [profile, setProfile] = useState(null);
+    const [message, setMessage] = useState('');
 
     const STATES = [
         "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh",
@@ -19,6 +22,23 @@ export function AddMember() {
         "Delhi", "Jammu and Kashmir", "Ladakh", "Lakshadweep", "Puducherry"
     ];
 
+    useEffect(() => {
+        const token = localStorage.getItem('access');
+        if (!token) {
+        setMessage('You are not logged in.');
+        return;
+        }
+
+        axios
+        .get(`http://localhost:8000/profile/`, {
+            headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((res) => setProfile(res.data))
+        .catch(() => setMessage('Failed to load profile.'));
+    }, []);
+
+
+    //console.log(profile);
 
     // Add new member
     const addDiv = () => {
@@ -42,10 +62,15 @@ export function AddMember() {
 
     const removemember = async(id, tempId) => {
         console.log(id);
+        const token = localStorage.getItem("access");
         if (id) {
             try {
                 const response = await fetch(`http://127.0.0.1:8000/Participantdata/Participant/${id}/`, {
                     method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}` // Include token here
+                    },
                 });
                 if (!response.ok) {
                     throw new Error("Failed to delete from backend");
@@ -56,7 +81,13 @@ export function AddMember() {
             }
         }
 
-        const response = await fetch("http://127.0.0.1:8000/Participantdata/Participant/");
+        
+        const response = await fetch("http://127.0.0.1:8000/Participantdata/Participant/", {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}` // Include token here too
+            },
+        });
         const data = await response.json();
 
         const names = data.map((item) => ({
@@ -79,19 +110,51 @@ export function AddMember() {
     // Submit to backend
     const submit = async () => {
         // Check if any field is empty
+        const invalidMembers = [];
         for (let member of members) {
+            // Check empty fields
             if (!member.name.trim() || !member.email.trim() || !member.phone.trim() || !member.collegename.trim() || !member.city.trim() || !member.state.trim()) {
                 alert("Please fill in all fields before submitting.");
-                return; // Stop execution
+                return;
             }
+
+            // Check phone length
+            const phoneRegex = /^[6-9]\d{9}$/;  // Indian numbers start 6-9 and are 10 digits
+            if (!phoneRegex.test(member.phone)) {
+                invalidMembers.push(`${member.name} (Invalid phone number: ${member.phone})`);
+            }
+
+
+            // Check that name, city, college contain only letters
+            const lettersRegex = /^[A-Za-z\s]+$/; // letters and spaces only
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!lettersRegex.test(member.name)) {
+                invalidMembers.push(`${member.name} (Invalid name)`);
+            }
+            if (!lettersRegex.test(member.city)) {
+                invalidMembers.push(`${member.name} (Invalid city)`);
+            }
+            if (!lettersRegex.test(member.collegename)) {
+                invalidMembers.push(`${member.name} (Invalid college name)`);
+            }
+            if (!emailRegex.test(member.email)) {
+            invalidMembers.push(`${member.name} (Invalid email)`);
+        }
+        }
+
+        if (invalidMembers.length > 0) {
+            alert("Please fix the following:\n" + invalidMembers.join("\n"));
+            return;
         }
 
         try {
             await Promise.all(
                 members.map(async (member) => {
+                    const token = localStorage.getItem('access');
                     const response = await fetch("http://127.0.0.1:8000/Participantdata/Participant/", {
                         method: "POST",
-                        headers: { "Content-Type": "application/json" },
+                        headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+                        //headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({
                             name: member.name,
                             email: member.email,
@@ -121,7 +184,17 @@ export function AddMember() {
     };
 
     const displayNames = async() => {
-        const response = await fetch("http://127.0.0.1:8000/Participantdata/Participant/");
+        // const response = await fetch("http://127.0.0.1:8000/Participantdata/Participant/");
+
+        const token = localStorage.getItem("access");
+        const response = await fetch("http://127.0.0.1:8000/Participantdata/Participant/", {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json"
+            }
+        });
+
+
         const data = await response.json();
 
         const names = data.map((item) => ({
@@ -129,6 +202,7 @@ export function AddMember() {
             tempId: item.tempId,
             name: item.name
         }));
+        console.log(names);
         setNames(names);
     }
 
@@ -224,11 +298,15 @@ export function AddMember() {
                     <button className='submitForm' onClick={submit}>Submit</button>
                 </div>
                 <div className='nameList'>
+                    <div className='participantName'>
+                        <p>TEAM LEADER</p>
+                        <p>{profile ? profile.fullname.toUpperCase() : "Loading..."}</p>
+                    </div>
                     { names && 
                         names.map((item) => (
-                            <div className='participantName' key={item.tempId}>
+                            <div className='participantName' key={item.id}>
                                 <p>{item.name}</p>
-                                <button onClick={() => removemember(item.id, item.tempId)} className='removeParticipant'><i class="fa-solid fa-user-minus"></i></button>
+                                <button onClick={() => removemember(item.id, item.tempId)} className='removeParticipant'><i className="fa-solid fa-user-minus"></i></button>
                             </div>
                         ))
                     }

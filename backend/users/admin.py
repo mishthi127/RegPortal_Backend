@@ -16,17 +16,17 @@ class CustomUserAdmin(UserAdmin):
     model = NewUser
     list_display = (
         "email", "fullname", "role", "phone_number", "collegename",
-        "city", "state", "is_active", "percentage_complete"
+        "city", "state", "is_active", "percentage_complete", "pixel_highlight"
     )
     list_filter = ("is_active", "is_staff", "role", "gender")
     search_fields = ("email", "fullname", "phone_number", "alcherid")
     ordering = ("email",)
     list_per_page = 50
-    readonly_fields = ("date_joined", "otp_created_at")  # safe fields
+    readonly_fields = ("date_joined", "otp_created_at", "pixel_highlight")  # safe fields
 
     fieldsets = (
         (None, {"fields": ("email", "password")}),
-        ("Personal Info", {"fields": ("fullname", "username", "gender", "role", "phone_number", "alternate_phone", "img", "about")}),
+        ("Personal Info", {"fields": ("fullname", "username", "gender", "role", "phone_number", "alternate_phone", "img", "about", "pixel_highlight")}),
         ("Team Info", {"fields": ("collegename", "city", "state", "alcherid", "referred_by", "team_members")}),
         ("Permissions", {"fields": ("is_active", "is_staff", "is_superuser", "groups", "user_permissions")}),
         ("Security", {"fields": ("otp", "otp_created_at", "otp_used", "password_reset_token", "password_reset_expiry")}),
@@ -43,7 +43,7 @@ class CustomUserAdmin(UserAdmin):
 
 admin.site.register(NewUser, CustomUserAdmin)
 
-
+# Register your TeamMembers model as before
 @admin.register(TeamMembers)
 class TeamMembersAdmin(admin.ModelAdmin):
     list_display = ("id", "email", "name", "phone", "collegename", "city", "state", "accommodation")
@@ -51,14 +51,27 @@ class TeamMembersAdmin(admin.ModelAdmin):
     list_filter = ("accommodation", "gender")
     list_per_page = 50
 
+# 1. Define the inline class for the members
+class TeamMembersInline(admin.TabularInline):
+    model = Team.members.through  # Use the auto-created through model
+    verbose_name = "Team Member"
+    verbose_name_plural = "Team Members"
+    extra = 1  # Provides 1 extra blank row for adding new members
 
+# 2. Update your TeamAdmin to use the inline
 @admin.register(Team)
 class TeamAdmin(admin.ModelAdmin):
     list_display = ("id", "name", "leader", "accommodation", "blankets", "dues", "total_paid")
     search_fields = ("name", "leader__email")
     list_filter = ("accommodation",)
     list_per_page = 50
-
+    
+    # This is the crucial part that adds the inline view
+    inlines = [TeamMembersInline]
+    
+    # 3. (Recommended) Exclude the original 'members' field to prevent it
+    # from showing up as a large, confusing multi-select box.
+    exclude = ('members',)
 
 @admin.register(Price)
 class PriceAdmin(admin.ModelAdmin):
