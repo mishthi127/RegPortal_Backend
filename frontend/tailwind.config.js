@@ -10,7 +10,7 @@ module.exports = {
       colors: {
         'alch-red': '#EF5243',
         'alch-cream': '#EEECD9',
-        'alch-dark': '#090909',
+        'alch-dark': '#000000',
       },
       fontFamily: {
         // Manrope remains your global font
