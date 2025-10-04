@@ -47,7 +47,7 @@ const DecorativeButton = ({ to, children, variant = 'orange', onClick }) => {
   }
 
   return (
-    <Link to={to} onClick={onClick} className="relative inline-block group font-bold mt-8">
+    <Link to={to} onClick={onClick} className="relative inline-block group font-bold">
       <img 
         src={frameSrc}
         alt="" 

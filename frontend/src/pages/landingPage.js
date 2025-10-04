@@ -48,7 +48,7 @@ const LandingPage = () => {
           </div>
           <div className="hidden lg:flex items-center space-x-6">
             <Link to="/contact" className="text-alch-cream hover:text-white">Contact us</Link>
-            <DecorativeButton to="/login" variant="orange-sm">Login</DecorativeButton>
+            <DecorativeButton to="/login" className = "" variant="orange-sm">Login</DecorativeButton>
           </div>
           <div className="lg:hidden">
             <button onClick={toggleMenu}><img src={hamburgerIcon} alt="Menu" className="h-8 w-8" /></button>
