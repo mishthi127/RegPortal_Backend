@@ -147,6 +147,7 @@ def complete_profile(request):
     user.city = request.data.get('city', user.city)
     user.state = request.data.get('state', user.state)
     user.pixel_highlight = request.data.get('pixel_highlight', user.pixel_highlight)
+    user.save()
     return Response({'detail': 'Profile updated', 'user': ProfileSerializer(user).data})
 
 

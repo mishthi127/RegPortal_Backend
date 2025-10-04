@@ -16,17 +16,17 @@ class CustomUserAdmin(UserAdmin):
     model = NewUser
     list_display = (
         "email", "fullname", "role", "phone_number", "collegename",
-        "city", "state", "is_active", "percentage_complete"
+        "city", "state", "is_active", "percentage_complete", "pixel_highlight"
     )
     list_filter = ("is_active", "is_staff", "role", "gender")
     search_fields = ("email", "fullname", "phone_number", "alcherid")
     ordering = ("email",)
     list_per_page = 50
-    readonly_fields = ("date_joined", "otp_created_at")  # safe fields
+    readonly_fields = ("date_joined", "otp_created_at", "pixel_highlight")  # safe fields
 
     fieldsets = (
         (None, {"fields": ("email", "password")}),
-        ("Personal Info", {"fields": ("fullname", "username", "gender", "role", "phone_number", "alternate_phone", "img", "about")}),
+        ("Personal Info", {"fields": ("fullname", "username", "gender", "role", "phone_number", "alternate_phone", "img", "about", "pixel_highlight")}),
         ("Team Info", {"fields": ("collegename", "city", "state", "alcherid", "referred_by", "team_members")}),
         ("Permissions", {"fields": ("is_active", "is_staff", "is_superuser", "groups", "user_permissions")}),
         ("Security", {"fields": ("otp", "otp_created_at", "otp_used", "password_reset_token", "password_reset_expiry")}),

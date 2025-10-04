@@ -1,7 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Pixel } from './components/Pixel';
-import { Footer } from './components/Footer';
+import { Pixel } from './components/landingPage/Pixel';
+import { Footer } from './components/landingPage/Footer';
+import { FAQS } from './components/landingPage/FAQS';
 
 function HomePage() {
   const navigate = useNavigate();
@@ -50,19 +51,28 @@ function HomePage() {
           </>
         )}
 
-        {token && (
+        {/* {token && (
           <>
             <button onClick={handleLogout}  className="mt-4 px-6 py-2 bg-red-400 text-white rounded-md hover:bg-red-500 transition">
               Logout
             </button>
           </>
-        )}
+        )} */}
 
       </div>
 
         <Pixel />
-        <Footer />
-        
+        <div
+          className='bg-[rgba(238,236,217,1)]'
+          style={{
+              backgroundImage: "url('/whitevector.png')",
+              
+              backgroundRepeat: "repeat",
+          }}   
+        >
+          <FAQS />
+          <Footer />
+        </div>
     </>
   );
 }
