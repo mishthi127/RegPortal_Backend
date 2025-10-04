@@ -8,7 +8,6 @@ from django.conf import settings
 from phonenumber_field.modelfields import PhoneNumberField
 from django.utils.crypto import get_random_string
 
-from django.contrib.postgres.fields import ArrayField #rohit
 from django.db.models import JSONField #rohit
 class RegistrationSession(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
