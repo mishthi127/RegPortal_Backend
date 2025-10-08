@@ -1,38 +1,56 @@
-//import React from 'react';
-// You might not need RegistrationForm.css here anymore if its styles are not global
-import './RegistrationForm.css'; 
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+// src/App.js
 
-// Import all your page components
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+// Import the context provider
+import { RegistrationProvider } from './components/AuthPage/RegistrationContext.js';
+
+// --- Your Existing Page Imports ---
 import LandingPage from './pages/landingPage';
-import RegistrationForm from './RegistrationForm';
-import LoginForm from './LoginForm';
-import Profile from './Profile';
+import { default as ProfilePage } from './pages/ProfilePage';
 import CompleteProfile from './CompleteProfile';
 import CompetitionsList from './CompetitionsPage';
 import RegisterPage from "./RegisterPage";
 import { AddMember } from './AddMember/AddMember';
+import SignInPage from './pages/SignInPage.js';
+import PersonalInfoPage from './pages/PersonalInfoPage.js';
+import TeamInfoPage from './pages/TeamInfoPage.js';
+import ForgotPasswordPage from './pages/ForgotPasswordPage.js';
+import NotFoundPage from './pages/NotFoundPage.js';
 
 function App() {
-  const token = localStorage.getItem("access"); // check login
+  const token = localStorage.getItem("access");
+
+  const routeElements = [
+    // --- TEMPORARY CHANGE ---
+    // The root path "/" now renders your ProfilePage for easy UI checking.
+    // Change this back to LandingPage when you are done.
+    React.createElement(Route, { key: "landing", path: "/", element: React.createElement(ProfilePage) }),
+    
+    // The original profile route is still here
+    React.createElement(Route, { key: "profile", path: "/profile", element: React.createElement(ProfilePage) }),
+    
+    React.createElement(Route, { key: "complete-profile", path: "/complete-profile", element: React.createElement(CompleteProfile) }),
+    React.createElement(Route, { key: "competitions", path: "/competitions", element: React.createElement(CompetitionsList) }),
+    React.createElement(Route, { key: "register-id", path: "/register/:id", element: React.createElement(RegisterPage) }),
+    React.createElement(Route, { key: "add-member", path: "/addmember", element: React.createElement(AddMember) }),
+    React.createElement(Route, { key: "signin", path: "/signin", element: React.createElement(SignInPage) }),
+    React.createElement(Route, { key: "login-compat", path: "/login", element: React.createElement(SignInPage) }),
+    React.createElement(Route, { key: "register-personal", path: "/register", element: React.createElement(PersonalInfoPage) }),
+    React.createElement(Route, { key: "register-team", path: "/register/team-info", element: React.createElement(TeamInfoPage) }),
+    React.createElement(Route, { key: "forgot-password", path: "/forgot-password", element: React.createElement(ForgotPasswordPage) }),
+    React.createElement(Route, { key: "not-found", path: "*", element: React.createElement(NotFoundPage) })
+  ];
 
   return (
-    <Router>
-      {/* The old <nav> element has been removed */}
-      <Routes>
-        {/* The root path "/" now renders your new LandingPage */}
-        <Route path="/" element={<LandingPage />} />
-        
-        {/* All your other application routes remain the same */}
-        <Route path="/register" element={<RegistrationForm />} />
-        <Route path="/login" element={<LoginForm />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/complete-profile" element={<CompleteProfile />} />
-        <Route path="/competitions" element={<CompetitionsList />} />
-        <Route path="/register/:id" element={<RegisterPage />} />
-        <Route path="/addmember" element={<AddMember />} />
-      </Routes>
-    </Router>
+    React.createElement(RegistrationProvider, null,
+      React.createElement(BrowserRouter, null,
+        React.createElement(Routes, null,
+          routeElements
+        )
+      )
+    )
   );
 }
 
