@@ -1,3 +1,27 @@
+/* src/index.css */
+
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Syne:wght@400;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  @apply bg-alch-cream;
+}
+
+/* ADD THIS RULE FOR THE SWIPER FIX */
+.swiper-wrapper {
+  /* This forcefully ensures all slides stretch to match the tallest one */
+  align-items: stretch !important;
+}
+
+/* added to remove scrol bar in add mem form !! */
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none;    /* Firefox */
+}

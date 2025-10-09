@@ -43,7 +43,7 @@ class CustomUserAdmin(UserAdmin):
 
 admin.site.register(NewUser, CustomUserAdmin)
 
-
+# Register your TeamMembers model as before
 @admin.register(TeamMembers)
 class TeamMembersAdmin(admin.ModelAdmin):
     list_display = ("id", "email", "name", "phone", "collegename", "city", "state", "accommodation")
@@ -51,14 +51,27 @@ class TeamMembersAdmin(admin.ModelAdmin):
     list_filter = ("accommodation", "gender")
     list_per_page = 50
 
+# 1. Define the inline class for the members
+class TeamMembersInline(admin.TabularInline):
+    model = Team.members.through  # Use the auto-created through model
+    verbose_name = "Team Member"
+    verbose_name_plural = "Team Members"
+    extra = 1  # Provides 1 extra blank row for adding new members
 
+# 2. Update your TeamAdmin to use the inline
 @admin.register(Team)
 class TeamAdmin(admin.ModelAdmin):
     list_display = ("id", "name", "leader", "accommodation", "blankets", "dues", "total_paid")
     search_fields = ("name", "leader__email")
     list_filter = ("accommodation",)
     list_per_page = 50
-
+    
+    # This is the crucial part that adds the inline view
+    inlines = [TeamMembersInline]
+    
+    # 3. (Recommended) Exclude the original 'members' field to prevent it
+    # from showing up as a large, confusing multi-select box.
+    exclude = ('members',)
 
 @admin.register(Price)
 class PriceAdmin(admin.ModelAdmin):
