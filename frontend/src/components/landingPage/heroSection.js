@@ -7,8 +7,7 @@ import DecorativeButton from '../DecorativeButton';
 import bottomBorder from '../../assets/bottom-border.svg';
 import backgroundPattern from '../../assets/background-pattern.svg';
 
-const HeroSection = () => {
-  // UPDATED: Removed the incorrect 'backgroundSize' property
+const HeroSection = ({ isAuthenticated }) => {
   const mainContentStyle = {
     backgroundImage: `url(${backgroundPattern})`,
     backgroundRepeat: 'repeat',
@@ -41,8 +40,12 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 2.6 }}
+            className="mt-8" // Added margin-top for spacing
           >
-            <DecorativeButton to="/register" variant="orange">Register</DecorativeButton>
+            {/* The Register button is now only rendered if the user is NOT authenticated */}
+            {!isAuthenticated && (
+              <DecorativeButton to="/register" variant="orange">Register</DecorativeButton>
+            )}
           </motion.div>
         </div>
       </main>
