@@ -1,9 +1,9 @@
     import { useState } from "react";
     import { useEffect } from "react";
     import axios from "axios";
-    import backgroundPattern from '../../assets/background-pattern.svg';
     import lotus from "../../assets/lotus.svg"
     import flower from "../../assets/heading-icon-red.svg"
+    import "../media.css";
 
     export function Pixel() {
         const token = localStorage.getItem("access"); // check login
@@ -14,17 +14,6 @@
         const [animationstart, setAnimationstart] = useState(false);
         const [yourturn, setYourturn] = useState(false);
         const [animation1, setAnimation1] = useState(false);
-        const [cellSize, setCellSize] = useState(
-            window.innerWidth < 640 ? 6.68 : 20
-        );
-
-        useEffect(() => {
-            const handleResize = () => {
-                setCellSize(window.innerWidth < 640 ? 6.68 : 20);
-            };
-            window.addEventListener("resize", handleResize);
-            return () => window.removeEventListener("resize", handleResize);
-        }, []);
 
         const animation2 = [{row: 7, col: 18},{row: 9, col: 18},{row: 8, col: 17},{row: 8, col: 19}];
         const animation3 = [];
@@ -237,64 +226,51 @@
 
         return (
             <div 
-                className="h-[780px] w-full bg-alch-dark flex flex-col justify-between items-center"
-                style={{
-                    backgroundImage: `url(${backgroundPattern})`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                    backgroundRepeat: "no-repeat",
-                }}    
+                className="h-auto lg:h-[780px] w-100% bg-alch-dark flex flex-col justify-between items-center pixelbg"   
             >
-                    <div className="flex justify-center items-center mt-[166px]">
-                        <div className="flex items-center ">
+                    <div className="flex justify-center items-center mt-[66px] lg:mt-[166px]">
+                        <div className="flex items-center">
                             {/* Left strip */}
                             <div className="flex flex-col w-[5px]">
-                                <div className="h-[20px] bg-[rgba(238,236,217,1)]"></div>
-                                <div className="h-[30px] bg-transparent"></div>
-                                <div className="h-[20px] bg-[rgba(238,236,217,1)]"></div>
-                                <div className="h-[120px] bg-transparent"></div>
-                                <div className="h-[20px] bg-[rgba(238,236,217,1)]"></div>
-                                <div className="h-[30px] bg-transparent"></div>
-                                <div className="h-[20px] bg-[rgba(238,236,217,1)]"></div>
+                                <div className="h-[6.68px] lg:h-[20px] bg-[rgba(238,236,217,1)]"></div>
+                                <div className="h-[10.02px] lg:h-[30px] bg-transparent"></div>
+                                <div className="h-[6.68px] lg:h-[20px] bg-[rgba(238,236,217,1)]"></div>
+                                <div className="h-[40.08px] lg:h-[120px] bg-transparent"></div>
+                                <div className="h-[6.68px] lg:h-[20px] bg-[rgba(238,236,217,1)]"></div>
+                                <div className="h-[10.02px] lg:h-[30px] bg-transparent"></div>
+                                <div className="h-[6.68px] lg:h-[20px] bg-[rgba(238,236,217,1)]"></div>
                             </div>
 
                             {/* Middle column */}
                             <div className="flex flex-col w-[20.58px]">
-                                <div className="h-[20px] bg-[rgba(238,236,217,1)]"></div>
-                                <div className="h-[30px] bg-transparent"></div>
-                                <div className="h-[20px] bg-[rgba(238,236,217,1)]"></div>
-                                <div className="h-[80px] bg-transparent"></div>
-                                <div className="h-[20px] bg-[rgba(238,236,217,1)]"></div>
-                                <div className="h-[30px] bg-transparent"></div>
-                                <div className="h-[20px] bg-[rgba(238,236,217,1)]"></div>
+                                <div className="h-[6.68px] lg:h-[20px] bg-[rgba(238,236,217,1)]"></div>
+                                <div className="h-[10.02px] lg:h-[30px] bg-transparent"></div>
+                                <div className="h-[6.68px] lg:h-[20px] bg-[rgba(238,236,217,1)]"></div>
+                                <div className="h-[26.72px] lg:h-[80px] bg-transparent"></div>
+                                <div className="h-[6.68px] lg:h-[20px] bg-[rgba(238,236,217,1)]"></div>
+                                <div className="h-[10.02px] lg:h-[30px] bg-transparent"></div>
+                                <div className="h-[6.68px] lg:h-[20px] bg-[rgba(238,236,217,1)]"></div>
                             </div>
 
                             {/* Right big block */}
                             <div className="flex flex-col">
-                                <div className="h-[20px] w-[144.06px] bg-[rgba(238,236,217,1)]"></div>
-                                <div className="h-[20px] w-[20.58px] bg-transparent"></div>
-                                <div className="h-[20px] w-[400px] bg-[rgba(238,236,217,1)]"></div>
-                                <div className="h-[20px] w-[20.58px] bg-transparent"></div>
-                                <div className="h-[20px] w-[400px] bg-[rgba(238,236,217,1)]"></div>
-                                <div className="h-[20px] w-[20.58px] bg-transparent"></div>
-                                <div className="h-[20px] w-[400px] bg-[rgba(238,236,217,1)]"></div>
-                                <div className="h-[20px] w-[20.58px] bg-transparent"></div>
-                                <div className="h-[20px] w-[144.06px] bg-[rgba(238,236,217,1)]"></div>
+                                <div className="h-[6.68px] lg:h-[20px] w-[144.06px] bg-[rgba(238,236,217,1)]"></div>
+                                <div className="h-[6.68px] lg:h-[20px] w-[20.58px] bg-transparent"></div>
+                                <div className="h-[6.68px] lg:h-[20px] w-[400px] bg-[rgba(238,236,217,1)]"></div>
+                                <div className="h-[6.68px] lg:h-[20px] w-[20.58px] bg-transparent"></div>
+                                <div className="h-[6.68px] lg:h-[20px] w-[400px] bg-[rgba(238,236,217,1)]"></div>
+                                <div className="h-[6.68px] lg:h-[20px] w-[20.58px] bg-transparent"></div>
+                                <div className="h-[6.68px] lg:h-[20px] w-[400px] bg-[rgba(238,236,217,1)]"></div>
+                                <div className="h-[6.68px] lg:h-[20px] w-[20.58px] bg-transparent"></div>
+                                <div className="h-[6.68px] lg:h-[20px] w-[144.06px] bg-[rgba(238,236,217,1)]"></div>
                             </div>
                         </div>
+
                         <div
-                            className="-mx-[30px] z-10 relative"
-                            style={{
-                                display: "grid",
-                                gridTemplateColumns: `repeat(${columns}, ${cellSize}px)`,
-                                gridTemplateRows: `repeat(${rows}, ${cellSize}px)`,
-                                gap: "0px",
-                                width: `${columns * cellSize}px`,
-                                height: `${rows * cellSize}px`,
-                            }}
+                            className="-mx-[30px] z-10 relative pixel-grid"
                         >
                             {animation1 && (
-                                <img src={lotus} alt="lotus" className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[254px] w-[373px]"/>
+                                <img src={lotus} alt="lotus" className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-full w-full lg:h-[254px] lg:w-[373px]"/>
                             )}
 
                             {grid.flat().map(({ row, col }) => (
@@ -306,7 +282,7 @@
                                                 ? "none"
                                                 :wight.some(h => h.row === row && h.col === col)
                                                 ?"none"
-                                                : "0.125px solid rgba(238, 236, 217, 1)",
+                                                : "0.1px solid rgba(238, 236, 217, 1)",
                                         backgroundColor: transperent.some(h => h.row === row && h.col === col)
                                                 ? "transparent"
                                                 :wight.some(h => h.row === row && h.col === col)
@@ -328,49 +304,69 @@
                                 </div>
                             )}
                         </div>
+
                         <div className="flex items-center">
                             {/* Left strip */}
                             <div className="flex flex-col items-end">
-                                <div className="h-[20px] w-[144.06px] bg-[rgba(238,236,217,1)]"></div>
-                                <div className="h-[20px] w-[20.58px] bg-transparent"></div>
-                                <div className="h-[20px] w-[400px] bg-[rgba(238,236,217,1)]"></div>
-                                <div className="h-[20px] w-[20.58px] bg-transparent"></div>
-                                <div className="h-[20px] w-[400px] bg-[rgba(238,236,217,1)]"></div>
-                                <div className="h-[20px] w-[20.58px] bg-transparent"></div>
-                                <div className="h-[20px] w-[400px] bg-[rgba(238,236,217,1)]"></div>
-                                <div className="h-[20px] w-[20.58px] bg-transparent"></div>
-                                <div className="h-[20px] w-[144.06px] bg-[rgba(238,236,217,1)]"></div>
+                                <div className="h-[6.68px] lg:h-[20px] w-[144.06px] bg-[rgba(238,236,217,1)]"></div>
+                                <div className="h-[6.68px] lg:h-[20px] w-[20.58px] bg-transparent"></div>
+                                <div className="h-[6.68px] lg:h-[20px] w-[400px] bg-[rgba(238,236,217,1)]"></div>
+                                <div className="h-[6.68px] lg:h-[20px] w-[20.58px] bg-transparent"></div>
+                                <div className="h-[6.68px] lg:h-[20px] w-[400px] bg-[rgba(238,236,217,1)]"></div>
+                                <div className="h-[6.68px] lg:h-[20px] w-[20.58px] bg-transparent"></div>
+                                <div className="h-[6.68px] lg:h-[20px] w-[400px] bg-[rgba(238,236,217,1)]"></div>
+                                <div className="h-[6.68px] lg:h-[20px] w-[20.58px] bg-transparent"></div>
+                                <div className="h-[6.68px] lg:h-[20px] w-[144.06px] bg-[rgba(238,236,217,1)]"></div>
                             </div>
 
                             {/* Middle column */}
                             <div className="flex flex-col w-[20.58px]">
-                                <div className="h-[20px] bg-[rgba(238,236,217,1)]"></div>
-                                <div className="h-[30px] bg-transparent"></div>
-                                <div className="h-[20px] bg-[rgba(238,236,217,1)]"></div>
-                                <div className="h-[80px] bg-transparent"></div>
-                                <div className="h-[20px] bg-[rgba(238,236,217,1)]"></div>
-                                <div className="h-[30px] bg-transparent"></div>
-                                <div className="h-[20px] bg-[rgba(238,236,217,1)]"></div>
+                                <div className="h-[6.68px] lg:h-[20px] bg-[rgba(238,236,217,1)]"></div>
+                                <div className="h-[10.02px] lg:h-[30px] bg-transparent"></div>
+                                <div className="h-[6.68px] lg:h-[20px] bg-[rgba(238,236,217,1)]"></div>
+                                <div className="h-[26.72px] lg:h-[80px] bg-transparent"></div>
+                                <div className="h-[6.68px] lg:h-[20px] bg-[rgba(238,236,217,1)]"></div>
+                                <div className="h-[10.02px] lg:h-[30px] bg-transparent"></div>
+                                <div className="h-[6.68px] lg:h-[20px] bg-[rgba(238,236,217,1)]"></div>
                             </div>
 
                             {/* Right big block */}
                             <div className="flex flex-col w-[5px]">
-                                <div className="h-[20px] bg-[rgba(238,236,217,1)]"></div>
-                                <div className="h-[30px] bg-transparent"></div>
-                                <div className="h-[20px] bg-[rgba(238,236,217,1)]"></div>
-                                <div className="h-[120px] bg-transparent"></div>
-                                <div className="h-[20px] bg-[rgba(238,236,217,1)]"></div>
-                                <div className="h-[30px] bg-transparent"></div>
-                                <div className="h-[20px] bg-[rgba(238,236,217,1)]"></div>
+                                <div className="h-[6.68px] lg:h-[20px] bg-[rgba(238,236,217,1)]"></div>
+                                <div className="h-[10.02px] lg:h-[30px] bg-transparent"></div>
+                                <div className="h-[6.68px] lg:h-[20px] bg-[rgba(238,236,217,1)]"></div>
+                                <div className="h-[40.08px] lg:h-[120px] bg-transparent"></div>
+                                <div className="h-[6.68px] lg:h-[20px] bg-[rgba(238,236,217,1)]"></div>
+                                <div className="h-[10.02px] lg:h-[30px] bg-transparent"></div>
+                                <div className="h-[6.68px] lg:h-[20px] bg-[rgba(238,236,217,1)]"></div>
                             </div>
                         </div>
                     </div>
-                    <div className="flex justify-center mt-[50px]">
-                        {!animationstart && <div style={{backgroundImage: "url('/explorebg.png')"}} className="w-[200px] h-[46px] cursor-pointer font-sans flex justify-center items-center font-bold text-base" onClick={()=>{animation();}}>Explore the Fun Side</div>}
-                        {animationstart && !animationdone && <div className="w-[200px] h-[46px] cursor-pointer font-sans flex justify-center items-center font-bold text-base"></div>}
-                        {animationdone && <div style={{backgroundImage: "url('/Submit.png')",backgroundSize: "cover",backgroundPosition: "center",backgroundRepeat: "no-repeat",}} className="w-[116.29px] h-[46px] cursor-pointer font-sans flex justify-center items-center font-bold text-base" onClick={()=>{submit();}}>Submit</div>}
+                    <div className="relative h-[46px] mt-[10px] lg:mt-[50px] flex justify-center items-center">
+                        {/* Explore button */}
+                        <div
+                            className={`absolute transition-opacity duration-500 ${
+                            animationstart ? "opacity-0 pointer-events-none" : "opacity-100"
+                            } lg:w-[200px] w-[100px] h-[40px] lg:h-[46px] flex justify-center items-center font-sans font-bold lg:text-base text-[9px] lg:text-[15px] cursor-pointer`}
+                            style={{ backgroundImage: "url('/explorebg.png')", backgroundSize: "contain", backgroundPosition: "center", backgroundRepeat: "no-repeat" }}
+                            onClick={() => animation()}
+                        >
+                            Explore the Fun Side
+                        </div>
+
+
+                        {/* Submit button */}
+                        <div
+                            className={`absolute transition-opacity duration-500 ${
+                            animationdone ? "opacity-100" : "opacity-0 pointer-events-none"
+                            } lg:w-[116.29px] w-[65px] h-[25px] lg:h-[46px] flex justify-center items-center font-sans font-bold text-[11px] lg:text-[15px] lg:text-base cursor-pointer`}
+                            style={{ backgroundImage: "url('/Submit.png')", backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat" }}
+                            onClick={() => submit()}
+                        >
+                            Submit
+                        </div>
                     </div>
-                    <img className="w-full h-[40px] mt-auto" src="/image131.png" alt="image131"/>
+                    <img className="w-[100%] h-[10.94px] lg:h-[40px] mt-[47px] lg:mt-auto" src="/image131.png" alt="image131"/>
             </div>
     );
     }

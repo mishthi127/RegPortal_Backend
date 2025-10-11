@@ -15,8 +15,8 @@ module.exports = {
       fontFamily: {
         // Manrope remains your global font
         sans: ['Manrope', ...defaultTheme.fontFamily.sans],
-        // The 'font-modernoir' class now uses Syne
-        modernoir: ['Syne', 'sans-serif'],
+        // TT Modernoir is your special heading font via 'font-display'
+        display: ['TT Modernoir', 'sans-serif'],
       },
     },
   },

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Alert } from './Alert';
 import axios from 'axios';
 import background from '../assets/bg_add.svg';
 import namesbg from '../assets/names_team.svg';
@@ -13,20 +14,30 @@ import close from "../assets/close.svg";
 import addmembtn from "../assets/addmembtn.png";
 import inputbg from "../assets/inputbg.svg";
 import discard from "../assets/discard.svg";
-
+import mbaddmembtn from "../assets/mbaddmembtn.svg";
+import mbserach from "../assets/mbsearch.svg";
+import mbaddforminpbg from "../assets/mbaddforminpbg.svg";
+import mbmembg from "../assets/mbmembg.svg";
+import mbaddmem from "../assets/mbaddmem.svg";
 
 export function AddMembers(){
     const navigate = useNavigate();
     const [members, setMembers] = useState([
-        { id: null, tempId: crypto.randomUUID(), name: "", email: "", gender: "Male", phone: "", collegename:"", city:"", state:"" }
+        { id: null , name: "", email: "", gender: "Male", phone: "", collegename:"", city:"", state:"" }
     ]);
-    const [showAlert, setShowAlert] = useState(false);
     const [names, setNames] = useState([]);
     const [filteredNames, setFilteredNames] = useState([]);
     const [profile, setProfile] = useState(null);
     const [message, setMessage] = useState('');
     const [text, setText] = useState("");
     const [addpop, setAddpop] = useState(false);
+    
+    //coustom alert 
+    const [customAlert, setCustomAlert] = useState({ show: false, message: "" });
+    const showAlert = (msg) => {
+        setCustomAlert({ show: true, message: msg });
+    };
+
 
     const STATES = [
         "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh",
@@ -61,7 +72,7 @@ export function AddMembers(){
     const addDiv = () => {
         setMembers([
             ...members,
-            { id: null, tempId: crypto.randomUUID(), name: "", email: "", gender: "Male", phone: "", collegename:"", city:"", state:"" }
+            { id: null , name: "", email: "", gender: "Male", phone: "", collegename:"", city:"", state:"" }
         ]);
     };
 
@@ -69,6 +80,8 @@ export function AddMembers(){
     const removeDiv = (id, tempId) => {
         if (members.length === 1) {
             alert("At least one member form is required.");
+            //coustom alert
+            //showAlert("At least one member form is required.");
             return;
         }
 
@@ -139,7 +152,7 @@ export function AddMembers(){
 
     const makediscard = () => {
         setMembers([
-            { id: null, tempId: crypto.randomUUID(), name: "", email: "", gender: "Male", phone: "", collegename:"", city:"", state:"" }
+            { id: null , name: "", email: "", gender: "Male", phone: "", collegename:"", city:"", state:"" }
         ]);
     }
 
@@ -151,6 +164,7 @@ export function AddMembers(){
             // Check empty fields
             if (!member.name.trim() || !member.email.trim() || !member.phone.trim() || !member.collegename.trim() || !member.city.trim() || !member.state.trim()) {
                 alert("Please fill in all fields before submitting.");
+                //showAlert("Please fill in all fields before submitting.")
                 return;
             }
 
@@ -180,7 +194,7 @@ export function AddMembers(){
 
         if (invalidMembers.length > 0) {
             alert("Please fix the following:\n" + invalidMembers.join("\n"));
-            //setShowAlert(true);
+            //showAlert("Please fix the following:\n" + invalidMembers.join("\n"));
             return;
         }
 
@@ -211,7 +225,7 @@ export function AddMembers(){
 
             //alert("All members saved successfully!");
             setMembers([
-                { id: null, tempId: crypto.randomUUID(), name: "", email: "", gender: "Male", phone: "", collegename:"", city:"", state:""  }
+                { id: null , name: "", email: "", gender: "Male", phone: "", collegename:"", city:"", state:""  }
             ]);
         } catch (err) {
             console.error(err);
@@ -276,7 +290,7 @@ export function AddMembers(){
             backgroundImage: `url(${background})`,
             backgroundPosition: 'center', // centers the image
             backgroundSize: 'cover',      // makes it cover the div
-            backgroundRepeat: 'no-repeat' // prevents tiling
+            backgroundRepeat: 'no-repeat',
     };
 
     const searchBgStyle = {
@@ -293,8 +307,22 @@ export function AddMembers(){
             backgroundRepeat: 'no-repeat' // prevents tiling
     };
 
+    const mbnamesBgStyle = {
+            backgroundImage: `url(${mbmembg})`,
+            backgroundPosition: 'center', // centers the image
+            backgroundSize: 'cover',      // makes it cover the div
+            backgroundRepeat: 'no-repeat' // prevents tiling
+    };
+
     const addBgStyle = {
             backgroundImage: `url(${addbg})`,
+            backgroundPosition: 'center', // centers the image
+            backgroundSize: 'cover',      // makes it cover the div
+            backgroundRepeat: 'no-repeat' // prevents tiling
+    };
+
+    const mbaddBgStyle = {
+            backgroundImage: `url(${mbaddmem})`,
             backgroundPosition: 'center', // centers the image
             backgroundSize: 'cover',      // makes it cover the div
             backgroundRepeat: 'no-repeat' // prevents tiling
@@ -317,7 +345,14 @@ export function AddMembers(){
     const inputbgstyle = {
             backgroundImage: `url(${inputbg})`,
             backgroundPosition: 'center', // centers the image
-            backgroundSize: 'contain',      // makes it cover the div
+            backgroundSize: 'cover',      // makes it cover the div
+            backgroundRepeat: 'no-repeat' // prevents tiling
+    }
+
+    const mbinputbgstyle = {
+            backgroundImage: `url(${mbaddforminpbg})`,
+            backgroundPosition: 'center', // centers the image
+            backgroundSize: 'cover',      // makes it cover the div
             backgroundRepeat: 'no-repeat' // prevents tiling
     }
 
@@ -341,53 +376,49 @@ export function AddMembers(){
 
     return(
         <div className='w-full h-full flex flex-col items-center justify-start'>
-                {showAlert && (
-                    <div className="fixed inset-0 bg-black/50 flex items-start justify-center z-50">
-                    <div className="bg-white p-6 rounded-lg shadow-lg w-[300px]">
-                        <p className="text-lg font-semibold">This is a custom alert!</p>
-                        <button
-                        className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
-                        onClick={() => setShowAlert(false)}
-                        >
-                        OK
-                        </button>
-                    </div>
-                    </div>
-                )}
 
-            {/* for pop up */}
+            {/* laptop add mem form*/}
             {addpop && 
-                <div className='fixed inset-0 bg-black/60 z-50 flex items-center flex-col justify-center' onClick={() => setAddpop(false)}>
-                    <div className='h-[81px] w-[800px] flex flex-col justify-center items-center bg-slate-600 ' onClick={(e) => e.stopPropagation()}>
-                        
-                            {/* <div className='h-[27px] w-[27px] absolute top-0 left-0 bg-black'></div>
-                            <div className='h-[27px] w-[27px] absolute top-0 right-0 bg-black'></div> */}
-                        
-                        <div className='w-[733px] h-[33px] flex justify-between items-center'>
-                            <p className='font-sans text-2xl font-semibold text-alch-cream'>Add Team Member</p>
-                            <button onClick={()=>{setAddpop(false)}}><img src={close} alt='close' className='h-[32px] w-[32px]' /></button>
+                <div className='fixed inset-0 bg-black/60 z-50 lg:flex hidden items-center flex-col justify-center ' onClick={() => setAddpop(false)}>
+                    <div className='h-[67px] lg:h-[81px] lg:w-[800px] w-[319px]' onClick={(e) => e.stopPropagation()}>
+                        <div className='lg:h-[27px] h-[15px] lg:w-[800px] w-[319px] flex flex-row'>
+                            <div className='lg:h-[27px] lg:w-[27px] h-[15px] w-[15px] bg-transparent'></div>
+                            <div className='lg:w-[746px] lg:h-[27px] h-[15px] w-[289px] bg-alch-dark'></div>
+                            <div className='lg:h-[27px] lg:w-[27px] h-[15px] w-[15px] bg-transparent'></div>
+                        </div>
+
+                            <div className='lg:w-[800px] lg:h-[33px] h-[37px] w-[319px] flex justify-between lg:px-[50px] px-[20px] items-center bg-alch-dark'>
+                                <p className='font-sans lg:text-2xl text-[16px] font-semibold text-alch-cream'>Add Team Member</p>
+                                <button onClick={()=>{setAddpop(false)}}><img src={close} alt='close' className='lg:h-[32px] lg:w-[32px] h-[22px] w-[22px]' /></button>
+                            </div>
+
+                        <div className='h-[15px] lg:h-[27px] lg:w-[800px] w-[319px] flex flex-col justify-center items-center bg-alch-dark ' onClick={(e) => e.stopPropagation()}>
                         </div>
                     </div>
-                    <div className='h-[100vh] w-[800px] flex flex-col overflow-y-auto bg-alch-cream' style={noscroolbar} onClick={(e) => e.stopPropagation()}>
+
+                    <div className='lg:h-[100vh] h-[600px] lg:w-[800px] w-[319px] flex flex-col overflow-y-auto bg-alch-cream' style={noscroolbar} onClick={(e) => e.stopPropagation()}>
                             <div 
                                 className='flex flex-col'
                             >
-                                <div className='verticalForm'>
+                                <div>
                                     {members.map((item, index) => (
                                         <div className='flex flex-col items-center my-[30px]' key={item.tempId} >
-                                            <div className='flex flex-row justify-between items-center w-[635px]'>
-                                                <p className='font-sans text-[18px] leading-[140%] tracking-[2%]'>Member {index + 1}</p>
-                                                <button onClick={() => removeDiv(item.id, item.tempId)} className='removeParticipantForm'><img src={close} alt='close' className='h-[32px] w-[32px]' /></button>
+                                            <div className='flex flex-row justify-between items-center lg:w-[635px] w-[250px]'>
+                                                <div className='flex items-center justify-center'>
+                                                    <p className='font-sans text-[18px] leading-[140%] tracking-[2%]'>Member {index + 1}</p>
+                                                    <button className='lg:hidden block' onClick={addDiv} ><img src={mbaddmembtn} alt='close' className='h-[32px] w-[32px]'/></button>
+                                                </div>
+                                                <button onClick={() => removeDiv(item.id, item.tempId)}><img src={close} alt='close' className='h-[32px] w-[32px]' /></button>
                                             </div>
-                                            <ul className='font-sans text-[16px] leading-[140%] tracking-[2%]'>
-                                                <li className='h-[84px] mt-[24px]'>
-                                                    <label className='h-[25px] font-sans text-[18px] leading-[140%] tracking-[2%]'>Full Name</label><br/>
+                                            <ul className='font-sans text-[16px] leading-[140%] tracking-[2%] flex flex-col items-center'>
+                                                <li className='lg:h-[84px] h-[57px] mt-[24px]'>
+                                                    <label className='lg:h-[25px] h-[22px] font-sans lg:text-[18px] text-[16px] leading-[140%] tracking-[2%]'>Full Name</label><br/>
                                                     <input
                                                         type="text"
                                                         value={item.name}
                                                         onChange={(e) => handleChange(item.id, item.tempId, "name", e.target.value)}
                                                         style={inputbgstyle}
-                                                        className='w-[557.25px] h-[45px] mt-[11px] outline-none px-[15px] text-[14px] bg-transparent'
+                                                        className='lg:w-[560px] w-[261px] lg:h-[45px] h-[31px] mt-[11px] outline-none px-[15px] lg:text-[14px] text-[12px] bg-transparent focus:outline-none focus:ring-0'
                                                     />
                                                 </li>
                                                 <li className='mt-[24px]'>
@@ -397,7 +428,7 @@ export function AddMembers(){
                                                         value={item.email}
                                                         onChange={(e) => handleChange(item.id, item.tempId, "email", e.target.value)}
                                                         style={inputbgstyle}
-                                                        className='w-[557.25px] h-[45px] mt-[11px] outline-none px-[15px] text-[14px] bg-transparent'
+                                                        className='lg:w-[560px] w-[261px] lg:h-[45px] h-[31px] mt-[11px] outline-none px-[15px] lg:text-[14px] text-[12px] bg-transparent focus:outline-none focus:ring-0'
                                                     />
                                                 </li>
                                                 <li className='mt-[24px]'>
@@ -406,7 +437,7 @@ export function AddMembers(){
                                                         value={item.gender}
                                                         onChange={(e) => handleChange(item.id, item.tempId, "gender", e.target.value)}
                                                         style={inputbgstyle}
-                                                        className='w-[557.25px] h-[45px] mt-[11px] outline-none px-[15px] text-[14px] bg-transparent'
+                                                        className='lg:w-[560px] w-[261px] lg:h-[45px] h-[31px] mt-[11px] outline-none px-[15px] lg:text-[14px] text-[12px] bg-transparent focus:outline-none focus:ring-0 appearance-none'
                                                     >
                                                         <option value="Male">Male</option>
                                                         <option value="Female">Female</option>
@@ -416,11 +447,11 @@ export function AddMembers(){
                                                 <li className='mt-[24px]'>
                                                     <label>Phone Number*</label><br/>
                                                     <input
-                                                        type="number"
+                                                        type="text"
                                                         value={item.phone}
                                                         onChange={(e) => handleChange(item.id, item.tempId, "phone", e.target.value)}
                                                         style={inputbgstyle}
-                                                        className='w-[557.25px] h-[45px] mt-[11px] outline-none px-[15px] text-[14px] bg-transparent'
+                                                        className='lg:w-[560px] w-[261px] lg:h-[45px] h-[31px] mt-[11px] outline-none px-[15px] lg:text-[14px] text-[12px] bg-transparent focus:outline-none focus:ring-0 '
                                                     />
                                                 </li>
                                                 <li className='mt-[24px]'>
@@ -430,7 +461,7 @@ export function AddMembers(){
                                                         value={item.collegename}
                                                         onChange={(e) => handleChange(item.id, item.tempId, "collegename", e.target.value)}
                                                         style={inputbgstyle}
-                                                        className='w-[557.25px] h-[45px] mt-[11px] outline-none px-[15px] text-[14px] bg-transparent'
+                                                        className='lg:w-[560px] w-[261px] lg:h-[45px] h-[31px] mt-[11px] outline-none px-[15px] lg:text-[14px] text-[12px] bg-transparent focus:outline-none focus:ring-0'
                                                     />
                                                 </li>
                                                 <li className='mt-[24px]'>
@@ -440,7 +471,7 @@ export function AddMembers(){
                                                         value={item.city}
                                                         onChange={(e) => handleChange(item.id, item.tempId, "city", e.target.value)}
                                                         style={inputbgstyle}
-                                                        className='w-[557.25px] h-[45px] mt-[11px] outline-none px-[15px] text-[14px] bg-transparent'
+                                                        className='lg:w-[560px] w-[261px] lg:h-[45px] h-[31px] mt-[11px] outline-none px-[15px] lg:text-[14px] text-[12px] bg-transparent focus:outline-none focus:ring-0'
                                                     />
                                                 </li>
                                                 <li className='mt-[24px]'>
@@ -449,7 +480,7 @@ export function AddMembers(){
                                                         value={item.state}
                                                         onChange={(e) => handleChange(item.id, item.tempId, "state", e.target.value)}
                                                         style={inputbgstyle}
-                                                        className='w-[557.25px] h-[45px] mt-[11px] outline-none px-[15px]  text-[14px] bg-transparent'
+                                                        className='lg:w-[560px] w-[261px] lg:h-[45px] h-[31px] mt-[11px] outline-none px-[15px]  lg:text-[14px] text-[12px] bg-transparent focus:outline-none focus:ring-0 appearance-none'
                                                     >
                                                         <option value="">Select a State</option>
                                                         {STATES.map((st) => (
@@ -466,26 +497,179 @@ export function AddMembers(){
                                 </div>
                             </div>
                     </div>
-                    <div className='h-[81px] w-[800px] flex justify-center items-center relative bg-alch-cream border-t-[1px] border-alch-dark' onClick={(e) => e.stopPropagation()}>
-                                {/* <div className='h-[27px] w-[27px] absolute bottom-0 left-0 bg-black'></div>
-                                <div className='h-[27px] w-[27px] absolute bottom-0 right-0 bg-black'></div> */}
-                        <div className='flex justify-between items-center w-[800px]'>
-                            <button className=' h-[35px] w-[157px] ml-[31.73px]' onClick={addDiv} style={addmemBgStyle}><p className='font-sans text-[16px] font-bold text-alch-dark'>Add Form</p></button> 
-                            <div className='flex flex-row gap-[31.73px] mr-[30px]'>
-                                <button className='w-[109.27px] h-[34.62px]' onClick={makediscard} style={discardBgStyle}><p className='font-sans text-[16px] font-bold text-alch-red'>Discard</p></button> 
-                                <button className='w-[157px] h-[35px] ' onClick={submit} style={addmemBgStyle}><p className='font-sans text-[16px] font-bold text-alch-dark'>Add Member</p></button> 
+        
+                    <div className='h-[67px] lg:h-[81px] lg:w-[800px] w-[319px] border-t-[1px] border-alch-dark' onClick={(e) => e.stopPropagation()}>
+                        <div className='lg:h-[27px] h-[15px] lg:w-[800px] w-[319px] flex flex-col justify-center items-center bg-alch-cream ' onClick={(e) => e.stopPropagation()}>
+                        </div>
+
+                            <div className='flex lg:justify-between justify-center items-center lg:w-[800px] w-[319px] bg-alch-cream'>
+                                <button className='hidden lg:block h-[35px] w-[157px] ml-[31.73px]' onClick={addDiv} style={addmemBgStyle}><p className='font-sans text-[16px] font-bold text-alch-dark'>Add Form</p></button> 
+                                <div className='flex flex-row gap-[31.73px] lg:mr-[30px]'>
+                                    <button className='w-[109.27px] h-[34.62px]' onClick={makediscard} style={discardBgStyle}><p className='font-sans text-[16px] font-bold text-alch-red'>Discard</p></button> 
+                                    <button className='w-[157px] h-[35px] ' onClick={submit} style={addmemBgStyle}><p className='font-sans text-[16px] font-bold text-alch-dark'>Add Member</p></button> 
+                                </div>
                             </div>
+
+                        <div className='lg:h-[27px] h-[15px] lg:w-[800px] w-[319px] flex flex-row'>
+                            <div className='lg:h-[27px] lg:w-[27px] h-[15px] w-[15px] bg-transparent'></div>
+                            <div className='lg:w-[746px] lg:h-[27px] h-[15px] w-[289px] bg-alch-cream'></div>
+                            <div className='lg:h-[27px] lg:w-[27px] h-[15px] w-[15px] bg-transparent'></div>
                         </div>
                     </div>
                 </div>
             }
+
+            {/* mobile add mem form*/}
+            {addpop && 
+                <div className='fixed inset-0 bg-black/60 z-50 flex lg:hidden items-center flex-col justify-center' onClick={() => setAddpop(false)}>
+                    <div className='h-[67px] lg:h-[81px] lg:w-[800px] w-[319px]' onClick={(e) => e.stopPropagation()}>
+                        <div className='lg:h-[27px] h-[15px] lg:w-[800px] w-[319px] flex flex-row'>
+                            <div className='lg:h-[27px] lg:w-[27px] h-[15px] w-[15px] bg-transparent'></div>
+                            <div className='lg:w-[746px] lg:h-[27px] h-[15px] w-[289px] bg-alch-dark'></div>
+                            <div className='lg:h-[27px] lg:w-[27px] h-[15px] w-[15px] bg-transparent'></div>
+                        </div>
+
+                            <div className='lg:w-[800px] lg:h-[33px] h-[37px] w-[319px] flex justify-between lg:px-[50px] px-[20px] items-center bg-alch-dark'>
+                                <p className='font-sans lg:text-2xl text-[16px] font-semibold text-alch-cream'>Add Team Member</p>
+                                <button onClick={()=>{setAddpop(false)}}><img src={close} alt='close' className='lg:h-[32px] lg:w-[32px] h-[22px] w-[22px]' /></button>
+                            </div>
+
+                        <div className='h-[15px] lg:h-[27px] lg:w-[800px] w-[319px] flex flex-col justify-center items-center bg-alch-dark ' onClick={(e) => e.stopPropagation()}>
+                        </div>
+                    </div>
+
+                    <div className='lg:h-[100vh] h-[600px] lg:w-[800px] w-[319px] flex flex-col overflow-y-auto bg-alch-cream' style={noscroolbar} onClick={(e) => e.stopPropagation()}>
+                            <div 
+                                className='flex flex-col'
+                            >
+                                <div>
+                                    {members.map((item, index) => (
+                                        <div className='flex flex-col items-center my-[30px]' key={item.tempId} >
+                                            <div className='flex flex-row justify-between items-center lg:w-[635px] w-[250px]'>
+                                                <div className='flex items-center justify-center'>
+                                                    <p className='font-sans text-[18px] leading-[140%] tracking-[2%]'>Member {index + 1}</p>
+                                                    <button className='lg:hidden block' onClick={addDiv} ><img src={mbaddmembtn} alt='close' className='h-[32px] w-[32px]'/></button>
+                                                </div>
+                                                <button onClick={() => removeDiv(item.id, item.tempId)}><img src={close} alt='close' className='h-[32px] w-[32px]' /></button>
+                                            </div>
+                                            <ul className='font-sans text-[16px] leading-[140%] tracking-[2%] flex flex-col items-center'>
+                                                <li className='lg:h-[84px] h-[57px] mt-[24px]'>
+                                                    <label className='lg:h-[25px] h-[22px] font-sans lg:text-[18px] text-[16px] leading-[140%] tracking-[2%]'>Full Name</label><br/>
+                                                    <input
+                                                        type="text"
+                                                        value={item.name}
+                                                        onChange={(e) => handleChange(item.id, item.tempId, "name", e.target.value)}
+                                                        style={mbinputbgstyle}
+                                                        className='w-[261px] h-[31px] mt-[11px] outline-none px-[15px] text-[12px] bg-transparent focus:outline-none focus:ring-0'
+                                                    />
+                                                </li>
+                                                <li className='mt-[24px]'>
+                                                    <label>Email*</label><br/>
+                                                    <input
+                                                        type="email"
+                                                        value={item.email}
+                                                        onChange={(e) => handleChange(item.id, item.tempId, "email", e.target.value)}
+                                                        style={mbinputbgstyle}
+                                                        className='lg:w-[560px] w-[261px] lg:h-[45px] h-[31px] mt-[11px] outline-none px-[15px] lg:text-[14px] text-[12px] bg-transparent focus:outline-none focus:ring-0'
+                                                    />
+                                                </li>
+                                                <li className='mt-[24px]'>
+                                                    <label>Gender*</label><br/>
+                                                    <select
+                                                        value={item.gender}
+                                                        onChange={(e) => handleChange(item.id, item.tempId, "gender", e.target.value)}
+                                                        style={mbinputbgstyle}
+                                                        className='lg:w-[560px] w-[261px] lg:h-[45px] h-[31px] mt-[11px] outline-none px-[15px] lg:text-[14px] text-[12px] bg-transparent focus:outline-none focus:ring-0 appearance-none'
+                                                    >
+                                                        <option value="Male">Male</option>
+                                                        <option value="Female">Female</option>
+                                                        <option value="Other">Other</option>
+                                                    </select>
+                                                </li>
+                                                <li className='mt-[24px]'>
+                                                    <label>Phone Number*</label><br/>
+                                                    <input
+                                                        type="text"
+                                                        value={item.phone}
+                                                        onChange={(e) => handleChange(item.id, item.tempId, "phone", e.target.value)}
+                                                        style={mbinputbgstyle}
+                                                        className='lg:w-[560px] w-[261px] lg:h-[45px] h-[31px] mt-[11px] outline-none px-[15px] lg:text-[14px] text-[12px] bg-transparent focus:outline-none focus:ring-0 '
+                                                    />
+                                                </li>
+                                                <li className='mt-[24px]'>
+                                                    <label>College Name*</label><br/>
+                                                    <input
+                                                        type="text"
+                                                        value={item.collegename}
+                                                        onChange={(e) => handleChange(item.id, item.tempId, "collegename", e.target.value)}
+                                                        style={mbinputbgstyle}
+                                                        className='lg:w-[560px] w-[261px] lg:h-[45px] h-[31px] mt-[11px] outline-none px-[15px] lg:text-[14px] text-[12px] bg-transparent focus:outline-none focus:ring-0'
+                                                    />
+                                                </li>
+                                                <li className='mt-[24px]'>
+                                                    <label>City Name*</label><br/>
+                                                    <input
+                                                        type="text"
+                                                        value={item.city}
+                                                        onChange={(e) => handleChange(item.id, item.tempId, "city", e.target.value)}
+                                                        style={mbinputbgstyle}
+                                                        className='lg:w-[560px] w-[261px] lg:h-[45px] h-[31px] mt-[11px] outline-none px-[15px] lg:text-[14px] text-[12px] bg-transparent focus:outline-none focus:ring-0'
+                                                    />
+                                                </li>
+                                                <li className='mt-[24px]'>
+                                                    <label>State*</label><br/>
+                                                    <select
+                                                        value={item.state}
+                                                        onChange={(e) => handleChange(item.id, item.tempId, "state", e.target.value)}
+                                                        style={mbinputbgstyle}
+                                                        className='lg:w-[560px] w-[261px] lg:h-[45px] h-[31px] mt-[11px] outline-none px-[15px]  lg:text-[14px] text-[12px] bg-transparent focus:outline-none focus:ring-0 appearance-none'
+                                                    >
+                                                        <option value="">Select a State</option>
+                                                        {STATES.map((st) => (
+                                                        <option key={st} value={st}>
+                                                            {st}
+                                                        </option>
+                                                        ))}
+                                                    </select>
+                                                </li>
+                                            </ul>
+                                            
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                    </div>
+        
+                    <div className='h-[67px] lg:h-[81px] lg:w-[800px] w-[319px] border-t-[1px] border-alch-dark' onClick={(e) => e.stopPropagation()}>
+                        <div className='lg:h-[27px] h-[15px] lg:w-[800px] w-[319px] flex flex-col justify-center items-center bg-alch-cream ' onClick={(e) => e.stopPropagation()}>
+                        </div>
+
+                            <div className='flex lg:justify-between justify-center items-center lg:w-[800px] w-[319px] bg-alch-cream'>
+                                <button className='hidden lg:block h-[35px] w-[157px] ml-[31.73px]' onClick={addDiv} style={addmemBgStyle}><p className='font-sans text-[16px] font-bold text-alch-dark'>Add Form</p></button> 
+                                <div className='flex flex-row gap-[31.73px] lg:mr-[30px]'>
+                                    <button className='w-[109.27px] h-[34.62px]' onClick={makediscard} style={discardBgStyle}><p className='font-sans text-[16px] font-bold text-alch-red'>Discard</p></button> 
+                                    <button className='w-[157px] h-[35px] ' onClick={submit} style={addmemBgStyle}><p className='font-sans text-[16px] font-bold text-alch-dark'>Add Member</p></button> 
+                                </div>
+                            </div>
+
+                        <div className='lg:h-[27px] h-[15px] lg:w-[800px] w-[319px] flex flex-row'>
+                            <div className='lg:h-[27px] lg:w-[27px] h-[15px] w-[15px] bg-transparent'></div>
+                            <div className='lg:w-[746px] lg:h-[27px] h-[15px] w-[289px] bg-alch-cream'></div>
+                            <div className='lg:h-[27px] lg:w-[27px] h-[15px] w-[15px] bg-transparent'></div>
+                        </div>
+                    </div>
+                </div>
+            }
+
             <div 
-                className='h-[766px] w-[1298px] flex items-center justify-center flex-col'
-                style={headerBgStyle}>
+                className='lg:h-[766px] lg:w-[1298px] h-[952px] w-[371px] flex items-center lg:justify-center flex-col'
+                style={headerBgStyle}
+            >
                     <div>
+                        {/* laptop search */}
                         <div
                             style={searchBgStyle}
-                            className='h-[43px] w-[526px] flex items-center mb-[32px]'
+                            className='lg:h-[43px] lg:w-[526px] w-[336px] h-[56px] hidden lg:flex  items-center mb-[32px] mt-[56px] lg:mt-[0]'
                         >
                             <button><img src={searchbutton} alt='search' className='ml-[16px]'/></button>
                             <input 
@@ -495,17 +679,58 @@ export function AddMembers(){
                                 onChange={(e) => setText(e.target.value)}
                             ></input>
                         </div>
+                        {/* mobile search */}
+                        <div
+                            style={{
+                                backgroundImage: `url(${mbserach})`,
+                                backgroundPosition: 'center', // centers the image
+                                backgroundSize: 'cover',      // makes it cover the div
+                                backgroundRepeat: 'no-repeat'
+                            }}
+                            className='w-[335px] h-[32px] lg:hidden flex  items-center mb-[32px] mt-[56px] lg:mt-[0]'
+                        >
+                            <button><img src={searchbutton} alt='search' className='ml-[16px]'/></button>
+                            <input 
+                                placeholder='Search' 
+                                className='bg-transparent ml-[10px] font-sans font-semibold text-[12px] leading-none tracking-normal outline-none flex-grow'
+                                value={text}
+                                onChange={(e) => setText(e.target.value)}
+                            ></input>
+                        </div>
                     </div>
-                    <div className='w-[1079px] h-auto flex justify-center items-center flex-row gap-[27px]'>
-                        <div className='h-[600px] w-[600px] flex flex-col gap-[16px]'>
-                            {/* Leader Div - hide when searching */}
+                    <div className='lg:w-[1079px] w-[371px] h-auto flex justify-center items-center flex-col lg:flex-row gap-[16px] lg:gap-[27px] '>
+                        <div className='lg:h-[600px] lg:w-[600px] h-auto w-[336px] flex flex-col gap-[16px]'>
+                            {/* laptop leader */}
                             {!text && (
                                 <div
-                                    className='w-[526px] h-[58.08px] flex justify-center items-center cursor-pointer'
+                                    className='lg:w-[526px] lg:h-[58.08px] w-[336px] h-[56px] hidden lg:flex justify-center items-center cursor-pointer'
                                     style={namesBgStyle}
                                     onClick={() => navigate('/profile')}
                                 >   
-                                    <div className='w-[493.99px] h-[38px] flex justify-between items-center'>
+                                    <div className='lg:w-[493.99px] lg:h-[38px] w-[315.55px] h-[38px] flex justify-between items-center'>
+                                        <div className='flex justify-between items-center gap-[17px]'>
+                                            <img src={profilepic} alt='profile' className='w-[32.11px] h-[32.11px]'/>
+                                            <div className='h-[38px] flex flex-col justify-between'>
+                                                <p className='font-sans font-semibold text-[16px] leading-[100%] tracking-[0px]'>
+                                                    {profile ? profile.fullname.toUpperCase() : "Loading..."}
+                                                </p>
+                                                <p className='font-sans font-normal text-[12px] leading-[100%] tracking-[0px]' >
+                                                    {profile ? profile.email : "loading..."}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div className='p-[5px] rounded-[2.5px] bg-alch-red text-alch-cream text-center font-sans font-semibold text-[16px] leading-[100%] tracking-[0px]'>Leader</div>
+                                    </div> 
+                                </div>
+                            )}
+                            {/* mobile leader */}
+                            {!text && (
+                                <div
+                                    className='lg:w-[526px] lg:h-[58.08px] w-[336px] h-[56px] flex lg:hidden justify-center items-center cursor-pointer'
+                                    style={mbnamesBgStyle}
+                                    onClick={() => navigate('/profile')}
+                                >   
+                                    <div className='lg:w-[493.99px] lg:h-[38px] w-[315.55px] h-[38px] flex justify-between items-center'>
                                         <div className='flex justify-between items-center gap-[17px]'>
                                             <img src={profilepic} alt='profile' className='w-[32.11px] h-[32.11px]'/>
                                             <div className='h-[38px] flex flex-col justify-between'>
@@ -522,12 +747,14 @@ export function AddMembers(){
                                 </div>
                             )}
 
+                            {/* names of even index in laptop */}
+
                             { namesToDisplay && 
                                 namesToDisplay
                                 .filter((_, index) => index % 2 === 0)
                                 .map((item) => (
-                                    <div className='w-[526px] h-[58.08px]  flex justify-center items-center' style={namesBgStyle} key={item.id}>
-                                        <div className='w-[493.99px] h-[38px] flex justify-between items-center'>
+                                    <div className='lg:w-[526px] lg:h-[58.08px] w-[336px] h-[56px] hidden lg:flex justify-center items-center' style={namesBgStyle} key={item.id}>
+                                        <div className='lg:w-[493.99px] lg:h-[38px] w-[315.55px] h-[38px] flex justify-between items-center'>
                                             <div className='h-[38px] flex justify-center items-center gap-[17px] '>
                                                 <img src={profilepic} alt='profile' className='w-[32.11px] h-[32.11px]'/>
                                                 <div className='flex flex-col justify-between h-[38px]'>
@@ -540,21 +767,52 @@ export function AddMembers(){
                                     </div>
                                 ))
                             }
-                            <div onClick={()=>{setAddpop(true)}} className='w-[526px] h-[58.08px]  flex justify-center items-center cursor-pointer' style={addBgStyle}>
-                                <div className='flex justify-between items-center w-[493.99px] h-[33.94px]'>
+
+                            {/* names of all mem in mobile */}
+                            { namesToDisplay && 
+                                namesToDisplay
+                                .map((item) => (
+                                    <div className='lg:w-[526px] lg:h-[58.08px] w-[336px] h-[56px]  flex lg:hidden justify-center items-center' style={mbnamesBgStyle} key={item.id}>
+                                        <div className='lg:w-[493.99px] lg:h-[38px] w-[315.55px] h-[38px] flex justify-between items-center'>
+                                            <div className='h-[38px] flex justify-center items-center gap-[17px] '>
+                                                <img src={profilepic} alt='profile' className='w-[32.11px] h-[32.11px]'/>
+                                                <div className='flex flex-col justify-between h-[38px]'>
+                                                    <p className='font-sans font-semibold text-[16px] leading-[100%] tracking-[0px]'>{item.name.charAt(0).toUpperCase() + item.name.slice(1)}</p>
+                                                    <p className='font-sans font-normal text-[12px] leading-[100%] tracking-[0px]' >{item.email}</p>
+                                                </div>
+                                            </div>
+                                            <button onClick={() => removemember(item.id, item.tempId)} ><img src={removeoutline} alt='remove'/></button>
+                                        </div>     
+                                    </div>
+                                ))
+                            }
+
+                            {/* add mem form btn laptop */}
+                            <div onClick={()=>{setAddpop(true)}} className='lg:w-[526px] lg:h-[58.08px] w-[336px] h-[56px] hidden lg:flex  justify-center items-center cursor-pointer' style={addBgStyle}>
+                                <div className='flex justify-between items-center lg:w-[493.99px] lg:h-[38px] w-[315.55px] h-[38px]'>
+                                    <p className='font-sans font-bold text-base' >Add more Members</p>
+                                    <button><img src={addbutton} alt='add' className='w-[24px] h-[24px]'/></button>
+                                </div>
+                            </div>
+                            {/* add mem form btn mobile */}
+                            <div onClick={()=>{setAddpop(true)}} className='lg:w-[526px] lg:h-[58.08px] w-[336px] h-[56px] flex lg:hidden justify-center items-center cursor-pointer' style={mbaddBgStyle}>
+                                <div className='flex justify-between items-center lg:w-[493.99px] lg:h-[38px] w-[315.55px] h-[38px]'>
                                     <p className='font-sans font-bold text-base' >Add more Members</p>
                                     <button><img src={addbutton} alt='add' className='w-[24px] h-[24px]'/></button>
                                 </div>
                             </div>
                         </div>
-                        <div className='h-[600px] w-[600px] flex flex-col gap-[16px]'>
+
+                        {/* names of mem of odd index in laptop */}
+
+                        <div className='lg:h-[600px] lg:w-[600px] h-auto w-[336px] hidden lg:flex flex-col lg:gap-[16px]'>
                             {/* <div className='w-[526px] h-[58.08px]'></div> */}
                             { namesToDisplay && 
                                 namesToDisplay
                                 .filter((_, index) => index % 2 === 1)
                                 .map((item) => (
-                                    <div className='w-[526px] h-[58.08px] flex justify-center items-center' style={namesBgStyle} key={item.id}>
-                                        <div className='w-[493.99px] h-[38px] flex justify-between items-center'>
+                                    <div className='lg:w-[526px] lg:h-[58.08px] w-[336px] h-[56px] flex justify-center items-center' style={namesBgStyle} key={item.id}>
+                                        <div className='lg:w-[493.99px] lg:h-[38px] w-[315.55px] h-[38px] flex justify-between items-center'>
                                             <div className='h-[38px] flex justify-center items-center gap-[17px] '>
                                                 <img src={profilepic} alt='profile' className='w-[32.11px] h-[32.11px]'/>
                                                 <div className='flex flex-col justify-between h-[38px]'>
@@ -570,6 +828,7 @@ export function AddMembers(){
                         </div>
                     </div>
             </div>
+
         </div>
     )
 }

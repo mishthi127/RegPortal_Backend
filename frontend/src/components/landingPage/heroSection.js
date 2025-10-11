@@ -11,8 +11,9 @@ const HeroSection = () => {
   // UPDATED: Removed the incorrect 'backgroundSize' property
   const mainContentStyle = {
     backgroundImage: `url(${backgroundPattern})`,
-    backgroundRepeat: 'repeat',
+    backgroundRepeat: 'repeat-y',
     backgroundPosition: 'center',
+    backgroundSize: "100% auto",
   };
 
   return (

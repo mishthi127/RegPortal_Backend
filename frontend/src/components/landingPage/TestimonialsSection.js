@@ -2,7 +2,7 @@ import { motion, useMotionValue } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useRef, useCallback, useEffect, forwardRef } from "react";
 
 // Assuming these paths are correct
 import backgroundPattern from "../../assets/background-pattern.svg";
@@ -51,7 +51,7 @@ const TestimonialCard = ({ name, title, rating, text }) => (
   </div>
 );
 
-const TestimonialsSection = () => {
+const TestimonialsSection = forwardRef((props, ref) => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [swiperInstance, setSwiperInstance] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -123,7 +123,7 @@ const TestimonialsSection = () => {
   };
 
   return (
-    <section className="py-16" style={sectionStyle}>
+    <section ref={ref} className="py-16" style={sectionStyle} >
       <div className="max-w-7xl mx-auto">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
@@ -205,6 +205,6 @@ const TestimonialsSection = () => {
       </div>
     </section>
   );
-};
+});
 
 export default TestimonialsSection;

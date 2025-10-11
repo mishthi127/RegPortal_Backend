@@ -2,6 +2,7 @@
 // You might not need RegistrationForm.css here anymore if its styles are not global
 import './RegistrationForm.css'; 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
 
 // Import all your page components
 import LandingPage from './pages/landingPage';
@@ -12,9 +13,20 @@ import CompleteProfile from './CompleteProfile';
 import CompetitionsList from './CompetitionsPage';
 import RegisterPage from "./RegisterPage";
 import { AddMember } from './components/AddMember';
+import Err404Page from "./pages/err404Page";
+import LoadingScreen from "./components/LoadingScreen";
 
 function App() {
   //const token = localStorage.getItem("access"); // check login
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate loading time (API init, user check, etc.)
+    const timer = setTimeout(() => setLoading(false), 2500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) return <LoadingScreen />;
 
   return (
     <Router>
@@ -31,6 +43,8 @@ function App() {
         <Route path="/competitions" element={<CompetitionsList />} />
         <Route path="/register/:id" element={<RegisterPage />} />
         <Route path="/addmember" element={<AddMember />} />
+        <Route path="*" element={<Err404Page />} />
+
       </Routes>
     </Router>
   );

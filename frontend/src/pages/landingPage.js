@@ -1,6 +1,6 @@
 // src/pages/landingPage.js
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import HeroSection from '../components/landingPage/heroSection';
 import Preloader from '../components/Preloader';
@@ -9,7 +9,6 @@ import TestimonialsSection from '../components/landingPage/TestimonialsSection';
 import { Pixel } from '../components/landingPage/Pixel';
 import { Footer } from '../components/landingPage/Footer';
 import { FAQS } from '../components/landingPage/FAQS';
-
 import DecorativeButton from '../components/DecorativeButton';
 import logo from '../assets/logo.svg';
 import hamburgerIcon from '../assets/hamburger-icon.svg';
@@ -21,6 +20,26 @@ const LandingPage = () => {
   const [loading, setLoading] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const faqRef = useRef(null);
+  const testimonialRef = useRef(null);
+
+  const scrollToFAQ = () => {
+    faqRef.current?.scrollIntoView({ 
+      behavior: 'smooth', 
+      block: 'center', // center the element vertically in the viewport
+      inline: 'nearest'
+    });
+    
+  };
+
+  const scrollToTestimonials = () => {
+    testimonialRef.current?.scrollIntoView({ 
+      behavior: 'smooth',
+      block: 'center', // center the element vertically in the viewport
+      inline: 'nearest'
+    });
+  };
+
 
   useEffect(() => {
     const timer = setTimeout(() => { setLoading(false); }, 2000);
@@ -31,6 +50,8 @@ const LandingPage = () => {
   const headerBgStyle = {
     backgroundImage: `url(${backgroundPattern})`,
     backgroundPosition: 'center',
+    backgroundSize: "100% auto",
+    backgroundRepeat: "no-repeat",
   };
 
   return (
@@ -84,20 +105,18 @@ const LandingPage = () => {
       <Pixel />
       
         <div
-          className='bg-alch-cream'
-          style={{
-              backgroundImage: `url(${backgroundPattern})`,
-              backgroundRepeat: "repeat",
-          }}   
+          className='bg-alch-cream landingbg'  
         >
-          <AfterMovieSection />
-          <TestimonialsSection />
-          <FAQS />
-          <Footer />
+            <AfterMovieSection />
+            <TestimonialsSection ref={testimonialRef}/>
+            <FAQS ref={faqRef}/>
+            <Footer scrollToFAQ={scrollToFAQ} scrollToTestimonials={scrollToTestimonials}/>
         </div>
-        <div className='mt-[10px] pt-[10px] pb-[10px] flex justyfy-center items-center bg-black'>
+        
+        {/* <div className='mt-[10px] pt-[10px] pb-[10px] flex justyfy-center items-center bg-black'>
           <AddMembers/>
-        </div>
+  
+        </div> */}
     </div>
   );
 };

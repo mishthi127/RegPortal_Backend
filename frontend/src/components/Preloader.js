@@ -1,18 +1,24 @@
-// src/components/Preloader.js
-
-//import React from 'react';
 import { motion } from 'framer-motion';
-
-// Imports updated: bottomBorder is no longer needed
 import backgroundPattern from '../assets/background-pattern.svg';
 import topBorder from '../assets/top-border.svg';
+import { useEffect } from 'react';
 
 const Preloader = () => {
   const preloaderStyle = {
     backgroundImage: `url(${backgroundPattern})`,
-    backgroundRepeat: 'repeat',
-    backgroundSize: 'auto',
+    backgroundRepeat: 'repeat-y',
+    backgroundSize: "100% auto",
+    backgroundPosition: 'center',
+    // height: '100vh'
   };
+
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     document.getElementById("shrinkingDiv").style.height = "0px";
+  //   }, 100); // small delay to ensure rendering
+
+  //   return () => clearTimeout(timer);
+  // }, []);
 
   return (
     <motion.div
@@ -25,6 +31,14 @@ const Preloader = () => {
       <img src={topBorder} alt="Decorative Top Border" className="w-full" />
       {/* The bottom border <img> tag has been removed from here */}
     </motion.div>
+
+    // <div
+    //   id="shrinkingDiv"
+    //   className='w-screen bg-red-500 absolute top-0 left-0 origin-top transition-all duration-[3000ms]'
+    //   style={preloaderStyle}
+    // >
+    //   <img src={topBorder} alt="Decorative Top Border" className="w-full" />
+    // </div>
   );
 };
 
