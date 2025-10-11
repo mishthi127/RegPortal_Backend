@@ -82,7 +82,10 @@ class NewUser(AbstractBaseUser, PermissionsMixin):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(_('email address'), unique=True, db_index=True)
     pixel_highlight = models.JSONField(default=list, blank=True) #rohit
-    username = models.CharField(max_length=150, unique=True, blank=True, null=True)
+    
+    # --- CHANGE 1 OF 2: `unique=True` has been removed from this line ---
+    username = models.CharField(max_length=150, blank=True, null=True)
+    
     provider = models.CharField(max_length=200, default='email')
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
@@ -116,7 +119,10 @@ class NewUser(AbstractBaseUser, PermissionsMixin):
     img = models.ImageField(upload_to="image_uploads/userdp/%Y/%m/%d/", default='user-default.png')
     about = models.TextField(max_length=500, blank=True)
     percentage_complete = models.IntegerField(default=0)
-    phone_number = PhoneNumberField(unique=True)
+    
+    # --- CHANGE 2 OF 2: `unique=True` has been removed from this line ---
+    phone_number = PhoneNumberField()
+    
     alternate_phone = PhoneNumberField(blank=True, null=True)
     # Team info (required on registration)
     collegename = models.CharField(max_length=150 , null=True , blank=True)
