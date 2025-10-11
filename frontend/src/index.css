@@ -10,8 +10,32 @@ body {
   @apply bg-alch-cream;
 }
 
-/* ADD THIS RULE FOR THE SWIPER FIX */
-.swiper-wrapper {
-  /* This forcefully ensures all slides stretch to match the tallest one */
-  align-items: stretch !important;
+/* --- Define the Manrope variable font --- */
+@font-face {
+  font-family: 'Manrope';
+  src: url('./assets/fonts/Manrope-VariableFont_wght.ttf') format('truetype-variations');
+  font-weight: 200 800; /* Defines the entire weight range */
+  font-style: normal;
+}
+
+/* --- Define each weight for the TT Modernoir static font --- */
+@font-face {
+  font-family: 'TT Modernoir';
+  src: url('./assets/fonts/TT_Modernoir_Trial_Regular.ttf') format('truetype');
+  font-weight: 400; /* Regular */
+}
+@font-face {
+  font-family: 'TT Modernoir';
+  src: url('./assets/fonts/TT_Modernoir_Trial_Medium.ttf') format('truetype');
+  font-weight: 500; /* Medium */
+}
+@font-face {
+  font-family: 'TT Modernoir';
+  src: url('./assets/fonts/TT_Modernoir_Trial_DemiBold.ttf') format('truetype');
+  font-weight: 600; /* DemiBold */
+}
+@font-face {
+  font-family: 'TT Modernoir';
+  src: url('./assets/fonts/TT_Modernoir_Trial_Bold.ttf') format('truetype');
+  font-weight: 700; /* Bold */
 }

@@ -3,7 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-import DecorativeButton from '../DecorativeButton';
+import DecorativeButton from '../AuthPage/DecoratedButton';
 import bottomBorder from '../../assets/bottom-border.svg';
 import backgroundPattern from '../../assets/background-pattern.svg';
 
