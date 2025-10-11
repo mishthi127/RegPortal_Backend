@@ -2,17 +2,15 @@
 
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-
-// Import the context provider
 import { RegistrationProvider } from './components/AuthPage/RegistrationContext.js';
 
-// --- Your Existing Page Imports ---
+// Page Imports
 import LandingPage from './pages/landingPage';
-import { default as ProfilePage } from './pages/ProfilePage';
 import CompleteProfile from './CompleteProfile';
 import CompetitionsList from './CompetitionsPage';
 import RegisterPage from "./RegisterPage";
 import { AddMember } from './AddMember/AddMember';
+import ProfilePage from './pages/ProfilePage.js'; 
 import SignInPage from './pages/SignInPage.js';
 import PersonalInfoPage from './pages/PersonalInfoPage.js';
 import TeamInfoPage from './pages/TeamInfoPage.js';
@@ -23,14 +21,8 @@ function App() {
   const token = localStorage.getItem("access");
 
   const routeElements = [
-    // --- TEMPORARY CHANGE ---
-    // The root path "/" now renders your ProfilePage for easy UI checking.
-    // Change this back to LandingPage when you are done.
-    React.createElement(Route, { key: "landing", path: "/", element: React.createElement(ProfilePage) }),
-    
-    // The original profile route is still here
+    React.createElement(Route, { key: "landing", path: "/", element: React.createElement(LandingPage) }),
     React.createElement(Route, { key: "profile", path: "/profile", element: React.createElement(ProfilePage) }),
-    
     React.createElement(Route, { key: "complete-profile", path: "/complete-profile", element: React.createElement(CompleteProfile) }),
     React.createElement(Route, { key: "competitions", path: "/competitions", element: React.createElement(CompetitionsList) }),
     React.createElement(Route, { key: "register-id", path: "/register/:id", element: React.createElement(RegisterPage) }),
@@ -45,9 +37,12 @@ function App() {
 
   return (
     React.createElement(RegistrationProvider, null,
-      React.createElement(BrowserRouter, null,
-        React.createElement(Routes, null,
-          routeElements
+      // This new div sets the default font for the entire application.
+      React.createElement('div', { className: 'font-sans' }, 
+        React.createElement(BrowserRouter, null,
+          React.createElement(Routes, null,
+            routeElements
+          )
         )
       )
     )

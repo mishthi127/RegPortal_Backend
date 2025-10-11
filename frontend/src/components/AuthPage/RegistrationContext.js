@@ -4,9 +4,18 @@ import React, { createContext, useState, useContext } from 'react';
 const RegistrationContext = createContext();
 export const RegistrationProvider = ({ children }) => {
   const [formData, setFormData] = useState({
-    fullname: '', email: '', username: '', password: '',
-    country_code: '+91', phone_number: '', alternate_phone: '',
-    teamName: '', collegename: '', city: '', state: '',
+    fullname: '',
+    email: '',
+    username: '',
+    password: '',
+    confirm_password: '',
+    country_code: '+91',
+    phone_number: '',
+    alternate_phone: '',
+    teamName: '',
+    collegename: '',
+    city: '',
+    state: '',
   });
   const updateFormData = (newData) => {
     setFormData(prev => ({ ...prev, ...newData }));

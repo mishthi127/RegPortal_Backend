@@ -42,6 +42,7 @@ const PersonalInfoPage = () => {
     setError('');
     if (formData.password !== confirmPassword) { setError('Passwords do not match.'); return; }
     if (formData.password.length < 8) { setError('Password must be at least 8 characters.'); return; }
+    updateFormData({ confirm_password: confirmPassword });
     navigate('/register/team-info');
   };
 
@@ -91,6 +92,7 @@ const PersonalInfoPage = () => {
   
   const formFields = [
       React.createElement(DecoratedInput, { key: 'fullname', id: "fullname", label: "Full Name", placeholder: "Enter your full name", value: formData.fullname, onChange: handleChange, required: true }),
+      React.createElement(DecoratedInput, { key: 'username', id: "username", name:"username", label: "Username", placeholder: "Create a username", value: formData.username, onChange: handleChange, required: true }),
       createPhoneInput('phone_number', 'Phone Number'),
       createPhoneInput('alternate_phone', 'Alternative Phone Number'),
       React.createElement(DecoratedInput, { key: 'email', id: "email", label: "Email ID", type: "email", placeholder: "Enter your email", value: formData.email, onChange: handleChange, required: true }),

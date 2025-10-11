@@ -22,10 +22,10 @@ const DecoratedButton = ({
   const sizeClasses = size === 'sm' ? 'h-8' : 'h-[38px]';
   
   let frameClasses = 'text-brand-orange group-hover:text-dark-orange';
-  let textClasses = 'text-black';
+  let textClasses = 'text-black group-hover:text-brand-beige';
 
   if (variant === 'cream') {
-    frameClasses = 'text-brand-beige group-hover:text-white'; // Assuming you want cream to glow to white
+    frameClasses = 'text-brand-beige group-hover:text-white';
     textClasses = 'text-brand-dark';
   }
 
@@ -35,7 +35,6 @@ const DecoratedButton = ({
   // --- Props for the root component (either <Link> or <button>) ---
   const componentProps = {
     onClick: onClick,
-    // Add the dynamic and base classes
     className: `relative ${sizeClasses} group inline-flex items-center justify-center`
   };
 
@@ -51,7 +50,11 @@ const DecoratedButton = ({
         className: `absolute top-0 left-0 w-full h-full transition-colors duration-200 pointer-events-none ${frameClasses}`,
         preserveAspectRatio: "none"
       }),
-      React.createElement('span', { className: `relative z-10 font-bold text-sm px-8 ${textClasses}` }, children)
+      
+      // --- THIS IS THE RESPONSIVE FIX ---
+      // On mobile (default): text is 'text-xs' and padding is 'px-4'.
+      // On medium screens and up (md:): text is 'text-sm' and padding is 'px-8'.
+      React.createElement('span', { className: `relative z-10 font-bold text-xs md:text-sm px-4 md:px-8 ${textClasses}` }, children)
     )
   );
 };

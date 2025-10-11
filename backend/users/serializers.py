@@ -45,6 +45,28 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
+    # --- THIS IS THE NEWLY ADDED METHOD ---
+    def update(self, instance, validated_data):
+        """
+        Handle updates for existing (unverified) users.
+        """
+        # Remove confirm_password as it's not a model field
+        validated_data.pop('confirm_password', None)
+        
+        # Update password if it's provided
+        password = validated_data.pop('password', None)
+        if password:
+            instance.set_password(password)
+
+        # Update other fields by looping through the validated data
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        
+        # This is the crucial step: generate a new OTP for the existing user
+        instance.generate_otp()
+        instance.save()
+        return instance
+
 class VerifyOTPSerializer(serializers.Serializer):
     email = serializers.EmailField()
     otp = serializers.CharField(max_length=6)

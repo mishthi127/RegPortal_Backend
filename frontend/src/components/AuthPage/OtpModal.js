@@ -1,7 +1,7 @@
 // src/components/AuthPage/OtpModal.js
-import React, { useState, useRef } from 'react'; // 1. Imported useRef
+import React, { useState, useRef, useEffect } from 'react'; // Added useEffect
 import axios from 'axios';
-import DecoratedButton from './DecoratedButton'; // We can use the standard button again
+import DecoratedButton from './DecoratedButton';
 import { FiX } from 'react-icons/fi';
 
 import { ReactComponent as AuthFrame } from '../../assets/auth-frame.svg';
@@ -10,11 +10,23 @@ import { ReactComponent as InputDeco } from '../../assets/otp-input-deco.svg';
 
 const BASE_URL = 'http://localhost:8000';
 
-const OtpModal = ({ onClose, onVerifySuccess, contactInfo, email }) => {
+// --- NEW PROP: onResend ---
+const OtpModal = ({ onClose, onVerifySuccess, email, onResend }) => { 
   const [otp, setOtp] = useState('');
   const [error, setError] = useState('');
-  // 2. Created a ref for the INPUT field
   const otpInputRef = useRef(null);
+  
+  // --- NEW: Cooldown timer state ---
+  const [cooldown, setCooldown] = useState(0);
+
+  // --- NEW: useEffect to manage the countdown ---
+  useEffect(() => {
+    let timer;
+    if (cooldown > 0) {
+      timer = setTimeout(() => setCooldown(cooldown - 1), 1000);
+    }
+    return () => clearTimeout(timer);
+  }, [cooldown]);
 
   const handleOtpSubmit = async (e) => {
     e.preventDefault();
@@ -27,65 +39,60 @@ const OtpModal = ({ onClose, onVerifySuccess, contactInfo, email }) => {
     }
   };
 
-  // 3. Created a new handler with the 'blur' logic
   const handleOtpChange = (e) => {
     const value = e.target.value.replace(/[^0-9]/g, '');
     setOtp(value);
-    // When 4 digits are entered, blur the input to remove the cursor
-    if (value.length === 4 && otpInputRef.current) {
-      otpInputRef.current.blur();
+  };
+  
+  // --- NEW: Handler for the resend button ---
+  const handleResendClick = () => {
+    if (cooldown === 0) {
+      onResend(); // Call the function passed from TeamInfoPage
+      setCooldown(60); // Start a 60-second cooldown
     }
   };
 
-  const otpInput = React.createElement('div', { className: "relative h-10 w-32 group" }, 
+  const otpInput = React.createElement('div', { className: "relative h-10 group" }, 
     React.createElement(InputDeco, { 
       className: "absolute top-0 left-0 w-full h-full text-dark-orange pointer-events-none",
       preserveAspectRatio: "none" 
     }),
     React.createElement('input', {
-      ref: otpInputRef, // 4. Attached the ref to the input
+      ref: otpInputRef,
       id: 'otp',
       name: 'otp',
-      type: 'text',
-      maxLength: 4,
+      type: 'tel',
       value: otp,
-      onChange: handleOtpChange, // 5. Used the new handler here
-      className: "relative z-10 w-full h-full bg-transparent border-none focus:outline-none text-center text-xl tracking-[0.8em] font-bold text-gray-800 indent-[0.8em]"
+      onChange: handleOtpChange,
+      className: "relative z-10 w-full h-full bg-transparent border-none focus:outline-none text-center text-lg tracking-[0.4em] font-bold text-gray-800 indent-[0.4em]"
     })
   );
 
   return (
     React.createElement('div', { className: 'fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4' },
-      React.createElement('div', { className: 'relative max-w-[489px] w-full aspect-[489/336] font-body' },
+      React.createElement('div', { className: 'relative max-w-sm w-full font-body' },
         React.createElement(AuthFrame, {
             className: 'absolute inset-0 w-full h-full text-brand-beige z-0',
             preserveAspectRatio: "none"
         }),
-        React.createElement('div', { className: 'relative z-10 w-full h-full' },
-          React.createElement('button', { onClick: onClose, className: 'absolute top-[28px] right-[47px] text-2xl text-gray-500 hover:text-gray-800 z-50' }, React.createElement(FiX, null)),
-          React.createElement('div', { className: 'absolute top-[20px] w-full flex justify-center' },
-            React.createElement(OtpDeco, null)
+        React.createElement('div', { className: 'relative z-10 p-8 flex flex-col items-center text-center' },
+          React.createElement('button', { onClick: onClose, className: 'absolute top-4 right-4 text-2xl text-gray-500 hover:text-gray-800' }, React.createElement(FiX, null)),
+          React.createElement(OtpDeco, { key: 'deco-icon' }),
+          React.createElement('h2', { key: 'title', className: 'font-display text-2xl font-bold text-gray-800 mt-3' }, 'OTP VERIFICATION'),
+          React.createElement('p', { key: 'subtitle1', className: 'text-brand-gray text-sm mt-3' }, 'An OTP has been sent to ', React.createElement('span', { className: 'font-semibold text-dark-orange' }, email)),
+          React.createElement('form', { onSubmit: handleOtpSubmit, className: 'w-full flex flex-col sm:flex-row items-center justify-center gap-4 mt-6' },
+            otpInput,
+            React.createElement(DecoratedButton, { type: 'submit' }, 'Verify')
           ),
-          React.createElement('div', { className: 'absolute top-[98px] left-[40px] right-[40px] flex flex-col items-center text-center gap-y-2' },
-            React.createElement('h2', { className: 'font-display text-2xl font-bold text-gray-800' }, 'OTP VERIFICATION'),
-            React.createElement('p', { className: 'text-brand-gray text-sm' }, 
-              'OTP sent to ',
-              React.createElement('span', { className: 'font-semibold text-dark-orange' }, contactInfo || '91-898989898')
-            ),
-            React.createElement('p', { className: 'text-brand-gray text-sm' }, 
-              'Send to email instead? ',
-              React.createElement('button', { className: 'font-semibold text-dark-orange hover:underline' }, 'Send via email')
-            )
-          ),
-          React.createElement('div', { className: 'absolute top-[214px] left-[20px] right-[20px] ' },
-            React.createElement('form', { onSubmit: handleOtpSubmit, className: 'w-full flex items-center justify-center gap-x-20' },
-              otpInput,
-              // We can now go back to using the simple DecoratedButton
-              React.createElement(DecoratedButton, { type: 'submit', size: "md" }, 'Verify')
-            ),
-            error && React.createElement('p', { className: 'text-xs text-brand-red text-center mt-2' }, error)
-          ),
-          React.createElement('button', { className: 'absolute bottom-[30px] w-full text-sm text-dark-orange hover:underline text-center' }, 'Send again?')
+          error && React.createElement('p', { key: 'error', className: 'text-xs text-brand-red text-center mt-2' }, error),
+          
+          // --- MODIFIED: "Send again" button is now functional with cooldown ---
+          React.createElement('button', { 
+            key: 'send-again', 
+            className: 'text-sm text-dark-orange hover:underline mt-6 disabled:text-gray-500 disabled:no-underline',
+            onClick: handleResendClick,
+            disabled: cooldown > 0
+          }, cooldown > 0 ? `Send again in ${cooldown}s` : 'Send again?')
         )
       )
     )
