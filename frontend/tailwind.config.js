@@ -10,13 +10,30 @@ module.exports = {
       colors: {
         'alch-red': '#EF5243',
         'alch-cream': '#EEECD9',
-        'alch-dark': '#000000',
+        'alch-dark': '#090909',
+        'brand-dark': '#090909',
+        'brand-beige': '#EEECD9',
+        'brand-orange': '#e89f55',
+        'brand-red': '#e53e3e',
+        'brand-gray': '#6b7280',
+        'dark-orange': '#EF5243',
       },
+      // --- CORRECTED FONT FAMILY SECTION ---
       fontFamily: {
-        // Manrope remains your global font
+        // Manrope is now your default body font via 'font-sans'
         sans: ['Manrope', ...defaultTheme.fontFamily.sans],
         // TT Modernoir is your special heading font via 'font-display'
         display: ['TT Modernoir', 'sans-serif'],
+      },
+      // --- END OF FONT SECTION ---
+      keyframes: {
+        fadeInUp: {
+          '0%': { opacity: '0', transform: 'translateY(20px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+      },
+      animation: {
+        fadeInUp: 'fadeInUp 0.5s ease-out forwards',
       },
     },
   },

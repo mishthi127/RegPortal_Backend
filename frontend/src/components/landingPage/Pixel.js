@@ -1,6 +1,7 @@
-    import { useState } from "react";
-    import { useEffect } from "react";
-    import axios from "axios";
+// src/components/landingPage/Pixel.js
+
+import { useState, useEffect } from "react";
+import axiosInstance from "../../utils/axiosInstance"; // Using the custom axios instance
     import lotus from "../../assets/lotus.svg"
     import flower from "../../assets/heading-icon-red.svg"
     import "../media.css";
@@ -96,67 +97,34 @@
         animation3.push(...animation3Part3, ...animation3Part2, ...animation3Part1, ...animation3Part0);
 
 
-        useEffect(() => {
-            if (token) {
-                axios.get("http://localhost:8000/profile/", {
-                    headers: { Authorization: `Bearer ${token}` }
-                })
+    useEffect(() => {
+        if (token) {
+            axiosInstance.get("/profile/") // Using updated axios instance
                 .then(res => {
-                    console.log("hi",res.data);
-                    if (res.data.user && res.data.user.pixel_highlight) {
-                        setHighlight(res.data.user.pixel_highlight);
+                    // Correctly access pixel_highlight from the root of the response data
+                    if (res.data && res.data.pixel_highlight) {
+                        setHighlight(res.data.pixel_highlight);
                     }
                 })
                 .catch(err => console.error("Profile fetch error:", err));
-            }
-        }, [token]);
-
-        const customTransparent1 = [
-            { row: 0, col: 0 }, { row: 0, col: 1 },
-            { row: 1, col: 0 }, { row: 1, col: 1 }, { row: 1, col: 2 },
-            { row: 2, col: 0 }, { row: 2, col: 1 }, { row: 2, col: 2 }, { row: 2, col: 3 },
-            { row: 3, col: 0 }, { row: 3, col: 1 }, { row: 3, col: 2 },
-            { row: 4, col: 0 }, { row: 4, col: 1 },
-            { row: 5, col: 0 }
-        ];
-
-        const customwight1 = [
-            { row: 0, col: 2 }, { row: 1, col: 3 }, { row: 2, col: 4 }, { row: 3, col: 3 }, { row: 4, col: 2 }, { row: 5, col: 1 }, { row:6 , col: 0 }
-        ];
-
-        const customTransparent2 = customTransparent1.map(cell => ({
-            row: cell.row,
-            col: 35 - cell.col
-        }));
-        const customwight2 = customwight1.map(cell => ({
-            row: cell.row,
-            col: 35 - cell.col
-        }));
-
-        const customTransparent3 = customTransparent1.map(cell => ({
-            row: 16 - cell.row,
-            col: cell.col
-        }));
-        const customwight3 = customwight1.map(cell => ({
-            row: 16 - cell.row,
-            col: cell.col
-        }));
-
-        const customTransparent4 = customTransparent1.map(cell => ({
-            row: 16 - cell.row,
-            col: 35 - cell.col
-        }));
-        const customwight4 = customwight1.map(cell => ({
-            row: 16 - cell.row,
-            col: 35 - cell.col
-        }));
-
-        const transperent = [...customTransparent1, ...customTransparent2, ...customTransparent3, ...customTransparent4];
-        const wight = [...customwight1, ...customwight2, ...customwight3, ...customwight4];
+        }
+    }, [token]);
+    
+    // --- All grid and styling definitions are unchanged ---
+    const customTransparent1 = [{ row: 0, col: 0 }, { row: 0, col: 1 }, { row: 1, col: 0 }, { row: 1, col: 1 }, { row: 1, col: 2 }, { row: 2, col: 0 }, { row: 2, col: 1 }, { row: 2, col: 2 }, { row: 2, col: 3 }, { row: 3, col: 0 }, { row: 3, col: 1 }, { row: 3, col: 2 }, { row: 4, col: 0 }, { row: 4, col: 1 }, { row: 5, col: 0 }];
+    const customwight1 = [{ row: 0, col: 2 }, { row: 1, col: 3 }, { row: 2, col: 4 }, { row: 3, col: 3 }, { row: 4, col: 2 }, { row: 5, col: 1 }, { row:6 , col: 0 }];
+    const customTransparent2 = customTransparent1.map(cell => ({ row: cell.row, col: 35 - cell.col }));
+    const customwight2 = customwight1.map(cell => ({ row: cell.row, col: 35 - cell.col }));
+    const customTransparent3 = customTransparent1.map(cell => ({ row: 16 - cell.row, col: cell.col }));
+    const customwight3 = customwight1.map(cell => ({ row: 16 - cell.row, col: cell.col }));
+    const customTransparent4 = customTransparent1.map(cell => ({ row: 16 - cell.row, col: 35 - cell.col }));
+    const customwight4 = customwight1.map(cell => ({ row: 16 - cell.row, col: 35 - cell.col }));
+    const transperent = [...customTransparent1, ...customTransparent2, ...customTransparent3, ...customTransparent4];
+    const wight = [...customwight1, ...customwight2, ...customwight3, ...customwight4];
+    // --- End of styling definitions ---
 
         const handleclick = (row, col) => {
             if (animationdone){
-                // Check if the clicked cell is "clickable"
                 const isTransparent = transperent.some(h => h.row === row && h.col === col);
                 const isWhite = wight.some(h => h.row === row && h.col === col);
 
@@ -164,7 +132,6 @@
                     // Do nothing if cell is transparent or white
                     return;
                 }
-
                 const exist = highlight.some(h => h.row === row && h.col === col);
                 console.log({row, col});
                 if(exist){
@@ -174,15 +141,15 @@
                 }
             }
         }
+    
 
-        // Create 2D array for game 
-        const grid = Array.from({ length: rows }, (_, r) =>
-            Array.from({ length: columns }, (_, c) => ({ row: r, col: c }))
-        );
+    const grid = Array.from({ length: rows }, (_, r) =>
+        Array.from({ length: columns }, (_, c) => ({ row: r, col: c }))
+    );
 
-        function wait(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
-        }
+    function wait(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
 
         async function animation(){
             setAnimation1(true);
@@ -200,18 +167,17 @@
             setAnimationdone(true);
         }
 
-        const submit = async() => {
-            if(!token){
-                window.location.href = '/login';
-            }else{
-                if ( highlight.length === 0 ){
-                    alert("click on boxexs");
-                }else{
-                    try{
-                        const res = await axios.post("http://localhost:8000/auth/complete-profile/", 
-                            { pixel_highlight: highlight },
-                            { headers: { Authorization: `Bearer ${token}` } }
-                    );
+    const submit = async () => {
+        if (!token) {
+            window.location.href = '/login';
+        } else {
+            if (highlight.length === 0) {
+                alert("click on boxexs");
+            } else {
+                try {
+                    const res = await axiosInstance.post("/auth/complete-profile/", { // Using updated axios instance
+                        pixel_highlight: highlight
+                    });
                     console.log("submited", highlight);
                     console.log("Updated profile from backend:", res.data);
                     alert("submited");
@@ -369,4 +335,4 @@
                     <img className="w-[100%] h-[10.94px] lg:h-[40px] mt-[47px] lg:mt-auto" src="/image131.png" alt="image131"/>
             </div>
     );
-    }
+}

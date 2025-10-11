@@ -1,3 +1,5 @@
+# src/views.py
+
 from rest_framework import generics, status, permissions
 from rest_framework import viewsets
 from rest_framework.response import Response
@@ -10,6 +12,8 @@ from django.conf import settings
 
 from django.utils import timezone
 from datetime import timedelta
+
+from django.db.models import Q 
 
 from allauth.socialaccount.models import SocialAccount
 from rest_framework.decorators import api_view, permission_classes
@@ -47,8 +51,39 @@ def send_otp_email(user):
 
 class RegisterView(generics.CreateAPIView):
     serializer_class = RegisterSerializer
+
+    def create(self, request, *args, **kwargs):
+        """
+        Overrides the default create method to handle existing but unverified users
+        based ONLY on their email address.
+        """
+        clean_old_unverified_users()
+
+        email = request.data.get('email')
+
+        # Check for an existing user using ONLY the email field.
+        existing_user = NewUser.objects.filter(email=email).first()
+
+        if existing_user:
+            # Case 1: An existing user with this email is found
+            if existing_user.verified_email:
+                # User is fully verified, so this is a legitimate conflict.
+                return Response(
+                    {'email': 'new user with this email address already exists.'}, 
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            else:
+                # User exists but is NOT verified. Update them and resend the OTP.
+                serializer = self.get_serializer(instance=existing_user, data=request.data)
+                serializer.is_valid(raise_exception=True)
+                user = serializer.save()
+                send_otp_email(user)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+
+        # Case 2: No user with this email found. Proceed with standard creation.
+        return super().create(request, *args, **kwargs)
+
     def perform_create(self, serializer):
-        clean_old_unverified_users() 
         user = serializer.save()
         send_otp_email(user)
 
@@ -142,7 +177,7 @@ def complete_profile(request):
     user = request.user
     user.fullname = request.data.get('fullname', user.fullname)
     user.phone_number = request.data.get('phone_number', user.phone_number)
-    user.alternate_phone = request.data.get('alternate_phone', user.alternate_phone)  # Add this line
+    user.alternate_phone = request.data.get('alternate_phone', user.alternate_phone)
     user.collegename = request.data.get('collegename', user.collegename)
     user.city = request.data.get('city', user.city)
     user.state = request.data.get('state', user.state)
@@ -209,96 +244,51 @@ def competition_list(request):
 
 class ParticipantviewSet(viewsets.ModelViewSet):
     serializer_class = ParticipantSerializer
-    permission_classes = [IsAuthenticated]  # Changed from AllowAny - users must be logged in
+    permission_classes = [IsAuthenticated]
     
     def get_queryset(self):
-        """
-        This method filters the queryset to show only team members 
-        that belong to the current user's team.
-        
-        The key insight: each user has a Team (via the OneToOneField 'leader'),
-        and each Team has multiple TeamMembers (via ManyToManyField 'members').
-        """
         user = self.request.user
-        
-        # Get the user's team (or return empty queryset if they don't have one)
         try:
-            team = user.team  # This uses the related_name="team" from the Team model
-            return team.members.all()  # Return all members in this team
+            team = user.team
+            return team.members.all()
         except Team.DoesNotExist:
-            # If user doesn't have a team yet, return empty queryset
             return TeamMembers.objects.none()
     
     def perform_create(self, serializer):
-        """
-        When creating a new team member, we need to:
-        1. Save the TeamMember instance
-        2. Add it to the user's team
-        3. Create a team if the user doesn't have one yet
-        """
         user = self.request.user
-        
-        # Save the new team member
         team_member = serializer.save()
-        
-        # Get or create the user's team
         team, created = Team.objects.get_or_create(
             leader=user,
-            defaults={'name': f"{user.fullname}'s Team"}  # Default team name
+            defaults={'name': f"{user.fullname}'s Team"}
         )
-        
-        # Add this member to the team
         team.members.add(team_member)
-        
-        # Update the user's team_members count
         user.team_members = team.members.count()
         user.save(update_fields=['team_members'])
     
     def perform_destroy(self, instance):
-        """
-        When deleting a team member:
-        1. Remove them from the team
-        2. Delete the TeamMember instance
-        3. Update the team member count
-        """
         user = self.request.user
-        
         try:
             team = user.team
-            # Remove the member from the team before deleting
             team.members.remove(instance)
-            
-            # Update the count
             user.team_members = team.members.count()
             user.save(update_fields=['team_members'])
         except Team.DoesNotExist:
-            pass  # If no team exists, just delete the member
-        
-        # Now delete the actual TeamMember instance
+            pass
         instance.delete()
     
     def list(self, request, *args, **kwargs):
-        """
-        Override list to provide consistent response format.
-        Returns all team members for the authenticated user's team.
-        """
         queryset = self.get_queryset()
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
     def create(self, request, *args, **kwargs):
-        """
-        Override create to provide better error handling and response.
-        """
         serializer = self.get_serializer(data=request.data)
-        
         if serializer.is_valid():
             self.perform_create(serializer)
             return Response(
                 serializer.data, 
                 status=status.HTTP_201_CREATED
             )
-        
         return Response(
             serializer.errors, 
             status=status.HTTP_400_BAD_REQUEST
