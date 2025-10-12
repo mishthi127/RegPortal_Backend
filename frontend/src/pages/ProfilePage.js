@@ -10,6 +10,7 @@ import { ReactComponent as TabBarDeco } from '../assets/nav-item-deco.svg';
 import DecoratedInput from '../components/AuthPage/DecoratedInput.js';
 import DecoratedButton from '../components/AuthPage/DecoratedButton.js';
 import authorPlaceholder from '../assets/author-placeholder.png';
+import { AddMembers } from '../components/AddMembers.js';
 
 const BASE_URL = 'http://localhost:8000';
 
@@ -147,8 +148,8 @@ const ProfilePage = () => {
                     )
                 )
             ),
-            activeTab === 'My Events' && React.createElement('div', { className: 'text-center p-8' }, 'My Events Content Goes Here'),
-            activeTab === 'Teams' && React.createElement('div', { className: 'text-center p-8' }, 'Teams Content Goes Here')
+            activeTab === 'My registration' && React.createElement('div', { className: 'text-center p-8' }, 'My Events Content Goes Here'),
+            activeTab === 'Team members' && <AddMembers className="w-full h-full"/>
           )
         )
       )
