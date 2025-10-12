@@ -152,6 +152,7 @@ import axiosInstance from "../../utils/axiosInstance"; // Using the custom axios
     }
 
         async function animation(){
+            setHighlight([]);
             setAnimation1(true);
             await wait(1500);
             setAnimationstart(true);
@@ -263,10 +264,10 @@ import axiosInstance from "../../utils/axiosInstance"; // Using the custom axios
                             ))}
                             
                             {( yourturn &&
-                                <div className="flex justify-center items-center gap-[10px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px]  h-[53px] text-[#EF5243] text-center font-modernoir text-xl sm:text-5xl font-extrabold">
-                                    <img src={flower} alt="flower"/>
-                                    <p className="w-[364px] h-[53px] " >Now it’s your turn</p>
-                                    <img src={flower} alt="flower"/>
+                                <div className="flex justify-center items-center gap-[10px] absolute  w-full h-full text-[#EF5243] text-center font-modernoir text-[16px]  lg:text-[60px] font-extrabold">
+                                    <img className="w-[10px] lg:w-[30px]" src={flower} alt="flower"/>
+                                    <p className="" >Now it’s your turn</p>
+                                    <img className="w-[10px] lg:w-[30px]" src={flower} alt="flower"/>
                                 </div>
                             )}
                         </div>
@@ -313,7 +314,7 @@ import axiosInstance from "../../utils/axiosInstance"; // Using the custom axios
                         <div
                             className={`absolute transition-opacity duration-500 ${
                             animationstart ? "opacity-0 pointer-events-none" : "opacity-100"
-                            } lg:w-[200px] w-[100px] h-[40px] lg:h-[46px] flex justify-center items-center font-sans font-bold lg:text-base text-[9px] lg:text-[15px] cursor-pointer`}
+                            } lg:w-[200px] w-[80px] h-[30px] lg:h-[46px] flex justify-center items-center font-sans font-bold lg:text-base text-[6.8px] lg:text-[15px] cursor-pointer`}
                             style={{ backgroundImage: "url('/explorebg.png')", backgroundSize: "contain", backgroundPosition: "center", backgroundRepeat: "no-repeat" }}
                             onClick={() => animation()}
                         >
@@ -325,7 +326,7 @@ import axiosInstance from "../../utils/axiosInstance"; // Using the custom axios
                         <div
                             className={`absolute transition-opacity duration-500 ${
                             animationdone ? "opacity-100" : "opacity-0 pointer-events-none"
-                            } lg:w-[116.29px] w-[65px] h-[25px] lg:h-[46px] flex justify-center items-center font-sans font-bold text-[11px] lg:text-[15px] lg:text-base cursor-pointer`}
+                            } lg:w-[116.29px] w-[50px] h-[19px] lg:h-[46px] flex justify-center items-center font-sans font-bold text-[8px] lg:text-[15px] lg:text-base cursor-pointer`}
                             style={{ backgroundImage: "url('/Submit.png')", backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat" }}
                             onClick={() => submit()}
                         >

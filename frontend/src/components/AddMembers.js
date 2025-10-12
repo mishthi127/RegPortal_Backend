@@ -396,7 +396,7 @@ export function AddMembers(){
                         </div>
                     </div>
 
-                    <div className='lg:h-[100vh] h-[600px] lg:w-[800px] w-[319px] flex flex-col overflow-y-auto bg-alch-cream' style={noscroolbar} onClick={(e) => e.stopPropagation()}>
+                    <div className='lg:h-[70%] h-[600px] lg:w-[800px] w-[319px] flex flex-col overflow-y-auto bg-alch-cream' style={noscroolbar} onClick={(e) => e.stopPropagation()}>
                             <div 
                                 className='flex flex-col'
                             >
@@ -538,7 +538,7 @@ export function AddMembers(){
                         </div>
                     </div>
 
-                    <div className='lg:h-[100vh] h-[600px] lg:w-[800px] w-[319px] flex flex-col overflow-y-auto bg-alch-cream' style={noscroolbar} onClick={(e) => e.stopPropagation()}>
+                    <div className='h-[75%] w-[319px] flex flex-col overflow-y-auto bg-alch-cream' style={noscroolbar} onClick={(e) => e.stopPropagation()}>
                             <div 
                                 className='flex flex-col'
                             >
@@ -546,9 +546,9 @@ export function AddMembers(){
                                     {members.map((item, index) => (
                                         <div className='flex flex-col items-center my-[30px]' key={item.tempId} >
                                             <div className='flex flex-row justify-between items-center lg:w-[635px] w-[250px]'>
-                                                <div className='flex items-center justify-center'>
+                                                <div className='flex items-center justify-center gap-[10px]'>
                                                     <p className='font-sans text-[18px] leading-[140%] tracking-[2%]'>Member {index + 1}</p>
-                                                    <button className='lg:hidden block' onClick={addDiv} ><img src={mbaddmembtn} alt='close' className='h-[32px] w-[32px]'/></button>
+                                                    <button className='lg:hidden block' onClick={addDiv} ><img src={mbaddmembtn} alt='close' className='h-[37px] w-[37px]'/></button>
                                                 </div>
                                                 <button onClick={() => removeDiv(item.id, item.tempId)}><img src={close} alt='close' className='h-[32px] w-[32px]' /></button>
                                             </div>
@@ -662,10 +662,10 @@ export function AddMembers(){
             }
 
             <div 
-                className='lg:h-[766px] lg:w-[1298px] h-[952px] w-[371px] flex items-center lg:justify-center flex-col'
-                style={headerBgStyle}
+                className='lg:h-full lg:w-full h-[952px] w-[371px] flex items-center lg:justify-center flex-col'
+                // style={headerBgStyle}
             >
-                    <div>
+                    <div className=' w-[100%] flex items-center justify-center'>
                         {/* laptop search */}
                         <div
                             style={searchBgStyle}
@@ -687,7 +687,7 @@ export function AddMembers(){
                                 backgroundSize: 'cover',      // makes it cover the div
                                 backgroundRepeat: 'no-repeat'
                             }}
-                            className='w-[335px] h-[32px] lg:hidden flex  items-center mb-[32px] mt-[56px] lg:mt-[0]'
+                            className='w-[95%] h-[35px] lg:hidden flex items-center mb-[32px] mt-[30px] lg:mt-[0]'
                         >
                             <button><img src={searchbutton} alt='search' className='ml-[16px]'/></button>
                             <input 
@@ -698,16 +698,16 @@ export function AddMembers(){
                             ></input>
                         </div>
                     </div>
-                    <div className='lg:w-[1079px] w-[371px] h-auto flex justify-center items-center flex-col lg:flex-row gap-[16px] lg:gap-[27px] '>
-                        <div className='lg:h-[600px] lg:w-[600px] h-auto w-[336px] flex flex-col gap-[16px]'>
+                    <div className='lg:w-full w-100% h-auto flex justify-center items-center flex-col lg:flex-row gap-[16px] lg:gap-[27px] '>
+                        <div className='lg:h-[600px] lg:w-[450px] h-auto w-100% flex flex-col gap-[16px]'>
                             {/* laptop leader */}
                             {!text && (
                                 <div
-                                    className='lg:w-[526px] lg:h-[58.08px] w-[336px] h-[56px] hidden lg:flex justify-center items-center cursor-pointer'
+                                    className='lg:w-[450px] lg:h-[49.5px] w-[336px] h-[56px] hidden lg:flex justify-center items-center cursor-pointer'
                                     style={namesBgStyle}
                                     onClick={() => navigate('/profile')}
                                 >   
-                                    <div className='lg:w-[493.99px] lg:h-[38px] w-[315.55px] h-[38px] flex justify-between items-center'>
+                                    <div className='lg:w-[95%] lg:h-[38px] w-[315.55px] h-[38px] flex justify-between items-center'>
                                         <div className='flex justify-between items-center gap-[17px]'>
                                             <img src={profilepic} alt='profile' className='w-[32.11px] h-[32.11px]'/>
                                             <div className='h-[38px] flex flex-col justify-between'>
@@ -726,23 +726,23 @@ export function AddMembers(){
                             {/* mobile leader */}
                             {!text && (
                                 <div
-                                    className='lg:w-[526px] lg:h-[58.08px] w-[336px] h-[56px] flex lg:hidden justify-center items-center cursor-pointer'
+                                    className='w-[325px] h-[55px] flex lg:hidden justify-center items-center cursor-pointer'
                                     style={mbnamesBgStyle}
                                     onClick={() => navigate('/profile')}
                                 >   
-                                    <div className='lg:w-[493.99px] lg:h-[38px] w-[315.55px] h-[38px] flex justify-between items-center'>
+                                    <div className='w-[300px] h-[38px] flex justify-between items-center'>
                                         <div className='flex justify-between items-center gap-[17px]'>
                                             <img src={profilepic} alt='profile' className='w-[32.11px] h-[32.11px]'/>
-                                            <div className='h-[38px] flex flex-col justify-between'>
-                                                <p className='font-sans font-semibold text-[16px] leading-[100%] tracking-[0px]'>
+                                            <div className='h-[30px] flex flex-col justify-between'>
+                                                <p className='font-sans font-semibold text-[14px] leading-[100%] tracking-[0px]'>
                                                     {profile ? profile.fullname.toUpperCase() : "Loading..."}
                                                 </p>
-                                                <p className='font-sans font-normal text-[12px] leading-[100%] tracking-[0px]' >
+                                                <p className='font-sans font-normal text-[10px] leading-[100%] tracking-[0px]' >
                                                     {profile ? profile.email : "loading..."}
                                                 </p>
                                             </div>
                                         </div>
-                                        <div className='p-[5px] rounded-[2.5px] bg-alch-red text-alch-cream text-center font-sans font-semibold text-[16px] leading-[100%] tracking-[0px]'>Leader</div>
+                                        <div className='p-[5px] rounded-[2.5px] bg-alch-red text-alch-cream text-center font-sans font-semibold text-[14px] leading-[100%] tracking-[0px]'>Leader</div>
                                     </div> 
                                 </div>
                             )}
@@ -753,8 +753,8 @@ export function AddMembers(){
                                 namesToDisplay
                                 .filter((_, index) => index % 2 === 0)
                                 .map((item) => (
-                                    <div className='lg:w-[526px] lg:h-[58.08px] w-[336px] h-[56px] hidden lg:flex justify-center items-center' style={namesBgStyle} key={item.id}>
-                                        <div className='lg:w-[493.99px] lg:h-[38px] w-[315.55px] h-[38px] flex justify-between items-center'>
+                                    <div className='lg:w-[450px] lg:h-[49.5px] w-[336px] h-[56px] hidden lg:flex justify-center items-center' style={namesBgStyle} key={item.id}>
+                                        <div className='lg:w-[95%] lg:h-[38px] w-[315.55px] h-[38px] flex justify-between items-center'>
                                             <div className='h-[38px] flex justify-center items-center gap-[17px] '>
                                                 <img src={profilepic} alt='profile' className='w-[32.11px] h-[32.11px]'/>
                                                 <div className='flex flex-col justify-between h-[38px]'>
@@ -772,13 +772,13 @@ export function AddMembers(){
                             { namesToDisplay && 
                                 namesToDisplay
                                 .map((item) => (
-                                    <div className='lg:w-[526px] lg:h-[58.08px] w-[336px] h-[56px]  flex lg:hidden justify-center items-center' style={mbnamesBgStyle} key={item.id}>
-                                        <div className='lg:w-[493.99px] lg:h-[38px] w-[315.55px] h-[38px] flex justify-between items-center'>
+                                    <div className='w-[325px] h-[55px] flex lg:hidden justify-center items-center' style={mbnamesBgStyle} key={item.id}>
+                                        <div className='w-[300px] h-[38px] flex justify-between items-center'>
                                             <div className='h-[38px] flex justify-center items-center gap-[17px] '>
                                                 <img src={profilepic} alt='profile' className='w-[32.11px] h-[32.11px]'/>
-                                                <div className='flex flex-col justify-between h-[38px]'>
-                                                    <p className='font-sans font-semibold text-[16px] leading-[100%] tracking-[0px]'>{item.name.charAt(0).toUpperCase() + item.name.slice(1)}</p>
-                                                    <p className='font-sans font-normal text-[12px] leading-[100%] tracking-[0px]' >{item.email}</p>
+                                                <div className='flex flex-col justify-between h-[30px]'>
+                                                    <p className='font-sans font-semibold text-[14px] leading-[100%] tracking-[0px]'>{item.name.charAt(0).toUpperCase() + item.name.slice(1)}</p>
+                                                    <p className='font-sans font-normal text-[10px] leading-[100%] tracking-[0px]' >{item.email}</p>
                                                 </div>
                                             </div>
                                             <button onClick={() => removemember(item.id, item.tempId)} ><img src={removeoutline} alt='remove'/></button>
@@ -788,16 +788,16 @@ export function AddMembers(){
                             }
 
                             {/* add mem form btn laptop */}
-                            <div onClick={()=>{setAddpop(true)}} className='lg:w-[526px] lg:h-[58.08px] w-[336px] h-[56px] hidden lg:flex  justify-center items-center cursor-pointer' style={addBgStyle}>
-                                <div className='flex justify-between items-center lg:w-[493.99px] lg:h-[38px] w-[315.55px] h-[38px]'>
+                            <div onClick={()=>{setAddpop(true)}} className='lg:w-[450px] lg:h-[49.5px] w-[336px] h-[56px] hidden lg:flex  justify-center items-center cursor-pointer' style={addBgStyle}>
+                                <div className='flex justify-between items-center lg:w-[95%] lg:h-[38px] w-[315.55px] h-[38px]'>
                                     <p className='font-sans font-bold text-base' >Add more Members</p>
                                     <button><img src={addbutton} alt='add' className='w-[24px] h-[24px]'/></button>
                                 </div>
                             </div>
                             {/* add mem form btn mobile */}
-                            <div onClick={()=>{setAddpop(true)}} className='lg:w-[526px] lg:h-[58.08px] w-[336px] h-[56px] flex lg:hidden justify-center items-center cursor-pointer' style={mbaddBgStyle}>
-                                <div className='flex justify-between items-center lg:w-[493.99px] lg:h-[38px] w-[315.55px] h-[38px]'>
-                                    <p className='font-sans font-bold text-base' >Add more Members</p>
+                            <div onClick={()=>{setAddpop(true)}} className='w-[325px] h-[55px] flex lg:hidden justify-center items-center cursor-pointer' style={mbaddBgStyle}>
+                                <div className='flex justify-between items-center w-[300px] h-[38px]'>
+                                    <p className='font-sans font-bold text-[14px]' >Add more Members</p>
                                     <button><img src={addbutton} alt='add' className='w-[24px] h-[24px]'/></button>
                                 </div>
                             </div>
@@ -805,14 +805,14 @@ export function AddMembers(){
 
                         {/* names of mem of odd index in laptop */}
 
-                        <div className='lg:h-[600px] lg:w-[600px] h-auto w-[336px] hidden lg:flex flex-col lg:gap-[16px]'>
+                        <div className='lg:h-[600px] lg:w-[450px] h-auto w-[336px] hidden lg:flex flex-col lg:gap-[16px]'>
                             {/* <div className='w-[526px] h-[58.08px]'></div> */}
                             { namesToDisplay && 
                                 namesToDisplay
                                 .filter((_, index) => index % 2 === 1)
                                 .map((item) => (
-                                    <div className='lg:w-[526px] lg:h-[58.08px] w-[336px] h-[56px] flex justify-center items-center' style={namesBgStyle} key={item.id}>
-                                        <div className='lg:w-[493.99px] lg:h-[38px] w-[315.55px] h-[38px] flex justify-between items-center'>
+                                    <div className='lg:w-[450px] lg:h-[49.5px] w-[336px] h-[56px] flex justify-center items-center' style={namesBgStyle} key={item.id}>
+                                        <div className='lg:w-[95%] lg:h-[38px] w-[315.55px] h-[38px] flex justify-between items-center'>
                                             <div className='h-[38px] flex justify-center items-center gap-[17px] '>
                                                 <img src={profilepic} alt='profile' className='w-[32.11px] h-[32.11px]'/>
                                                 <div className='flex flex-col justify-between h-[38px]'>

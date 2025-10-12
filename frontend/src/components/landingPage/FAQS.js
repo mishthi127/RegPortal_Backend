@@ -86,7 +86,7 @@ export const FAQS = forwardRef((props, ref) => {
                     </div>
                     {   <div
                             className={`transition-all w-[89%] duration-500 ease-in-out overflow-hidden flex justify-center items-center ${
-                                openindex.includes(1) ? "h-[145px] opacity-100 mt-[-19px] " : "max-h-0 opacity-0"
+                                openindex.includes(1) ? "h-[145px] opacity-100 mt-[-25px] " : "max-h-0 opacity-0"
                             }`}
                             style={{
                                 backgroundImage: "url('/mbfaqansbg.svg')",
@@ -168,7 +168,7 @@ export const FAQS = forwardRef((props, ref) => {
                     </div>
                     {   <div
                             className={`transition-all w-[89%] duration-500 ease-in-out overflow-hidden flex justify-center items-center ${
-                                openindex.includes(2) ? "h-[145px] opacity-100 mt-[-19px] " : "max-h-0 opacity-0"
+                                openindex.includes(2) ? "h-[145px] opacity-100  mt-[-25px] " : "max-h-0 opacity-0"
                             }`}
                             style={{
                                 backgroundImage: "url('/mbfaqansbg.svg')",
@@ -250,7 +250,7 @@ export const FAQS = forwardRef((props, ref) => {
                     </div>
                     {   <div
                             className={`transition-all w-[89%] duration-500 ease-in-out overflow-hidden flex justify-center items-center ${
-                                openindex.includes(3) ? "h-[145px] opacity-100 mt-[-19px] " : "max-h-0 opacity-0"
+                                openindex.includes(3) ? "h-[145px] opacity-100  mt-[-25px] " : "max-h-0 opacity-0"
                             }`}
                             style={{
                                 backgroundImage: "url('/mbfaqansbg.svg')",
@@ -332,7 +332,7 @@ export const FAQS = forwardRef((props, ref) => {
                     </div>
                     {   <div
                             className={`transition-all w-[89%] duration-500 ease-in-out overflow-hidden flex justify-center items-center ${
-                                openindex.includes(4) ? "h-[145px] opacity-100 mt-[-19px] " : "max-h-0 opacity-0"
+                                openindex.includes(4) ? "h-[145px] opacity-100  mt-[-25px] " : "max-h-0 opacity-0"
                             }`}
                             style={{
                                 backgroundImage: "url('/mbfaqansbg.svg')",
@@ -414,7 +414,7 @@ export const FAQS = forwardRef((props, ref) => {
                     </div>
                     {   <div
                             className={`transition-all w-[89%] duration-500 ease-in-out overflow-hidden flex justify-center items-center ${
-                                openindex.includes(5) ? "h-[145px] opacity-100 mt-[-19px] " : "max-h-0 opacity-0"
+                                openindex.includes(5) ? "h-[145px] opacity-100  mt-[-25px] " : "max-h-0 opacity-0"
                             }`}
                             style={{
                                 backgroundImage: "url('/mbfaqansbg.svg')",

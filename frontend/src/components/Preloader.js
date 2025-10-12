@@ -1,7 +1,6 @@
-import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
 import backgroundPattern from '../assets/background-pattern.svg';
 import topBorder from '../assets/top-border.svg';
-import { useEffect } from 'react';
 
 const Preloader = () => {
   const preloaderStyle = {
@@ -9,36 +8,67 @@ const Preloader = () => {
     backgroundRepeat: 'repeat-y',
     backgroundSize: "100% auto",
     backgroundPosition: 'center',
-    // height: '100vh'
   };
 
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     document.getElementById("shrinkingDiv").style.height = "0px";
-  //   }, 100); // small delay to ensure rendering
+  const [timeLeft, setTimeLeft] = useState(1.1); // seconds
+  const [heightPercent, setHeightPercent] = useState(100); // percentage
 
-  //   return () => clearTimeout(timer);
-  // }, []);
+  useEffect(() => {
+    const delay = 500; // 0.5s delay
+    const duration = 1100; // 1.1s shrinking animation
+    let animationFrame;
+
+    const timeout = setTimeout(() => {
+      const startTime = performance.now();
+
+      const update = () => {
+        const elapsed = performance.now() - startTime;
+        const remaining = Math.max(duration - elapsed, 0);
+
+        setTimeLeft(remaining / 1000);
+        setHeightPercent((remaining / duration) * 100);
+
+        if (remaining > 0) {
+          animationFrame = requestAnimationFrame(update);
+        }
+      };
+
+      animationFrame = requestAnimationFrame(update);
+    }, delay);
+
+    return () => {
+      clearTimeout(timeout);
+      cancelAnimationFrame(animationFrame);
+    };
+  }, []); // empty dependency array so it runs once
+
 
   return (
-    <motion.div
-      initial={{ opacity: 1 }}
-      animate={{ opacity: 0 }}
-      transition={{ duration: 0.5, delay: 1.5 }}
-      style={preloaderStyle}
-      className="fixed inset-0 z-50 flex flex-col justify-start bg-alch-cream" // Changed to justify-start
-    >
-      <img src={topBorder} alt="Decorative Top Border" className="w-full" />
-      {/* The bottom border <img> tag has been removed from here */}
-    </motion.div>
-
-    // <div
-    //   id="shrinkingDiv"
-    //   className='w-screen bg-red-500 absolute top-0 left-0 origin-top transition-all duration-[3000ms]'
-    //   style={preloaderStyle}
-    // >
-    //   <img src={topBorder} alt="Decorative Top Border" className="w-full" />
-    // </div>
+    <div className='fixed inset-0 z-50'>
+      <div className='h-[100%] w-[100%] relative'>
+        <div
+          className="shrinking-div absolute bottom-0 right-0 flex flex-col justify-start overflow-hidden bg-alch-cream w-full"
+          style={{
+            ...preloaderStyle,
+            height: `${heightPercent}%`,
+          }}
+        >
+          <div className="z-10 flex justify-between">
+            <div>
+              <div className="h-[3px] w-[10px] lg:h-[10px] lg:w-[24px] bg-alch-dark"></div>
+              <div className="h-[3px] w-[6px] lg:h-[10px] lg:w-[16px] bg-alch-dark"></div>
+              <div className="h-[3px] w-[3px] lg:h-[10px] lg:w-[8px] bg-alch-dark"></div>
+            </div>
+            <div className="items-end flex flex-col">
+              <div className="h-[3px] w-[10px] lg:h-[10px] lg:w-[24px] bg-alch-dark"></div>
+              <div className="h-[3px] w-[6px] lg:h-[10px] lg:w-[16px] bg-alch-dark"></div>
+              <div className="h-[3px] w-[3px] lg:h-[10px] lg:w-[8px] bg-alch-dark"></div>
+            </div>
+          </div>
+          <img src={topBorder} alt="Decorative Top Border" className="w-full top-0 left-0" />
+        </div>
+      </div>
+    </div>
   );
 };
 

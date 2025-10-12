@@ -164,12 +164,7 @@ const LandingPage = () => {
             <TestimonialsSection ref={testimonialRef}/>
             <FAQS ref={faqRef}/>
             <Footer scrollToFAQ={scrollToFAQ} scrollToTestimonials={scrollToTestimonials}/>
-        </div>
-        
-        {/* <div className='mt-[10px] pt-[10px] pb-[10px] flex justyfy-center items-center bg-black'>
-          <AddMembers/>
-  
-        </div> */}
+        </div> 
     </div>
   );
 };
