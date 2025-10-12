@@ -137,7 +137,6 @@ export function AddMembers(){
         const updatedFilteredNames = text
             ? names.filter(n => n?.name?.toLowerCase().includes(text.toLowerCase()))
             : names;
-
         setFilteredNames(updatedFilteredNames);
     }
 
