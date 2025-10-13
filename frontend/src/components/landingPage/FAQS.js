@@ -1,161 +1,439 @@
-import { useState } from "react"
+import { useState, forwardRef } from "react"
+import flower from "../../assets/heading-icon-red.svg"
 
-export function FAQS(){
-    const [openindex, setOpenindex] = useState(null);
+export const FAQS = forwardRef((props, ref) => {
+    const [openindex, setOpenindex] = useState([]);
     const invert = (index) => {
-        if(openindex === index){
-            setOpenindex(null);
-        }else{
-            setOpenindex(index);
+        if (openindex.includes(index)) {
+            setOpenindex(openindex.filter(i => i !== index));
+        } else {
+            setOpenindex([...openindex, index]);
         }
     }
 
+
     return(
-        <div 
-            className="w-full h-[702px] bg-transparent flex flex-col items-center justify-center "
-            
-        >
-            <div className="w-[970px] display-block mt-[22px] mb-[22px]">
-                <div 
-                    className="w-full h-[60px] flex justify-between items-center"
-                    style={{
-                        backgroundImage: "url('/faqbar.png')",
-                        backgroundSize: "cover",
-                        backgroundPosition: "center",
-                        backgroundRepeat: "no-repeat",
-                    }}    
-                >
-                    <p className="text-[rgba(238,236,217,1)] ml-[15px] font-bold text-sm tracking-[0.04em] leading-[110.00000000000001%]">IS THERE ACCOMMODATION PROVIDED FOR OUTSTATION PARTICIPANTS AT ALCHERINGA?</p>
-                    {openindex !== 1 && <img src="/updown.png" onClick={()=>{invert(1);}} alt="updown" className="w-[16px] h-[15px] mr-[20px]"/>}
-                    {openindex === 1 && <img src="/downup.png" onClick={()=>{invert(1);}} alt="downup" className="w-[16px] h-[15px] mr-[20px]"/>}
-                </div>
-                {   openindex === 1 &&
-                    <div
+        <div className="h-auto w-full  flex flex-col" ref={ref}>
+            <div className=" flex justify-center items-center mt-[20px] gap-[10px]  text-center font-modernoir text-4xl sm:text-5xl font-extrabold text-alch-dark">
+                
+                    <img src={flower} alt="red"/>
+                    FAQS
+                    <img src={flower} alt="red"/>
+            </div>
+            <div 
+                className="bg-transparent flex flex-col flex-1 items-center mt-[80px] lg:gap-[48px] gap-[10px]"
+            >   
+                <div className="w-[970px] hidden lg:block">
+                    <div 
+                        className="w-full lg:h-[60px] h-[81px] flex justify-between items-center"
                         style={{
-                            backgroundImage: "url('/popfaqbar.png')",
-                            backgroundSize: "cover",
+                            backgroundImage: "url('/faqbar.png')",
+                            backgroundSize: "contain",
                             backgroundPosition: "center",
                             backgroundRepeat: "no-repeat",
-                        }} 
-                        className="h-[99px] flex justify-center items-center -mt-[12px]"
+                        }}  
+                        onClick={()=>{invert(1);}}  
                     >
-                        <p className="font-normal text-sm tracking-[0.02em] leading-[140%] h-[60px] w-[899px]">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was </p>
+                        <p className="text-[rgba(238,236,217,1)] ml-[15px] font-bold text-sm tracking-[0.04em] leading-[110.00000000000001%]">IS THERE ACCOMMODATION PROVIDED FOR OUTSTATION PARTICIPANTS AT ALCHERINGA?</p>
+                        <img
+                            src="/downup.png"
+                            alt="toggle"
+                            className={`w-[16px] h-[15px] mr-[20px] cursor-pointer transition-transform duration-500 ${
+                                openindex.includes(1) ? "rotate-180" : "rotate-0"
+                            }`}
+                            onClick={() => invert(1)}
+                        />
                     </div>
-                }
-            </div>
-            <div className="w-[970px] display-block mt-[22px] mb-[22px]">
-                <div 
-                    className="w-full h-[60px] flex justify-between items-center"
-                    style={{
-                        backgroundImage: "url('/faqbar.png')",
-                        backgroundSize: "cover",
-                        backgroundPosition: "center",
-                        backgroundRepeat: "no-repeat",
-                    }}    
-                >
-                    <p className="text-[rgba(238,236,217,1)] ml-[15px] font-bold text-sm tracking-[0.04em] leading-[110.00000000000001%]">IS THERE ACCOMMODATION PROVIDED FOR OUTSTATION PARTICIPANTS AT ALCHERINGA?</p>
-                    {openindex !== 2 && <img src="/updown.png" onClick={()=>{invert(2);}} alt="updown" className="w-[16px] h-[15px] mr-[20px]"/>}
-                    {openindex === 2 && <img src="/downup.png" onClick={()=>{invert(2);}} alt="downup" className="w-[16px] h-[15px] mr-[20px]"/>}
+                    {   <div
+                            className={`transition-all duration-500 ease-in-out overflow-hidden ${
+                                openindex.includes(1) ? "max-h-[200px] opacity-100 mt-[-12px]" : "max-h-0 opacity-0"
+                            }`}
+                            style={{
+                                backgroundImage: "url('/popfaqbar.png')",
+                                backgroundSize: "cover",
+                                backgroundPosition: "center",
+                                backgroundRepeat: "no-repeat",
+                            }}
+                            >
+                            <div className="flex justify-center items-center h-[99px]">
+                                <p className="font-normal text-sm tracking-[0.02em] leading-[140%] w-[899px]">
+                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, ...
+                                </p>
+                            </div>
+                        </div>
+                    }
                 </div>
-                {   openindex === 2 &&
-                    <div
+                <div className="lg:hidden flex flex-col items-center">
+                    <div 
+                        className="w-[89%] h-[85px] flex justify-between items-center"
                         style={{
-                            backgroundImage: "url('/popfaqbar.png')",
-                            backgroundSize: "cover",
+                            backgroundImage: "url('/mbfaqbg.svg')",
+                            backgroundSize: "contain",
                             backgroundPosition: "center",
                             backgroundRepeat: "no-repeat",
-                        }} 
-                        className="h-[99px] flex justify-center items-center -mt-[12px]"
+                        }}  
+                        onClick={()=>{invert(1);}}  
                     >
-                        <p className="font-normal text-sm tracking-[0.02em] leading-[140%] h-[60px] w-[899px]">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was </p>
+                        <p className="text-[rgba(238,236,217,1)] ml-[15px] font-bold text-[13px] tracking-[0.04em] leading-[110.00000000000001%]">IS THERE ACCOMMODATION PROVIDED FOR OUTSTATION PARTICIPANTS AT ALCHERINGA?</p>
+                        <img
+                            src="/downup.png"
+                            alt="toggle"
+                            className={`w-[16px] h-[15px] mr-[20px] cursor-pointer transition-transform duration-500 ${
+                                openindex.includes(1) ? "rotate-180" : "rotate-0"
+                            }`}
+                            onClick={() => invert(1)}
+                        />
                     </div>
-                }
-            </div>
-            <div className="w-[970px] display-block mt-[22px] mb-[22px]">
-                <div 
-                    className="w-full h-[60px] flex justify-between items-center"
-                    style={{
-                        backgroundImage: "url('/faqbar.png')",
-                        backgroundSize: "cover",
-                        backgroundPosition: "center",
-                        backgroundRepeat: "no-repeat",
-                    }}    
-                >
-                    <p className="text-[rgba(238,236,217,1)] ml-[15px] font-bold text-sm tracking-[0.04em] leading-[110.00000000000001%]">IS THERE ACCOMMODATION PROVIDED FOR OUTSTATION PARTICIPANTS AT ALCHERINGA?</p>
-                    {openindex !== 3 && <img src="/updown.png" onClick={()=>{invert(3);}} alt="updown" className="w-[16px] h-[15px] mr-[20px]"/>}
-                    {openindex === 3 && <img src="/downup.png" onClick={()=>{invert(3);}} alt="downup" className="w-[16px] h-[15px] mr-[20px]"/>}
+                    {   <div
+                            className={`transition-all w-[89%] duration-500 ease-in-out overflow-hidden flex justify-center items-center ${
+                                openindex.includes(1) ? "h-[145px] opacity-100 mt-[-25px] " : "max-h-0 opacity-0"
+                            }`}
+                            style={{
+                                backgroundImage: "url('/mbfaqansbg.svg')",
+                                //backgroundSize: "contain",
+                                backgroundSize: "100% 100%",
+                                backgroundPosition: "center",
+                                backgroundRepeat: "no-repeat",
+                            }}
+                            >
+                            <div className="flex justify-center items-center h-[110px]">
+                                <p className="font-normal text-[13px] tracking-[0.02em] leading-[140%] w-[300px]">
+                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, ...
+                                </p>
+                            </div>
+                        </div>
+                    }
                 </div>
-                {   openindex === 3 &&
-                    <div
+
+                <div className=" w-[970px] hidden lg:block  ">
+                    <div 
+                        className="w-full lg:h-[60px] h-[81px] flex justify-between items-center"
                         style={{
-                            backgroundImage: "url('/popfaqbar.png')",
-                            backgroundSize: "cover",
+                            backgroundImage: "url('/faqbar.png')",
+                            backgroundSize: "contain",
                             backgroundPosition: "center",
                             backgroundRepeat: "no-repeat",
-                        }} 
-                        className="h-[99px] flex justify-center items-center -mt-[12px]"
+                        }}  
+                        onClick={()=>{invert(2);}}  
                     >
-                        <p className="font-normal text-sm tracking-[0.02em] leading-[140%] h-[60px] w-[899px]">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was </p>
+                        <p className="text-[rgba(238,236,217,1)] ml-[15px] font-bold text-sm tracking-[0.04em] leading-[110.00000000000001%]">IS THERE ACCOMMODATION PROVIDED FOR OUTSTATION PARTICIPANTS AT ALCHERINGA?</p>
+                        <img
+                            src="/downup.png"
+                            alt="toggle"
+                            className={`w-[16px] h-[15px] mr-[20px] cursor-pointer transition-transform duration-500 ${
+                                openindex.includes(2) ? "rotate-180" : "rotate-0"
+                            }`}
+                            onClick={() => invert(2)}
+                        />
                     </div>
-                }
-            </div>
-            <div className="w-[970px] display-block mt-[22px] mb-[22px]">
-                <div 
-                    className="w-full h-[60px] flex justify-between items-center"
-                    style={{
-                        backgroundImage: "url('/faqbar.png')",
-                        backgroundSize: "cover",
-                        backgroundPosition: "center",
-                        backgroundRepeat: "no-repeat",
-                    }}    
-                >
-                    <p className="text-[rgba(238,236,217,1)] ml-[15px] font-bold text-sm tracking-[0.04em] leading-[110.00000000000001%]">IS THERE ACCOMMODATION PROVIDED FOR OUTSTATION PARTICIPANTS AT ALCHERINGA?</p>
-                    {openindex !== 4 && <img src="/updown.png" onClick={()=>{invert(4);}} alt="updown" className="w-[16px] h-[15px] mr-[20px]"/>}
-                    {openindex === 4 && <img src="/downup.png" onClick={()=>{invert(4);}} alt="downup" className="w-[16px] h-[15px] mr-[20px]"/>}
+                    {   <div
+                            className={`transition-all duration-500 ease-in-out overflow-hidden ${
+                                openindex.includes(2) ? "max-h-[200px] opacity-100 mt-[-12px]" : "max-h-0 opacity-0"
+                            }`}
+                            style={{
+                                backgroundImage: "url('/popfaqbar.png')",
+                                backgroundSize: "cover",
+                                backgroundPosition: "center",
+                                backgroundRepeat: "no-repeat",
+                            }}
+                            >
+                            <div className="flex justify-center items-center h-[99px]">
+                                <p className="font-normal text-sm tracking-[0.02em] leading-[140%] w-[899px]">
+                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, ...
+                                </p>
+                            </div>
+                        </div>
+                    }
                 </div>
-                {   openindex === 4 &&
-                    <div
+                <div className="  lg:hidden flex flex-col items-center">
+                    <div 
+                        className="w-[89%] h-[85px] flex justify-between items-center"
                         style={{
-                            backgroundImage: "url('/popfaqbar.png')",
-                            backgroundSize: "cover",
+                            backgroundImage: "url('/mbfaqbg.svg')",
+                            backgroundSize: "contain",
                             backgroundPosition: "center",
                             backgroundRepeat: "no-repeat",
-                        }} 
-                        className="h-[99px] flex justify-center items-center -mt-[12px]"
+                        }}  
+                        onClick={()=>{invert(2);}}  
                     >
-                        <p className="font-normal text-sm tracking-[0.02em] leading-[140%] h-[60px] w-[899px]">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was </p>
+                        <p className="text-[rgba(238,236,217,1)] ml-[15px] font-bold text-[13px] tracking-[0.04em] leading-[110.00000000000001%]">IS THERE ACCOMMODATION PROVIDED FOR OUTSTATION PARTICIPANTS AT ALCHERINGA?</p>
+                        <img
+                            src="/downup.png"
+                            alt="toggle"
+                            className={`w-[16px] h-[15px] mr-[20px] cursor-pointer transition-transform duration-500 ${
+                                openindex.includes(2) ? "rotate-180" : "rotate-0"
+                            }`}
+                            onClick={() => invert(2)}
+                        />
                     </div>
-                }
-            </div>
-            <div className="w-[970px] display-block mt-[22px] mb-[22px]">
-                <div 
-                    className="w-full h-[60px] flex justify-between items-center"
-                    style={{
-                        backgroundImage: "url('/faqbar.png')",
-                        backgroundSize: "cover",
-                        backgroundPosition: "center",
-                        backgroundRepeat: "no-repeat",
-                    }}    
-                >
-                    <p className="text-[rgba(238,236,217,1)] ml-[15px] font-bold text-sm tracking-[0.04em] leading-[110.00000000000001%]">IS THERE ACCOMMODATION PROVIDED FOR OUTSTATION PARTICIPANTS AT ALCHERINGA?</p>
-                    {openindex !== 5 && <img src="/updown.png" onClick={()=>{invert(5);}} alt="updown" className="w-[16px] h-[15px] mr-[20px]"/>}
-                    {openindex === 5 && <img src="/downup.png" onClick={()=>{invert(5);}} alt="downup" className="w-[16px] h-[15px] mr-[20px]"/>}
+                    {   <div
+                            className={`transition-all w-[89%] duration-500 ease-in-out overflow-hidden flex justify-center items-center ${
+                                openindex.includes(2) ? "h-[145px] opacity-100  mt-[-25px] " : "max-h-0 opacity-0"
+                            }`}
+                            style={{
+                                backgroundImage: "url('/mbfaqansbg.svg')",
+                                //backgroundSize: "contain",
+                                backgroundSize: "100% 100%",
+                                backgroundPosition: "center",
+                                backgroundRepeat: "no-repeat",
+                            }}
+                            >
+                            <div className="flex justify-center items-center h-[110px]">
+                                <p className="font-normal text-[13px] tracking-[0.02em] leading-[140%] w-[300px]">
+                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, ...
+                                </p>
+                            </div>
+                        </div>
+                    }
                 </div>
-                {   openindex === 5 &&
-                    <div
+
+                <div className=" w-[970px] hidden lg:block  ">
+                    <div 
+                        className="w-full lg:h-[60px] h-[81px] flex justify-between items-center"
                         style={{
-                            backgroundImage: "url('/popfaqbar.png')",
-                            backgroundSize: "cover",
+                            backgroundImage: "url('/faqbar.png')",
+                            backgroundSize: "contain",
                             backgroundPosition: "center",
                             backgroundRepeat: "no-repeat",
-                        }} 
-                        className="h-[99px] flex justify-center items-center -mt-[12px]"
+                        }}  
+                        onClick={()=>{invert(3);}}  
                     >
-                        <p className="font-normal text-sm tracking-[0.02em] leading-[140%] h-[60px] w-[899px]">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was </p>
+                        <p className="text-[rgba(238,236,217,1)] ml-[15px] font-bold text-sm tracking-[0.04em] leading-[110.00000000000001%]">IS THERE ACCOMMODATION PROVIDED FOR OUTSTATION PARTICIPANTS AT ALCHERINGA?</p>
+                        <img
+                            src="/downup.png"
+                            alt="toggle"
+                            className={`w-[16px] h-[15px] mr-[20px] cursor-pointer transition-transform duration-500 ${
+                                openindex.includes(3) ? "rotate-180" : "rotate-0"
+                            }`}
+                            onClick={() => invert(3)}
+                        />
                     </div>
-                }
+                    {   <div
+                            className={`transition-all duration-500 ease-in-out overflow-hidden ${
+                                openindex.includes(3) ? "max-h-[200px] opacity-100 mt-[-12px]" : "max-h-0 opacity-0"
+                            }`}
+                            style={{
+                                backgroundImage: "url('/popfaqbar.png')",
+                                backgroundSize: "cover",
+                                backgroundPosition: "center",
+                                backgroundRepeat: "no-repeat",
+                            }}
+                            >
+                            <div className="flex justify-center items-center h-[99px]">
+                                <p className="font-normal text-sm tracking-[0.02em] leading-[140%] w-[899px]">
+                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, ...
+                                </p>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div className="  lg:hidden flex flex-col items-center">
+                    <div 
+                        className="w-[89%] h-[85px] flex justify-between items-center"
+                        style={{
+                            backgroundImage: "url('/mbfaqbg.svg')",
+                            backgroundSize: "contain",
+                            backgroundPosition: "center",
+                            backgroundRepeat: "no-repeat",
+                        }}  
+                        onClick={()=>{invert(3);}}  
+                    >
+                        <p className="text-[rgba(238,236,217,1)] ml-[15px] font-bold text-[13px] tracking-[0.04em] leading-[110.00000000000001%]">IS THERE ACCOMMODATION PROVIDED FOR OUTSTATION PARTICIPANTS AT ALCHERINGA?</p>
+                        <img
+                            src="/downup.png"
+                            alt="toggle"
+                            className={`w-[16px] h-[15px] mr-[20px] cursor-pointer transition-transform duration-500 ${
+                                openindex.includes(3) ? "rotate-180" : "rotate-0"
+                            }`}
+                            onClick={() => invert(3)}
+                        />
+                    </div>
+                    {   <div
+                            className={`transition-all w-[89%] duration-500 ease-in-out overflow-hidden flex justify-center items-center ${
+                                openindex.includes(3) ? "h-[145px] opacity-100  mt-[-25px] " : "max-h-0 opacity-0"
+                            }`}
+                            style={{
+                                backgroundImage: "url('/mbfaqansbg.svg')",
+                                //backgroundSize: "contain",
+                                backgroundSize: "100% 100%",
+                                backgroundPosition: "center",
+                                backgroundRepeat: "no-repeat",
+                            }}
+                            >
+                            <div className="flex justify-center items-center h-[110px]">
+                                <p className="font-normal text-[13px] tracking-[0.02em] leading-[140%] w-[300px]">
+                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, ...
+                                </p>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <div className=" w-[970px] hidden lg:block  ">
+                    <div 
+                        className="w-full lg:h-[60px] h-[81px] flex justify-between items-center"
+                        style={{
+                            backgroundImage: "url('/faqbar.png')",
+                            backgroundSize: "contain",
+                            backgroundPosition: "center",
+                            backgroundRepeat: "no-repeat",
+                        }}  
+                        onClick={()=>{invert(4);}}  
+                    >
+                        <p className="text-[rgba(238,236,217,1)] ml-[15px] font-bold text-sm tracking-[0.04em] leading-[110.00000000000001%]">IS THERE ACCOMMODATION PROVIDED FOR OUTSTATION PARTICIPANTS AT ALCHERINGA?</p>
+                        <img
+                            src="/downup.png"
+                            alt="toggle"
+                            className={`w-[16px] h-[15px] mr-[20px] cursor-pointer transition-transform duration-500 ${
+                                openindex.includes(4) ? "rotate-180" : "rotate-0"
+                            }`}
+                            onClick={() => invert(4)}
+                        />
+                    </div>
+                    {   <div
+                            className={`transition-all duration-500 ease-in-out overflow-hidden ${
+                                openindex.includes(4) ? "max-h-[200px] opacity-100 mt-[-12px]" : "max-h-0 opacity-0"
+                            }`}
+                            style={{
+                                backgroundImage: "url('/popfaqbar.png')",
+                                backgroundSize: "cover",
+                                backgroundPosition: "center",
+                                backgroundRepeat: "no-repeat",
+                            }}
+                            >
+                            <div className="flex justify-center items-center h-[99px]">
+                                <p className="font-normal text-sm tracking-[0.02em] leading-[140%] w-[899px]">
+                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, ...
+                                </p>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div className="  lg:hidden flex flex-col items-center">
+                    <div 
+                        className="w-[89%] h-[85px] flex justify-between items-center"
+                        style={{
+                            backgroundImage: "url('/mbfaqbg.svg')",
+                            backgroundSize: "contain",
+                            backgroundPosition: "center",
+                            backgroundRepeat: "no-repeat",
+                        }}  
+                        onClick={()=>{invert(4);}}  
+                    >
+                        <p className="text-[rgba(238,236,217,1)] ml-[15px] font-bold text-[13px] tracking-[0.04em] leading-[110.00000000000001%]">IS THERE ACCOMMODATION PROVIDED FOR OUTSTATION PARTICIPANTS AT ALCHERINGA?</p>
+                        <img
+                            src="/downup.png"
+                            alt="toggle"
+                            className={`w-[16px] h-[15px] mr-[20px] cursor-pointer transition-transform duration-500 ${
+                                openindex.includes(4) ? "rotate-180" : "rotate-0"
+                            }`}
+                            onClick={() => invert(4)}
+                        />
+                    </div>
+                    {   <div
+                            className={`transition-all w-[89%] duration-500 ease-in-out overflow-hidden flex justify-center items-center ${
+                                openindex.includes(4) ? "h-[145px] opacity-100  mt-[-25px] " : "max-h-0 opacity-0"
+                            }`}
+                            style={{
+                                backgroundImage: "url('/mbfaqansbg.svg')",
+                                //backgroundSize: "contain",
+                                backgroundSize: "100% 100%",
+                                backgroundPosition: "center",
+                                backgroundRepeat: "no-repeat",
+                            }}
+                            >
+                            <div className="flex justify-center items-center h-[110px]">
+                                <p className="font-normal text-[13px] tracking-[0.02em] leading-[140%] w-[300px]">
+                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, ...
+                                </p>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <div className=" w-[970px] hidden lg:block  ">
+                    <div 
+                        className="w-full lg:h-[60px] h-[81px] flex justify-between items-center"
+                        style={{
+                            backgroundImage: "url('/faqbar.png')",
+                            backgroundSize: "contain",
+                            backgroundPosition: "center",
+                            backgroundRepeat: "no-repeat",
+                        }}  
+                        onClick={()=>{invert(5);}}  
+                    >
+                        <p className="text-[rgba(238,236,217,1)] ml-[15px] font-bold text-sm tracking-[0.04em] leading-[110.00000000000001%]">IS THERE ACCOMMODATION PROVIDED FOR OUTSTATION PARTICIPANTS AT ALCHERINGA?</p>
+                        <img
+                            src="/downup.png"
+                            alt="toggle"
+                            className={`w-[16px] h-[15px] mr-[20px] cursor-pointer transition-transform duration-500 ${
+                                openindex.includes(5) ? "rotate-180" : "rotate-0"
+                            }`}
+                            onClick={() => invert(5)}
+                        />
+                    </div>
+                    {   <div
+                            className={`transition-all duration-500 ease-in-out overflow-hidden ${
+                                openindex.includes(5) ? "max-h-[200px] opacity-100 mt-[-12px]" : "max-h-0 opacity-0"
+                            }`}
+                            style={{
+                                backgroundImage: "url('/popfaqbar.png')",
+                                backgroundSize: "cover",
+                                backgroundPosition: "center",
+                                backgroundRepeat: "no-repeat",
+                            }}
+                            >
+                            <div className="flex justify-center items-center h-[99px]">
+                                <p className="font-normal text-sm tracking-[0.02em] leading-[140%] w-[899px]">
+                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, ...
+                                </p>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div className="  lg:hidden flex flex-col items-center">
+                    <div 
+                        className="w-[89%] h-[85px] flex justify-between items-center"
+                        style={{
+                            backgroundImage: "url('/mbfaqbg.svg')",
+                            backgroundSize: "contain",
+                            backgroundPosition: "center",
+                            backgroundRepeat: "no-repeat",
+                        }}  
+                        onClick={()=>{invert(5);}}  
+                    >
+                        <p className="text-[rgba(238,236,217,1)] ml-[15px] font-bold text-[13px] tracking-[0.04em] leading-[110.00000000000001%]">IS THERE ACCOMMODATION PROVIDED FOR OUTSTATION PARTICIPANTS AT ALCHERINGA?</p>
+                        <img
+                            src="/downup.png"
+                            alt="toggle"
+                            className={`w-[16px] h-[15px] mr-[20px] cursor-pointer transition-transform duration-500 ${
+                                openindex.includes(5) ? "rotate-180" : "rotate-0"
+                            }`}
+                            onClick={() => invert(5)}
+                        />
+                    </div>
+                    {   <div
+                            className={`transition-all w-[89%] duration-500 ease-in-out overflow-hidden flex justify-center items-center ${
+                                openindex.includes(5) ? "h-[145px] opacity-100  mt-[-25px] " : "max-h-0 opacity-0"
+                            }`}
+                            style={{
+                                backgroundImage: "url('/mbfaqansbg.svg')",
+                                //backgroundSize: "contain",
+                                backgroundSize: "100% 100%",
+                                backgroundPosition: "center",
+                                backgroundRepeat: "no-repeat",
+                            }}
+                            >
+                            <div className="flex justify-center items-center h-[110px]">
+                                <p className="font-normal text-[13px] tracking-[0.02em] leading-[140%] w-[300px]">
+                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, ...
+                                </p>
+                            </div>
+                        </div>
+                    }
+                </div>
+                
             </div>
-            
         </div>
     )
-}
+});

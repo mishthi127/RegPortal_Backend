@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import './AddMember.css';
+// import './AddMember.css';
+import background from '../assets/bg_add.svg';
+// import addmore from '../assets/addmore.svg';
+// import addmemform from '../assets/addmemform.svg';
 
 export function AddMember() {
     const [members, setMembers] = useState([
@@ -208,11 +211,27 @@ export function AddMember() {
 
     useEffect(()=>{displayNames()},[]);
 
+    const headerBgStyle = {
+            backgroundImage: `url(${background})`,
+            backgroundPosition: 'center', // centers the image
+            backgroundSize: 'cover',      // makes it cover the div
+            backgroundRepeat: 'no-repeat' // prevents tiling
+    };
 
     return (
-        <div className='page'>
-            <div className='addParticipant'>
-                <div className='addParticipantForms'>
+        <div className=' flex items-center justify-center w-full h-full'>
+            <div 
+            className='h-[766px] w-[1298px]'
+            style={headerBgStyle}>
+                <div>
+                    <div 
+                        //style={{ backgroundImage: `url(${addmore})` }}
+                        className=''    
+                    >
+                        </div>
+                    <div></div>
+                </div>
+                {/* <div className='addParticipantForms'>
                     <button className='addForm' onClick={addDiv}>Add</button>
                     <div className='verticalForm'>
                         {members.map((item, index) => (
@@ -296,8 +315,8 @@ export function AddMember() {
                         ))}
                     </div>
                     <button className='submitForm' onClick={submit}>Submit</button>
-                </div>
-                <div className='nameList'>
+                </div> */}
+                {/* <div className='nameList'>
                     <div className='participantName'>
                         <p>TEAM LEADER</p>
                         <p>{profile ? profile.fullname.toUpperCase() : "Loading..."}</p>
@@ -310,7 +329,7 @@ export function AddMember() {
                             </div>
                         ))
                     }
-                </div>
+                </div> */}
             </div>
         </div>
     );

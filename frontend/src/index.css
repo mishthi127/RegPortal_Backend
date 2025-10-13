@@ -1,6 +1,44 @@
 /* src/index.css */
 
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Syne:wght@400;700;800&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Syne:wght@400;700;800&display=swap'); */
+
+@font-face {
+  font-family: 'Manrope';
+  src: url('./fonts/Manrope-VariableFont_wght.ttf') format('truetype');
+  font-weight: 200; /* ExtraLight weight */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Modernoir';
+  src: url('./fonts/TT_Modernoir_Trial_Light.ttf') format('truetype');
+  font-weight: 200; /* ExtraLight weight */
+  font-style: normal;
+}
+
+/* --- Define each weight for the TT Modernoir static font --- */
+@font-face {
+  font-family: 'TT Modernoir';
+  src: url('./fonts/TT_Modernoir_Trial_Regular.ttf') format('truetype');
+  font-weight: 400; /* Regular */
+}
+@font-face {
+  font-family: 'TT Modernoir';
+  src: url('./fonts/TT_Modernoir_Trial_Light.ttf') format('truetype');
+  font-weight: 500; /* Medium */
+}
+@font-face {
+  font-family: 'TT Modernoir';
+  src: url('./fonts/TT_Modernoir_Trial_Light.ttf') format('truetype');
+  font-weight: 600; /* DemiBold */
+}
+@font-face {
+  font-family: 'TT Modernoir';
+  src: url('./fonts/TT_Modernoir_Trial_Light.ttf') format('truetype');
+  font-weight: 700;/* Bold */
+}
+
+
 
 @tailwind base;
 @tailwind components;
@@ -38,4 +76,14 @@ body {
   font-family: 'TT Modernoir';
   src: url('./assets/fonts/TT_Modernoir_Trial_Bold.ttf') format('truetype');
   font-weight: 700; /* Bold */
+}
+
+/* added to remove scrol bar in add mem form !! */
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none;    /* Firefox */
 }

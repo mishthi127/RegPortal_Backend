@@ -1,6 +1,6 @@
 // src/pages/landingPage.js
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import axiosInstance from '../utils/axiosInstance'; // Using the custom axios instance
 
@@ -19,6 +19,8 @@ import ProfileDropdown from '../components/ProfileDropdown';
 import logo from '../assets/logo.svg';
 import hamburgerIcon from '../assets/hamburger-icon.svg';
 import backgroundPattern from '../assets/background-pattern.svg';
+import { AddMembers } from '../components/AddMembers';
+
 
 const LandingPage = () => {
   const [loading, setLoading] = useState(true);
@@ -29,6 +31,26 @@ const LandingPage = () => {
   const [user, setUser] = useState(null);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const faqRef = useRef(null);
+  const testimonialRef = useRef(null);
+
+  const scrollToFAQ = () => {
+    faqRef.current?.scrollIntoView({ 
+      behavior: 'smooth', 
+      block: 'center', // center the element vertically in the viewport
+      inline: 'nearest'
+    });
+    
+  };
+
+  const scrollToTestimonials = () => {
+    testimonialRef.current?.scrollIntoView({ 
+      behavior: 'smooth',
+      block: 'center', // center the element vertically in the viewport
+      inline: 'nearest'
+    });
+  };
+
 
   useEffect(() => {
     const timer = setTimeout(() => { setLoading(false); }, 2000);
@@ -62,6 +84,8 @@ const LandingPage = () => {
   const headerBgStyle = {
     backgroundImage: `url(${backgroundPattern})`,
     backgroundPosition: 'center',
+    backgroundSize: "100% auto",
+    backgroundRepeat: "no-repeat",
   };
 
   return (
@@ -132,19 +156,15 @@ const LandingPage = () => {
       {/* Page Content */}
       <HeroSection isAuthenticated={isAuthenticated} />
       <Pixel />
-      <AfterMovieSection />
-      <TestimonialsSection />
-
-      <div
-        className='bg-[rgba(238,236,217,1)]'
-        style={{
-          backgroundImage: "url('/whitevector.png')",
-          backgroundRepeat: "repeat",
-        }}
-      >
-        <FAQS />
-        <Footer />
-      </div>
+      
+        <div
+          className='bg-alch-cream landingbg'  
+        >
+            <AfterMovieSection />
+            <TestimonialsSection ref={testimonialRef}/>
+            <FAQS ref={faqRef}/>
+            <Footer scrollToFAQ={scrollToFAQ} scrollToTestimonials={scrollToTestimonials}/>
+        </div> 
     </div>
   );
 };
