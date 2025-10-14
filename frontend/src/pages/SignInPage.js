@@ -75,7 +75,7 @@ const SignInPage = () => {
             onError: () => setError('Google login failed'),
             // These props style the button to match your design
             theme: 'outline',
-            text: 'signup_with',
+            text: 'signin_with',
             shape: 'rectangular',
             width: '100%' // Ensures it takes the full width available
           })
