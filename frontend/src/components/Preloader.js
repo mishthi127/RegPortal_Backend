@@ -44,7 +44,7 @@ const Preloader = () => {
 
 
   return (
-    <div className='fixed inset-0 z-50'>
+    <div className='fixed inset-0 z-50 h-[100%] w-[100%]'>
       <div className='h-[100%] w-[100%] relative'>
         <div
           className="shrinking-div absolute bottom-0 right-0 flex flex-col justify-start overflow-hidden bg-alch-cream w-full"

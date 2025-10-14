@@ -19,6 +19,7 @@ import ProfileDropdown from '../components/ProfileDropdown';
 import logo from '../assets/logo.svg';
 import hamburgerIcon from '../assets/hamburger-icon.svg';
 import backgroundPattern from '../assets/background-pattern.svg';
+import mbbgpattern from "../assets/mbbgpatternwh.svg"
 import { AddMembers } from '../components/AddMembers';
 
 
@@ -33,6 +34,8 @@ const LandingPage = () => {
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const faqRef = useRef(null);
   const testimonialRef = useRef(null);
+  const footerRef = useRef(null);
+
 
   const scrollToFAQ = () => {
     faqRef.current?.scrollIntoView({ 
@@ -51,6 +54,12 @@ const LandingPage = () => {
     });
   };
 
+  const scrollToFooter = () => {
+    footerRef.current?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center',
+    });
+  };
 
   useEffect(() => {
     const timer = setTimeout(() => { setLoading(false); }, 2000);
@@ -88,15 +97,68 @@ const LandingPage = () => {
     backgroundRepeat: "no-repeat",
   };
 
+  const mbheaderBgStyle = {
+    backgroundImage: `url(${mbbgpattern})`,
+    backgroundPosition: 'center',
+    backgroundSize: "100% auto",
+    backgroundRepeat: "no-repeat",
+  };
+
   return (
     <div>
       {loading && <Preloader />}
-
-      <header className="sticky top-0 z-30 shadow-lg">
+    {/* laptop */}
+      <header className="sticky top-0 z-30 shadow-lg hidden lg:block border-b-[2px] border-alch-cream">
         <div className="absolute inset-0 bg-alch-dark" style={headerBgStyle}></div>
         <nav className="relative z-10 flex justify-between items-center py-4 px-4 sm:px-8">
           <Link to="/">
-            <img src={logo} alt="Alcheringa Logo" className="h-8 sm:h-10" />
+            <div>
+              <div className='flex flex-row justify-center items-center gap-[10px] h-[69px]'>
+                  <img className="lg:w-[37.99px] lg:h-[43.71px] w-[24px] h-[27.61px]" src={logo} alt="logo"/>
+                  <div className='text-alch-cream h-[32px] lg:h-[65.83px] flex flex-col justify-center'>
+                      <p className='font-modernoir font-bold lg:text-[37.99px] text-[18px] h-[42px] leading-none'>ALCHERINGA</p>
+                      <p className='font-sans h-[27px]  font-normal lg:text-[18.99px] text-[10px] leading-none self-end'>IIT GUWAHATI</p>
+                  </div>
+              </div>    
+            </div> 
+          </Link>
+          <div className="hidden lg:flex items-center">
+            <DecorativeButton to="#" variant="nav">
+              <div className="flex space-x-8 px-4 text-sm">
+                <Link to="/about" className="text-alch-cream hover:text-white whitespace-nowrap">About us</Link>
+                <Link to="/competitions" className="text-alch-cream hover:text-white whitespace-nowrap">Modules & Competitions</Link>
+              </div>
+            </DecorativeButton>
+          </div>
+          <div className="hidden lg:flex items-center space-x-6">
+            <Link className="text-alch-cream hover:text-white" onClick={scrollToFooter}>Contact us</Link>
+            {isAuthenticated ? (
+              <ProfileDropdown user={user} onLogout={handleLogout} />
+            ) : (
+              <DecorativeButton to="/login" variant="orange-sm">Login</DecorativeButton>
+            )}
+          </div>
+          {/* mobile */}
+          <div className="lg:hidden">
+            <button onClick={toggleMenu}><img src={hamburgerIcon} alt="Menu" className="h-12 w-12" /></button>
+          </div>
+        </nav>
+      </header>
+
+      {/* mobile */}
+      <header className="sticky top-0 z-30 shadow-lg lg:hidden border-b-[2px] border-alch-cream">
+        <div className="absolute inset-0 bg-alch-dark" style={mbheaderBgStyle}></div>
+        <nav className="relative z-10 flex justify-between items-center py-4 px-4 sm:px-8">
+          <Link to="/">
+            <div>
+              <div className='flex flex-row justify-center items-center gap-[10px] h-[69px]'>
+                  <img className="lg:w-[37.99px] lg:h-[43.71px] w-[24px] h-[27.61px]" src={logo} alt="logo"/>
+                  <div className='text-alch-cream h-[32px] lg:h-[65.83px] flex flex-col justify-center'>
+                      <p className='font-modernoir font-bold lg:text-[37.99px] text-[18px] h-[42px] leading-none'>ALCHERINGA</p>
+                      <p className='font-sans h-[27px]  font-normal lg:text-[18.99px] text-[10px] leading-none self-end'>IIT GUWAHATI</p>
+                  </div>
+              </div>    
+            </div> 
           </Link>
           <div className="hidden lg:flex items-center">
             <DecorativeButton to="#" variant="nav">
@@ -114,14 +176,15 @@ const LandingPage = () => {
               <DecorativeButton to="/login" variant="orange-sm">Login</DecorativeButton>
             )}
           </div>
+          {/* mobile */}
           <div className="lg:hidden">
-            <button onClick={toggleMenu}><img src={hamburgerIcon} alt="Menu" className="h-8 w-8" /></button>
+            <button onClick={toggleMenu}><img src={hamburgerIcon} alt="Menu" className="h-12 w-12" /></button>
           </div>
         </nav>
       </header>
 
       {/* Mobile Menu Overlay */}
-      <div className={`fixed top-0 right-0 h-full w-full bg-black bg-opacity-95 z-40 transform transition-transform duration-300 ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+      <div className={`fixed top-0 left-0 h-full w-[100%] bg-black bg-opacity-95 z-40 transform transition-transform duration-300 ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
         <div className="flex justify-end p-8">
           <button onClick={toggleMenu}>
             <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
@@ -163,7 +226,7 @@ const LandingPage = () => {
             <AfterMovieSection />
             <TestimonialsSection ref={testimonialRef}/>
             <FAQS ref={faqRef}/>
-            <Footer scrollToFAQ={scrollToFAQ} scrollToTestimonials={scrollToTestimonials}/>
+            <Footer scrollToFAQ={scrollToFAQ} scrollToTestimonials={scrollToTestimonials} ref={footerRef}/>
         </div> 
     </div>
   );
