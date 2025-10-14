@@ -1,8 +1,8 @@
 // src/pages/ProfilePage.js
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { FiMail, FiChevronDown } from "react-icons/fi";
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { FiMail, FiChevronDown } from 'react-icons/fi';
 
 // Import all necessary components and assets
 import { ReactComponent as AuthFrame } from '../assets/auth-frame.svg';
@@ -12,147 +12,55 @@ import DecoratedButton from '../components/AuthPage/DecoratedButton.js';
 import authorPlaceholder from '../assets/author-placeholder.png';
 import { AddMembers } from '../components/AddMembers.js';
 
-const BASE_URL = "http://localhost:8000";
+const BASE_URL = 'http://localhost:8000';
 
 const ProfilePage = () => {
   const navigate = useNavigate();
-  // State for displaying saved profile data
-  const [profileData, setProfileData] = useState(null);
-  // State for handling form input during editing
-  const [formData, setFormData] = useState(null);
-  
-  const [error, setError] = useState("");
+  const [userData, setUserData] = useState(null);
+  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-  const [isSaving, setIsSaving] = useState(false);
-  const [saveSuccess, setSaveSuccess] = useState(false);
-  const [activeTab, setActiveTab] = useState("Profile");
-  const [isEditing, setIsEditing] = useState(false);
+  const [activeTab, setActiveTab] = useState('Profile');
 
   useEffect(() => {
-    const token = localStorage.getItem("access");
+    const token = localStorage.getItem('access');
     if (!token) {
-      setError("You are not logged in. Redirecting...");
+      setError('You are not logged in. Redirecting...');
       setIsLoading(false);
-      setTimeout(() => navigate("/signin"), 2000);
+      setTimeout(() => navigate('/signin'), 2000);
       return;
     }
-    axios
-      .get(`${BASE_URL}/profile/`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+    axios.get(`${BASE_URL}/profile/`, { headers: { Authorization: `Bearer ${token}` } })
       .then((res) => {
-        const dataFromApi = {
-          ...res.data,
-          profilePic: authorPlaceholder, // Keep placeholder for now
-          // Ensure phone numbers are empty strings if null
-          phone_number: res.data.phone_number || "",
-          alternate_phone: res.data.alternate_phone || "",
-        };
-        setProfileData(dataFromApi);
-        setFormData(dataFromApi); // Initialize form data
+        setUserData({
+            profilePic: authorPlaceholder,
+            registeredOn: '1 month ago',
+            ...res.data,
+        });
         setIsLoading(false);
       })
-      .catch((err) => {
-        console.error(
-          "Profile load failed:",
-          err.response ? err.response.data : err.message
-        );
-        setError("Failed to load profile. Please log in again.");
+      .catch(() => {
+        setError('Failed to load profile. Please log in again.');
         setIsLoading(false);
       });
   }, [navigate]);
 
   const handleLogout = () => {
-    localStorage.removeItem("access");
-    localStorage.removeItem("refresh");
-    window.location.href = "/signin";
+    localStorage.removeItem('access');
+    localStorage.removeItem('refresh');
+    window.location.href = '/signin';
   };
+  const handleChange = (e) => { setUserData({ ...userData, [e.target.name]: e.target.value }); };
+  const handleSubmit = async (e) => { e.preventDefault(); /* Your data saving logic */ };
 
-  const handleChange = (e) => {
-    // Update the temporary formData state, not the main profileData
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-    setSaveSuccess(false);
-    setError("");
-  };
-
-  const handleEditClick = () => {
-    setIsEditing(true);
-    setError("");
-    setSaveSuccess(false);
-  };
-  
-  // ADDED: Cancel button functionality
-  const handleCancelClick = () => {
-    setIsEditing(false);
-    setFormData(profileData); // Revert any changes
-    setError("");
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!isEditing) return;
-
-    setIsSaving(true);
-    setSaveSuccess(false);
-    setError("");
-    const token = localStorage.getItem("access");
-
-    // Construct the data to send from the formData state
-    const dataToSend = {
-      fullname: formData.fullname,
-      gender: formData.gender,
-      collegename: formData.collegename,
-      city: formData.city,
-      state: formData.state,
-      phone_number: String(formData.phone_number || "").trim(),
-      alternate_phone: String(formData.alternate_phone || "").trim(),
-    };
-
-    try {
-      const response = await axios.patch(
-        `${BASE_URL}/auth/edit-profile/`,
-        dataToSend,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      
-      const updatedUser = { ...profileData, ...response.data.user };
-      
-      // Update both states with the saved data from the backend
-      setProfileData(updatedUser);
-      setFormData(updatedUser);
-
-      setSaveSuccess(true);
-      setIsEditing(false); // Switch back to VIEW mode
-      setTimeout(() => setSaveSuccess(false), 3000);
-
-    } catch (err) {
-      const responseError = err.response?.data;
-      let errorMessage = "Failed to save profile. Check your input.";
-      if (responseError) {
-        errorMessage = Object.keys(responseError)
-          .map(key => `${key}: ${responseError[key]}`)
-          .join(" ");
-      }
-      setError(errorMessage);
-    } finally {
-      setIsSaving(false);
-    }
-  };
-
-  const tabs = ["Profile", "My registration", "Team members"];
+  const tabs = ['Profile', 'My registration', 'Team members'];
 
   if (isLoading) {
-    return (
-      <div className="min-h-screen bg-brand-dark text-white flex items-center justify-center">
-        Loading profile...
-      </div>
-    );
+    return React.createElement('div', { className: 'min-h-screen bg-brand-dark text-white flex items-center justify-center' }, 'Loading profile...');
   }
-  
-  // Use formData for the form values, as it can be null before the API call finishes
-  if (!formData || !profileData) return null; 
+  if (error) {
+    return React.createElement('div', { className: 'min-h-screen bg-brand-dark text-white flex items-center justify-center' }, error);
+  }
+  if (!userData) return null;
 
   return (
     React.createElement('div', { style: { backgroundImage: `url(${require('../assets/background-pattern.svg').default})` }, className: 'min-h-screen bg-brand-dark p-4 sm:p-8' },
