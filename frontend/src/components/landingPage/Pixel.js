@@ -121,6 +121,18 @@ import axiosInstance from "../../utils/axiosInstance"; // Using the custom axios
     const customwight4 = customwight1.map(cell => ({ row: 16 - cell.row, col: 35 - cell.col }));
     const transperent = [...customTransparent1, ...customTransparent2, ...customTransparent3, ...customTransparent4];
     const wight = [...customwight1, ...customwight2, ...customwight3, ...customwight4];
+    const leftbox = [];
+    const bottombox = [];
+
+    for (let i = 0; i <= 35; i++) {
+        if (i <= 16) {
+            // Left vertical border
+            leftbox.push({ row: i, col: 0 });
+        }
+        // Bottom horizontal border
+        bottombox.push({ row: 16, col: i });
+    }
+
     // --- End of styling definitions ---
 
         const handleclick = (row, col) => {
@@ -245,11 +257,26 @@ import axiosInstance from "../../utils/axiosInstance"; // Using the custom axios
                                     key={`${row}-${col}`}
                                     style={{
                                         //border: "1px solid #000",
-                                        border: transperent.some(h => h.row === row && h.col === col)
+                                        borderTop: transperent.some(h => h.row === row && h.col === col) || 
+                                                wight.some(h => h.row === row && h.col === col)
                                                 ? "none"
-                                                :wight.some(h => h.row === row && h.col === col)
-                                                ?"none"
                                                 : "0.1px solid rgba(238, 236, 217, 1)",
+                                        borderRight: transperent.some(h => h.row === row && h.col === col) || 
+                                                    wight.some(h => h.row === row && h.col === col)
+                                                    ? "none"
+                                                    : "0.1px solid rgba(238, 236, 217, 1)",
+                                        borderBottom: transperent.some(h => h.row === row && h.col === col) || 
+                                                        wight.some(h => h.row === row && h.col === col)
+                                                        ? "none"
+                                                        :bottombox.some(h => h.row === row && h.col === col)
+                                                        ? "0.1px solid rgba(238, 236, 217, 1)"
+                                                        : "none",
+                                        borderLeft: transperent.some(h => h.row === row && h.col === col) || 
+                                                        wight.some(h => h.row === row && h.col === col)
+                                                        ? "none"
+                                                        :leftbox.some(h => h.row === row && h.col === col)
+                                                        ? "0.1px solid rgba(238, 236, 217, 1)"
+                                                        : "none",
                                         backgroundColor: transperent.some(h => h.row === row && h.col === col)
                                                 ? "transparent"
                                                 :wight.some(h => h.row === row && h.col === col)
@@ -257,7 +284,6 @@ import axiosInstance from "../../utils/axiosInstance"; // Using the custom axios
                                                 :highlight.some(h => h.row === row && h.col === col)
                                                 ? "rgba(239,82,67,1)"
                                                 : "rgba(44, 44, 44, 1)",
-
                                     }}
                                     onClick={()=>{handleclick(row, col)}}
                                 />
