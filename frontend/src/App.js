@@ -6,7 +6,7 @@ import { RegistrationProvider } from './components/AuthPage/RegistrationContext.
 
 // Page Imports
 import LandingPage from './pages/landingPage';
-import CompleteProfile from './CompleteProfile';
+import CompleteProfile from './pages/CompleteProfile.js';
 import CompetitionsList from './CompetitionsPage';
 import RegisterPage from "./RegisterPage";
 import { AddMember } from './AddMember/AddMember';
@@ -14,6 +14,7 @@ import ProfilePage from './pages/ProfilePage.js';
 import SignInPage from './pages/SignInPage.js';
 import PersonalInfoPage from './pages/PersonalInfoPage.js';
 import TeamInfoPage from './pages/TeamInfoPage.js';
+import ResetPasswordPage from './pages/ResetPasswordPage.js';
 import ForgotPasswordPage from './pages/ForgotPasswordPage.js';
 import NotFoundPage from './pages/NotFoundPage.js';
 
@@ -32,6 +33,7 @@ function App() {
     React.createElement(Route, { key: "register-personal", path: "/register", element: React.createElement(PersonalInfoPage) }),
     React.createElement(Route, { key: "register-team", path: "/register/team-info", element: React.createElement(TeamInfoPage) }),
     React.createElement(Route, { key: "forgot-password", path: "/forgot-password", element: React.createElement(ForgotPasswordPage) }),
+    React.createElement(Route, { key: "reset-password", path: "/reset-password", element: React.createElement(ResetPasswordPage) }),
     React.createElement(Route, { key: "not-found", path: "*", element: React.createElement(NotFoundPage) })
   ];
 

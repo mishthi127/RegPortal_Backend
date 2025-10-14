@@ -1,5 +1,4 @@
-// src/components/AuthPage/OtpModal.js
-import React, { useState, useRef, useEffect } from 'react'; // Added useEffect
+import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import DecoratedButton from './DecoratedButton';
 import { FiX } from 'react-icons/fi';
@@ -10,16 +9,13 @@ import { ReactComponent as InputDeco } from '../../assets/otp-input-deco.svg';
 
 const BASE_URL = 'http://localhost:8000';
 
-// --- NEW PROP: onResend ---
 const OtpModal = ({ onClose, onVerifySuccess, email, onResend }) => { 
   const [otp, setOtp] = useState('');
   const [error, setError] = useState('');
   const otpInputRef = useRef(null);
   
-  // --- NEW: Cooldown timer state ---
   const [cooldown, setCooldown] = useState(0);
 
-  // --- NEW: useEffect to manage the countdown ---
   useEffect(() => {
     let timer;
     if (cooldown > 0) {
@@ -32,8 +28,12 @@ const OtpModal = ({ onClose, onVerifySuccess, email, onResend }) => {
     e.preventDefault();
     setError('');
     try {
-      await axios.post(`${BASE_URL}/verify-otp/`, { email, otp });
-      onVerifySuccess();
+      // --- MODIFICATION IS HERE ---
+      // 1. We capture the server's response
+      const response = await axios.post(`${BASE_URL}/verify-otp/`, { email, otp });
+      // 2. We pass the response data (which includes the reset_token) back to the page
+      onVerifySuccess(response.data); 
+      // --- END MODIFICATION ---
     } catch (err) {
       setError(err.response?.data?.detail || 'OTP verification failed.');
     }
@@ -44,11 +44,10 @@ const OtpModal = ({ onClose, onVerifySuccess, email, onResend }) => {
     setOtp(value);
   };
   
-  // --- NEW: Handler for the resend button ---
   const handleResendClick = () => {
     if (cooldown === 0) {
-      onResend(); // Call the function passed from TeamInfoPage
-      setCooldown(60); // Start a 60-second cooldown
+      onResend();
+      setCooldown(60);
     }
   };
 
@@ -86,7 +85,6 @@ const OtpModal = ({ onClose, onVerifySuccess, email, onResend }) => {
           ),
           error && React.createElement('p', { key: 'error', className: 'text-xs text-brand-red text-center mt-2' }, error),
           
-          // --- MODIFIED: "Send again" button is now functional with cooldown ---
           React.createElement('button', { 
             key: 'send-again', 
             className: 'text-sm text-dark-orange hover:underline mt-6 disabled:text-gray-500 disabled:no-underline',

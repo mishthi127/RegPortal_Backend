@@ -5,11 +5,10 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from django.contrib.auth import authenticate
 from .models import RegistrationSession, NewUser, TeamMembers, Team, Price
-from .serializers import RegisterSerializer, VerifyOTPSerializer, LoginSerializer, ProfileSerializer , TeamMembersSerializer, TeamSerializer, PriceSerializer
-from rest_framework_simplejwt.tokens import RefreshToken
+from .serializers import RegisterSerializer, VerifyOTPSerializer, LoginSerializer, ProfileSerializer , TeamMembersSerializer, TeamSerializer, PriceSerializer, ForgotPasswordSerializer, ResetPasswordConfirmSerializer 
 from django.core.mail import send_mail
 from django.conf import settings
-
+import secrets
 from django.utils import timezone
 from datetime import timedelta
 
@@ -30,6 +29,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login as auth_login, logout
 from .models import  TeamMembers
 from .serializers import ParticipantSerializer
+from rest_framework_simplejwt.tokens import RefreshToken
 
 def clean_old_unverified_users():
     cutoff = timezone.now() - timedelta(minutes=5)
@@ -96,7 +96,28 @@ class VerifyOTPView(generics.GenericAPIView):
         otp = serializer.validated_data['otp']
         try:
             user = NewUser.objects.get(email=email)
-            if user.otp == otp and user.is_otp_valid():
+
+            if user.otp != otp or not user.is_otp_valid():
+                return Response({"detail": "Invalid or expired OTP."}, status=status.HTTP_400_BAD_REQUEST)
+
+            # --- MODIFICATION START ---
+            # Differentiate flow based on user's active status
+            if user.is_active:
+                # This is a PASSWORD RESET flow for an existing, active user
+                user.otp_used = True
+                
+                # Generate a secure, temporary token for password reset
+                token = secrets.token_urlsafe(32)
+                user.password_reset_token = token
+                user.password_reset_expiry = timezone.now() + timedelta(minutes=10) # Token expires in 10 minutes
+                user.save()
+                
+                return Response({
+                    "detail": "OTP verified successfully. Proceed to reset password.",
+                    "reset_token": token
+                })
+            else:
+                # This is the original REGISTRATION flow
                 user.is_active = True
                 user.otp_used = True
                 user.verified_email = True
@@ -107,10 +128,55 @@ class VerifyOTPView(generics.GenericAPIView):
                     'access': str(refresh.access_token),
                     'user': ProfileSerializer(user).data,
                 })
-            else:
-                return Response({"detail": "Invalid or expired OTP."}, status=status.HTTP_400_BAD_REQUEST)
+            # --- MODIFICATION END ---
+                
         except NewUser.DoesNotExist:
             return Response({"detail": "User not found."}, status=status.HTTP_404_NOT_FOUND)
+
+# --- NEW VIEW 1: ForgotPasswordView ---
+class ForgotPasswordView(generics.GenericAPIView):
+    serializer_class = ForgotPasswordSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        email = serializer.validated_data['email']
+        
+        try:
+            user = NewUser.objects.get(email=email, is_active=True)
+            user.generate_otp()
+            send_otp_email(user)
+            return Response({"detail": "An OTP has been sent to your email address."}, status=status.HTTP_200_OK)
+        except NewUser.DoesNotExist:
+            return Response({"detail": "No active account found with this email address."}, status=status.HTTP_404_NOT_FOUND)
+
+# --- NEW VIEW 2: ResetPasswordConfirmView ---
+class ResetPasswordConfirmView(generics.GenericAPIView):
+    serializer_class = ResetPasswordConfirmSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        
+        token = serializer.validated_data['token']
+        password = serializer.validated_data['password']
+
+        try:
+            user = NewUser.objects.get(password_reset_token=token)
+            
+            if user.password_reset_expiry < timezone.now():
+                return Response({"detail": "Password reset token has expired."}, status=status.HTTP_400_BAD_REQUEST)
+            
+            user.set_password(password)
+            # Invalidate the token after use
+            user.password_reset_token = None
+            user.password_reset_expiry = None
+            user.save()
+            
+            return Response({"detail": "Your password has been reset successfully."}, status=status.HTTP_200_OK)
+        except NewUser.DoesNotExist:
+            return Response({"detail": "Invalid password reset token."}, status=status.HTTP_400_BAD_REQUEST)
+
 
 class LoginView(generics.GenericAPIView):
     serializer_class = LoginSerializer
