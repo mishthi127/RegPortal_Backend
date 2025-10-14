@@ -37,6 +37,7 @@ const ProfilePage = () => {
             ...res.data,
         });
         setIsLoading(false);
+        console.log(res.data);
       })
       .catch(() => {
         setError('Failed to load profile. Please log in again.');
