@@ -5,29 +5,58 @@ from .models import RegistrationSession, NewUser, TeamMembers, Team, Price
 
 @admin.register(RegistrationSession)
 class RegistrationSessionAdmin(admin.ModelAdmin):
-    list_display = ("id", "fullname", "phone_number", "email", "session_stage", "otp_verified", "created_at")
-    search_fields = ("fullname", "email", "phone_number")
+    # list_display = ("id", "fullname", "phone_number", "email", "session_stage", "otp_verified", "created_at")
+    # search_fields = ("fullname", "email", "phone_number")
+    # list_filter = ("session_stage", "otp_verified", "created_at")
+    # readonly_fields = ("created_at",)   
+    # list_per_page = 50                  
+    # --- USE THIS UPDATED DISPLAY CONFIGURATION ---
+    list_display = (
+        "id",
+        "get_fullname",  # Use a custom method for a nice column name
+        "get_email",
+        "session_stage",
+        "otp_verified",
+        "created_at"
+    )
+    search_fields = ("user__fullname", "user__email", "user__phone_number")
     list_filter = ("session_stage", "otp_verified", "created_at")
-    readonly_fields = ("created_at",)   # prevents accidental changes
-    list_per_page = 50                  # better pagination for large datasets
+    readonly_fields = ("created_at",)
+    list_per_page = 50
+
+    # --- ADD THESE METHODS TO FETCH THE DATA ---
+    @admin.display(description='Full Name', ordering='user__fullname')
+    def get_fullname(self, obj):
+        return obj.user.fullname if obj.user else 'N/A'
+
+    @admin.display(description='Email', ordering='user__email')
+    def get_email(self, obj):
+        return obj.user.email if obj.user else 'N/A'
 
 
 class CustomUserAdmin(UserAdmin):
     model = NewUser
     list_display = (
-        "email", "fullname", "role", "phone_number", "collegename",
-        "city", "state", "is_active", "percentage_complete", "pixel_highlight"
+        "email", "fullname", "role", "phone_number", "get_team_name",
+        "city", "state", "is_active", "percentage_complete", "pixel_highlight",
     )
+    @admin.display(description='Team Name', ordering='team__name')
+    def get_team_name(self, obj):
+        # This safely gets the team name if it exists
+        try:
+            return obj.team.name
+        except obj.team.RelatedObjectDoesNotExist:
+            return "No Team"
     list_filter = ("is_active", "is_staff", "role", "gender")
     search_fields = ("email", "fullname", "phone_number", "alcherid")
     ordering = ("email",)
     list_per_page = 50
-    readonly_fields = ("date_joined", "otp_created_at", "pixel_highlight")  # safe fields
+    readonly_fields = ("get_team_name","date_joined", "otp_created_at", "pixel_highlight")  # safe fields
 
     fieldsets = (
         (None, {"fields": ("email", "password")}),
         ("Personal Info", {"fields": ("fullname", "username", "gender", "role", "phone_number", "alternate_phone", "img", "about", "pixel_highlight")}),
-        ("Team Info", {"fields": ("collegename", "city", "state", "alcherid", "referred_by", "team_members")}),
+        ("Team Info", {"fields": ("get_team_name","collegename", "city", "state", "alcherid", "referred_by", "team_members")}),
         ("Permissions", {"fields": ("is_active", "is_staff", "is_superuser", "groups", "user_permissions")}),
         ("Security", {"fields": ("otp", "otp_created_at", "otp_used", "password_reset_token", "password_reset_expiry")}),
         ("Important dates", {"fields": ("date_joined",)}),

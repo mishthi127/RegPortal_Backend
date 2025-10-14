@@ -134,7 +134,7 @@ const ProfilePage = () => {
                         )
                     ),
                     React.createElement(DecoratedInput, { id: 'alternate_phone', name: 'alternate_phone', label: 'Alternate Phone Number', value: userData.alternate_phone || '', placeholder: 'Optional', onChange: handleChange }),
-                    React.createElement(DecoratedInput, { id: 'teamName', name: 'teamName', label: 'Team Name', value: userData.teamName || '', onChange: handleChange }),
+                    React.createElement(DecoratedInput, { id: 'teamName', name: 'teamName', label: 'Team Name', value: userData.team_name || '', onChange: handleChange }),
                     React.createElement(DecoratedInput, { id: 'collegename', name: 'collegename', label: 'College', value: userData.collegename, onChange: handleChange }),
                     React.createElement(DecoratedInput, { id: 'city', name: 'city', label: 'City', value: userData.city, onChange: handleChange }),
                     React.createElement(DecoratedInput, { id: 'state', name: 'state', label: 'State', value: userData.state, onChange: handleChange })
