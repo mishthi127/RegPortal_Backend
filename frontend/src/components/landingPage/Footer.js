@@ -1,10 +1,11 @@
+import React from 'react';
 import logo from "../../assets/logo.svg";
 import phone from "../../assets/phonecall.svg";
 import "../media.css";
 
-export function Footer({ scrollToFAQ, scrollToTestimonials }){
+export function Footer({ scrollToFAQ, scrollToTestimonials, ref }){
     return(
-        <div className="h-[890px] bg-transparent flex flex-col">
+        <div className="h-[890px] bg-transparent flex flex-col" ref={ref}>
             
             <img className="w-[94%] h-auto mb-[3px] lg:mb-[5px] self-center mt-[40px] lg:mt-[80px]" src="/blackfooter.png" alt="blackbar"/>
             <div className="-mb-[9px] lg:-mb-[30px] z-10 flex justify-between">

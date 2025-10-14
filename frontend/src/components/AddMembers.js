@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Alert } from './Alert';
 import axios from 'axios';
@@ -21,9 +21,10 @@ import mbmembg from "../assets/mbmembg.svg";
 import mbaddmem from "../assets/mbaddmem.svg";
 
 export function AddMembers(){
+    const scrollRef = useRef(null);
     const navigate = useNavigate();
     const [members, setMembers] = useState([
-        { id: null , name: "", email: "", gender: "Male", phone: "", collegename:"", city:"", state:"" }
+        { id: null,tempId: null, name: "", email: "", gender: "Male", phone: "", collegename:"", city:"", state:"" }
     ]);
     const [names, setNames] = useState([]);
     const [filteredNames, setFilteredNames] = useState([]);
@@ -68,12 +69,25 @@ export function AddMembers(){
 
     //console.log(profile);
 
+    function generateTempId() {
+        return 'id-' + Date.now().toString(36) + '-' + Math.random().toString(36).substring(2, 8);
+    }
+
     // Add new member
     const addDiv = () => {
         setMembers([
             ...members,
-            { id: null , name: "", email: "", gender: "Male", phone: "", collegename:"", city:"", state:"" }
+            { id: null ,tempId:generateTempId(),  name: "", email: "", gender: "Male", phone: "", collegename:"", city:"", state:"" }
         ]);
+
+        setTimeout(() => {
+            if (scrollRef.current) {
+                scrollRef.current.scrollBy({
+                    top: 784,
+                    behavior: "smooth"
+                });
+            }
+        }, 100);
     };
 
     // Remove member
@@ -92,6 +106,15 @@ export function AddMembers(){
                 return item.tempId !== tempId;
             }
         }));
+
+        setTimeout(() => {
+            if (scrollRef.current) {
+                scrollRef.current.scrollBy({
+                    top: -290,
+                    behavior: "smooth"
+                });
+            }
+        }, 100);
     };
 
 
@@ -150,10 +173,20 @@ export function AddMembers(){
     };
 
     const makediscard = () => {
-        setMembers([
-            { id: null , name: "", email: "", gender: "Male", phone: "", collegename:"", city:"", state:"" }
-        ]);
-    }
+        setMembers(prevMembers =>
+            prevMembers.map(member => ({
+            ...member,
+            name: "",
+            email: "",
+            gender: "Male",   // or keep previous if you prefer: member.gender
+            phone: "",
+            collegename: "",
+            city: "",
+            state: ""
+            }))
+        );
+    };
+
 
     // Submit to backend
     const submit = async () => {
@@ -374,7 +407,7 @@ export function AddMembers(){
 
 
     return(
-        <div className='w-full h-full flex flex-col items-center justify-start'>
+        <div className='w-full h-full flex flex-col items-center justify-start '>
 
             {/* laptop add mem form*/}
             {addpop && 
@@ -395,7 +428,7 @@ export function AddMembers(){
                         </div>
                     </div>
 
-                    <div className='lg:h-[70%] h-[600px] lg:w-[800px] w-[319px] flex flex-col overflow-y-auto bg-alch-cream' style={noscroolbar} onClick={(e) => e.stopPropagation()}>
+                    <div className='lg:h-[70%] h-[600px] lg:w-[800px] w-[319px] flex flex-col overflow-y-auto bg-alch-cream' ref={scrollRef} style={noscroolbar} onClick={(e) => e.stopPropagation()}>
                             <div 
                                 className='flex flex-col'
                             >
@@ -697,8 +730,8 @@ export function AddMembers(){
                             ></input>
                         </div>
                     </div>
-                    <div className='lg:w-full w-100% h-auto flex justify-center items-center flex-col lg:flex-row gap-[16px] lg:gap-[27px] '>
-                        <div className='lg:h-[600px] lg:w-[450px] h-auto w-100% flex flex-col gap-[16px]'>
+                    <div className='lg:w-full w-100% h-auto flex justify-center items-start flex-col lg:flex-row gap-[16px] lg:gap-[27px] '>
+                        <div className=' h-100% w-100% flex flex-col gap-[16px]'>
                             {/* laptop leader */}
                             {!text && (
                                 <div
@@ -804,7 +837,7 @@ export function AddMembers(){
 
                         {/* names of mem of odd index in laptop */}
 
-                        <div className='lg:h-[600px] lg:w-[450px] h-auto w-[336px] hidden lg:flex flex-col lg:gap-[16px]'>
+                        <div className=' h-100% w-100% hidden lg:flex flex-col lg:gap-[16px]'>
                             {/* <div className='w-[526px] h-[58.08px]'></div> */}
                             { namesToDisplay && 
                                 namesToDisplay
