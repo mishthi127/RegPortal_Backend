@@ -16,9 +16,7 @@ const AfterMovieSection = () => {
   const youtubeEmbedUrl = `https://www.youtube.com/embed/${youtubeVideoId}?autoplay=1&mute=1&controls=1&modestbranding=1&rel=0`;
 
   const sectionStyle = {
-    backgroundImage: `url(${backgroundPattern})`,
-    backgroundRepeat: 'repeat',
-    backgroundSize: 'auto',
+    background:"transparent",
   };
 
   return (

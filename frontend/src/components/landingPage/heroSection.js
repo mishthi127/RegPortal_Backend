@@ -10,8 +10,9 @@ import backgroundPattern from '../../assets/background-pattern.svg';
 const HeroSection = ({ isAuthenticated }) => {
   const mainContentStyle = {
     backgroundImage: `url(${backgroundPattern})`,
-    backgroundRepeat: 'repeat',
+    backgroundRepeat: 'repeat-y',
     backgroundPosition: 'center',
+    backgroundSize: "100% auto",
   };
 
   return (
