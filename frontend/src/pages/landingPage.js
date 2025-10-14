@@ -6,6 +6,7 @@ import HeroSection from '../components/landingPage/heroSection';
 import Preloader from '../components/Preloader';
 import AfterMovieSection from '../components/landingPage/AfterMovieSection';
 import TestimonialsSection from '../components/landingPage/TestimonialsSection';
+import {CompModules } from '../components/landingPage/compModules';
 import { Pixel } from '../components/landingPage/Pixel';
 import { Footer } from '../components/landingPage/Footer';
 import { FAQS } from '../components/landingPage/FAQS';
@@ -14,6 +15,7 @@ import DecorativeButton from '../components/DecorativeButton';
 import logo from '../assets/logo.svg';
 import hamburgerIcon from '../assets/hamburger-icon.svg';
 import backgroundPattern from '../assets/background-pattern.svg';
+
 
 const LandingPage = () => {
   const [loading, setLoading] = useState(true);
@@ -45,7 +47,7 @@ const LandingPage = () => {
             <DecorativeButton to="#" variant="nav">
               <div className="flex space-x-8 px-4 text-sm">
                 <Link to="/about" className="text-alch-cream hover:text-white whitespace-nowrap">About us</Link>
-                <Link to="/competitions" className="text-alch-cream hover:text-white whitespace-nowrap">Modules & Competitions</Link>
+                <Link to="/competitions" className="text-alch-cream hover:text-white whitespace-nowrap">  Modules & Competitions</Link>
               </div>
             </DecorativeButton>
           </div>
@@ -79,6 +81,7 @@ const LandingPage = () => {
       
       {/* Page Content */}
       <HeroSection />
+      <CompModules/>
       <Pixel />
       <AfterMovieSection />
       <TestimonialsSection />

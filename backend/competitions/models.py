@@ -21,7 +21,6 @@ class Module(models.Model):
     )
     module_icon_active = models.ImageField(
         upload_to="image_uploads/moduleicons/active/",
-        default="image_uploads/moduleicons/active/module_icon_default.png"
     )
 
     def __str__(self):
