@@ -228,7 +228,8 @@ def google_complete_profile(request):
         not user.phone_number,
         not user.collegename,
         not user.city,
-        not user.state
+        not user.state,
+        not hasattr(user, 'team') # <-- ADD THIS CHECK
     ])
     return Response({
         'refresh': str(refresh),
@@ -241,6 +242,8 @@ def google_complete_profile(request):
 @permission_classes([IsAuthenticated])
 def complete_profile(request):
     user = request.user
+    team_name = request.data.get('team_name')
+
     user.fullname = request.data.get('fullname', user.fullname)
     user.phone_number = request.data.get('phone_number', user.phone_number)
     user.alternate_phone = request.data.get('alternate_phone', user.alternate_phone)
@@ -249,6 +252,15 @@ def complete_profile(request):
     user.state = request.data.get('state', user.state)
     user.pixel_highlight = request.data.get('pixel_highlight', user.pixel_highlight)
     user.save()
+
+    # --- STEP 2: Create or update the Team object for this user ---
+    if team_name:
+        Team.objects.update_or_create(
+            leader=user, 
+            defaults={'name': team_name}
+        )
+    user.refresh_from_db()
+
     return Response({'detail': 'Profile updated', 'user': ProfileSerializer(user).data})
 
 
@@ -288,7 +300,8 @@ def google_login(request):
             not user.phone_number,
             not user.collegename,
             not user.city,
-            not user.state
+            not user.state,
+            not hasattr(user, 'team') # <-- ADD THIS CHECK
         ])
 
         return Response({
