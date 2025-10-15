@@ -30,3 +30,83 @@
 .modules-list li:hover {
     background-color: rgba(0, 0, 0, 0.1);
 }
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* src/pages/CompetitionPage.css */
+
+/* Custom utility class for the chunky card border effect */
+.card-border-effect {
+    /* Main border */
+    border-width: 8px;
+    border-color: #171717; 
+    /* The outer, thick shadow for the "pixel" look: [Beige: 10px] over [Dark: 20px] */
+    box-shadow: 0 0 0 10px #EEECD9, 0 0 0 20px #171717; 
+}
+
+/* Hide default scrollbar for Webkit browsers (Chrome, Safari) */
+.custom-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+/* Hide default scrollbar for Firefox */
+.custom-scrollbar {
+    scrollbar-width: none;
+}
+
+/* Basic styling for the modal overlay to cover the screen */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: #EEECD9; /* Match the design background */
+    color: #171717;
+    padding: 30px;
+    border: 5px solid #171717;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+}
+
+.modal-buttons {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+.modal-buttons button, .modal-buttons a button {
+    padding: 8px 15px;
+    border: 2px solid #171717;
+    background: white;
+    cursor: pointer;
+    font-weight: bold;
+}

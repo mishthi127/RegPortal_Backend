@@ -1,5 +1,13 @@
 from rest_framework import serializers
 from .models import RegistrationSession, NewUser, TeamMembers, Team, Price
+from .models import NewUser
+from .models import  TeamMembers
+
+class ParticipantSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TeamMembers
+        fields = ['id', 'name', 'email', 'gender', 'phone', 'collegename', 'city', 'state']
+
 
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, min_length=6)
@@ -13,10 +21,6 @@ class RegisterSerializer(serializers.ModelSerializer):
             'collegename', 'city', 'state',
             'password', 'confirm_password'
         )
-
-    def validate_password(self, value):
-        validate_password(value)  # uses Django's built-in validators
-        return value
 
     def validate(self, data):
         if data['password'] != data['confirm_password']:

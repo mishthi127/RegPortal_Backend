@@ -18,8 +18,14 @@ from rest_framework.permissions import IsAdminUser
 from google.oauth2 import id_token
 from google.auth.transport import requests as grequests
 
-
-
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from rest_framework import viewsets
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login as auth_login, logout
+from .models import  TeamMembers
+from .serializers import ParticipantSerializer
 
 def clean_old_unverified_users():
     cutoff = timezone.now() - timedelta(minutes=5)
@@ -93,11 +99,12 @@ class ProfileView(generics.RetrieveAPIView):
         return self.request.user
     
 class TeamMembersViewSet(viewsets.ModelViewSet):
-    queryset = TeamMembers.objects.all()
+    queryset = TeamMembers.objects.all() 
     serializer_class = TeamMembersSerializer
     permission_classes = [IsAuthenticated]
-
-
+    
+    
+    
 class TeamViewSet(viewsets.ModelViewSet):
     queryset = Team.objects.all()
     serializer_class = TeamSerializer
@@ -139,6 +146,7 @@ def complete_profile(request):
     user.collegename = request.data.get('collegename', user.collegename)
     user.city = request.data.get('city', user.city)
     user.state = request.data.get('state', user.state)
+    user.pixel_highlight = request.data.get('pixel_highlight', user.pixel_highlight)
     user.save()
     return Response({'detail': 'Profile updated', 'user': ProfileSerializer(user).data})
 
@@ -191,3 +199,107 @@ def google_login(request):
 
     except ValueError:
         return Response({'detail': 'Invalid token'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+@login_required
+def competition_list(request):
+    return Response({"message": "List of competitions"})
+
+
+class ParticipantviewSet(viewsets.ModelViewSet):
+    serializer_class = ParticipantSerializer
+    permission_classes = [IsAuthenticated]  # Changed from AllowAny - users must be logged in
+    
+    def get_queryset(self):
+        """
+        This method filters the queryset to show only team members 
+        that belong to the current user's team.
+        
+        The key insight: each user has a Team (via the OneToOneField 'leader'),
+        and each Team has multiple TeamMembers (via ManyToManyField 'members').
+        """
+        user = self.request.user
+        
+        # Get the user's team (or return empty queryset if they don't have one)
+        try:
+            team = user.team  # This uses the related_name="team" from the Team model
+            return team.members.all()  # Return all members in this team
+        except Team.DoesNotExist:
+            # If user doesn't have a team yet, return empty queryset
+            return TeamMembers.objects.none()
+    
+    def perform_create(self, serializer):
+        """
+        When creating a new team member, we need to:
+        1. Save the TeamMember instance
+        2. Add it to the user's team
+        3. Create a team if the user doesn't have one yet
+        """
+        user = self.request.user
+        
+        # Save the new team member
+        team_member = serializer.save()
+        
+        # Get or create the user's team
+        team, created = Team.objects.get_or_create(
+            leader=user,
+            defaults={'name': f"{user.fullname}'s Team"}  # Default team name
+        )
+        
+        # Add this member to the team
+        team.members.add(team_member)
+        
+        # Update the user's team_members count
+        user.team_members = team.members.count()
+        user.save(update_fields=['team_members'])
+    
+    def perform_destroy(self, instance):
+        """
+        When deleting a team member:
+        1. Remove them from the team
+        2. Delete the TeamMember instance
+        3. Update the team member count
+        """
+        user = self.request.user
+        
+        try:
+            team = user.team
+            # Remove the member from the team before deleting
+            team.members.remove(instance)
+            
+            # Update the count
+            user.team_members = team.members.count()
+            user.save(update_fields=['team_members'])
+        except Team.DoesNotExist:
+            pass  # If no team exists, just delete the member
+        
+        # Now delete the actual TeamMember instance
+        instance.delete()
+    
+    def list(self, request, *args, **kwargs):
+        """
+        Override list to provide consistent response format.
+        Returns all team members for the authenticated user's team.
+        """
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    def create(self, request, *args, **kwargs):
+        """
+        Override create to provide better error handling and response.
+        """
+        serializer = self.get_serializer(data=request.data)
+        
+        if serializer.is_valid():
+            self.perform_create(serializer)
+            return Response(
+                serializer.data, 
+                status=status.HTTP_201_CREATED
+            )
+        
+        return Response(
+            serializer.errors, 
+            status=status.HTTP_400_BAD_REQUEST
+        )
