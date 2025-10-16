@@ -2,7 +2,7 @@ import { motion, useMotionValue } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useRef, useCallback, useEffect, forwardRef } from "react";
 
 // Assuming these paths are correct
 import backgroundPattern from "../../assets/background-pattern.svg";
@@ -51,7 +51,7 @@ const TestimonialCard = ({ name, title, rating, text }) => (
   </div>
 );
 
-const TestimonialsSection = () => {
+const TestimonialsSection = forwardRef((props, ref) => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [swiperInstance, setSwiperInstance] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -119,24 +119,22 @@ const TestimonialsSection = () => {
   }, [scrollProgress, isDragging, maxDragX, thumbMotionX]);
 
   const sectionStyle = {
-    backgroundImage: `url(${backgroundPattern})`,
-    backgroundRepeat: "repeat",
-    backgroundSize: "auto",
+    background:"transparent",
   };
 
   return (
-    <section className="py-16" style={sectionStyle}>
+    <section ref={ref} className="py-16" style={sectionStyle} >
       <div className="max-w-7xl mx-auto">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="flex items-center justify-center text-center font-modernoir text-4xl sm:text-5xl font-extrabold text-alch-dark mb-16"
+          className="flex items-center justify-center text-center font-modernoir text-[30px] lg:text-[48px] font-extrabold text-alch-dark mb-16"
         >
-          <img src={headingIconRed} alt="Decorative Icon" className="h-8 mx-2" />
+          <img src={headingIconRed} alt="Decorative Icon" className="h-5 sm:h-6 mx-2" />
           TESTIMONIALS
-          <img src={headingIconRed} alt="Decorative Icon" className="h-8 mx-2" />
+          <img src={headingIconRed} alt="Decorative Icon" className="h-5 sm:h-6 mx-2" />
         </motion.h2>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start pl-4 sm:pl-8">
           <motion.div
@@ -146,9 +144,8 @@ const TestimonialsSection = () => {
             transition={{ duration: 1 }}
             className="text-alch-dark text-center lg:text-left"
           >
-            <img src={quoteIcon} alt="Quote" className="h-16 mx-auto lg:mx-0" />
-            <h3 className="text-3xl font-bold mt-4 leading-snug w-full max-w-[272px] mx-auto lg:mx-0">              What our previous Participants are saying
-            </h3>
+            <img src={quoteIcon} alt="Quote" className="h-[38.12px] lg:h-16 mx-auto lg:mx-0" />
+            <h3 className="text-[16px] lg:text-3xl font-bold mt-4 leading-snug w-full max-w-[272px] mx-auto lg:mx-0 text-left">What our previous<br className="block" /> Participants  are<br className="block" /> saying</h3>
             <div className="mt-10 flex items-center justify-center lg:justify-start space-x-2">
               <img src={slideBarLeftDeco} alt="Left Deco" className="w-6 h-6" />
               <div
@@ -207,6 +204,6 @@ const TestimonialsSection = () => {
       </div>
     </section>
   );
-};
+});
 
 export default TestimonialsSection;

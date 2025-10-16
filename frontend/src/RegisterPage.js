@@ -65,9 +65,8 @@ const RegisterPage = () => {
       }
 
       const response = await fetch(
-        "http://127.0.0.1:8000/api/competitions/",
+        `http://127.0.0.1:8000/api/competitions/${id}`,
         {
-          method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
@@ -144,6 +143,7 @@ const RegisterPage = () => {
   };
 
   fetchMembers();
+  //fetchCompetitionsData();
 }, []);
 
 
@@ -163,13 +163,7 @@ const RegisterPage = () => {
       <div className="flex items-center justify-between px-6 py-4 max-w-screen-xl mx-auto">
         <img src={logo} alt="logo" className="h-10 w-auto" />
         <div className="flex items-center gap-6">
-          <span className="text-sm cursor-pointer hover:text-gray-300">Contact Us</span>
-          <button
-            onClick={() => navigate("/login")}
-            //className="bg-[#f79b2b] hover:bg-[#f58e1f] text-black font-semibold px-4 py-1.5 rounded transition"
-          >
-            <img src={LoginIcon} alt="login" className="h-7 w-auto inline mr-2" />
-          </button>
+          
         </div>
       </div>
 

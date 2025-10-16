@@ -16,9 +16,7 @@ const AfterMovieSection = () => {
   const youtubeEmbedUrl = `https://www.youtube.com/embed/${youtubeVideoId}?autoplay=1&mute=1&controls=1&modestbranding=1&rel=0`;
 
   const sectionStyle = {
-    backgroundImage: `url(${backgroundPattern})`,
-    backgroundRepeat: 'repeat',
-    backgroundSize: 'auto',
+    background:"transparent",
   };
 
   return (
@@ -34,8 +32,8 @@ const AfterMovieSection = () => {
           className="flex items-center justify-center text-center font-modernoir font-extrabold text-alch-dark mb-12"
         >
           <img src={headingIconRed} alt="Decorative Icon" className="h-5 sm:h-6" />
-          <span className="whitespace-nowrap px-3 text-xl sm:text-2xl md:text-3xl">
-            CHECK OUT OUR ALCHERINGA 24 AFTER MOVIE
+          <span className="whitespace-nowrap px-3 font-extrabold text-[25px] lg:text-[48px]">
+            CHECK OUT OUR <br className="block lg:hidden" /> ALCHERINGA 24 AFTER<br className="block lg:hidden" /> MOVIE
           </span>
           <img src={headingIconRed} alt="Decorative Icon" className="h-5 sm:h-6" />
         </motion.h2>

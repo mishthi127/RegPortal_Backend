@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { AddMember } from './components/AddMember';
 
 const BASE_URL = 'http://localhost:8000';
 
@@ -45,6 +46,9 @@ function Profile() {
 
       <button onClick={handleLogout} style={{ marginTop: '1rem' }}>
         Logout
+      </button>
+      <button onClick={()=>{window.location.href = '/';}} className='h-[10px] w-[10px] bg-red'>
+        home
       </button>
     </div>
   );
