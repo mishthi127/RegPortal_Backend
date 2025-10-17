@@ -1,11 +1,3 @@
-<<<<<<< HEAD
-import React from "react";
-import { motion } from "framer-motion";
-import DecorativeButton from "../AuthPage/DecoratedButton";
-import bottomBorder from "../../assets/bottom-border.svg";
-import backgroundPattern from "../../assets/background-pattern.svg";
-import flower from "../../assets/star-filled.svg";
-=======
 // src/components/landingPage/heroSection.js
 
 import React from 'react';
@@ -15,7 +7,7 @@ import DecorativeButton from '../AuthPage/DecoratedButton';
 import bottomBorder from '../../assets/bottom-border.svg';
 import backgroundPattern from '../../assets/background-pattern.svg';
 import mbbgpattern from "../../assets/mbbgpatternwh.svg"
->>>>>>> 630f0db7ff69e27775194cccf2fc38189d7ff401
+import flower from "../../assets/star-filled.svg";
 
 const HeroSection = ({ isAuthenticated }) => {
   const mainContentStyle = {
@@ -31,7 +23,6 @@ const HeroSection = ({ isAuthenticated }) => {
     backgroundSize: "100% auto",
   };
 
-<<<<<<< HEAD
   // Fixed flower positions, computed once
   const flowers = React.useMemo(
     () =>
@@ -85,42 +76,6 @@ const HeroSection = ({ isAuthenticated }) => {
               }}
             />
           ))}
-=======
-  return (
-    <div className="text-alch-cream">
-      <main className="relative flex flex-col justify-center items-center text-center overflow-hidden py-24 sm:py-32">
-        <div className="absolute inset-0 w-full h-full bg-alch-dark" style={mainContentStyle}></div>
-        <div className="absolute lg:hidden inset-0 w-full h-full bg-alch-dark" style={bgmainContentStyle}></div>
-
-        <div className="relative z-10 p-4">
-          <motion.h1 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 2.2 }}
-            className="text-[55px] lg:text-[150px] font-extrabold text-alch-red font-modernoir tracking-normal"
-          >
-            ALCHERINGA
-          </motion.h1>
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 2.4 }}
-            className="mt-4 text-[16px] lg:text-[24px] font-modernoir"
-          >
-            STITCH YOUR JOURNEY -<br className="block lg:hidden" /> ALCHERINGA AWAITS
-          </motion.p>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 2.6 }}
-            className="mt-8" // Added margin-top for spacing
-          >
-            {/* The Register button is now only rendered if the user is NOT authenticated */}
-            {!isAuthenticated && (
-              <DecorativeButton to="/register" variant="orange">Register</DecorativeButton>
-            )}
-          </motion.div>
->>>>>>> 630f0db7ff69e27775194cccf2fc38189d7ff401
         </div>
 
         {/* Text appears after flowers start fading */}
