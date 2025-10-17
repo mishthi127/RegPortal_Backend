@@ -11,18 +11,24 @@ from django.utils.crypto import get_random_string
 from django.db.models import JSONField #rohit
 class RegistrationSession(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    # Profile fields
-    fullname = models.CharField(max_length=150)
-    phone_number = PhoneNumberField()
-    alternate_phone = PhoneNumberField(blank=True, null=True)
-    username = models.CharField(max_length=150)
-    email = models.EmailField()
-    password = models.CharField(max_length=128)
-    # Team fields (required)
-    collegename = models.CharField(max_length=150 , null=True , blank=True)
-    city = models.CharField(max_length=150 ,null=True , blank=True)
-    state = models.CharField(max_length=200, null=True , blank=True)
+    
+    # fullname = models.CharField(max_length=150)
+    # phone_number = PhoneNumberField()
+    # alternate_phone = PhoneNumberField(blank=True, null=True)
+    # username = models.CharField(max_length=150)
+    # email = models.EmailField()
+    # password = models.CharField(max_length=128)
+
+    # collegename = models.CharField(max_length=150 , null=True , blank=True)
+    # city = models.CharField(max_length=150 ,null=True , blank=True)
+    # state = models.CharField(max_length=200, null=True , blank=True)
     # OTP
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        null=True, # Make it optional for now
+        blank=True
+    )
     otp = models.CharField(max_length=6, blank=True)
     otp_created_at = models.DateTimeField(blank=True, null=True)
     otp_verified = models.BooleanField(default=False)

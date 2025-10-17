@@ -5,7 +5,7 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from django.contrib.auth import authenticate
 from .models import RegistrationSession, NewUser, TeamMembers, Team, Price
-from .serializers import RegisterSerializer, VerifyOTPSerializer, LoginSerializer, ProfileSerializer , TeamMembersSerializer, TeamSerializer, PriceSerializer, ForgotPasswordSerializer, ResetPasswordConfirmSerializer 
+from .serializers import RegisterSerializer, VerifyOTPSerializer, LoginSerializer, ProfileSerializer , TeamMembersSerializer, TeamSerializer, PriceSerializer, ForgotPasswordSerializer, ResetPasswordConfirmSerializer ,ProfileUpdateSerializer
 from django.core.mail import send_mail
 from django.conf import settings
 import secrets
@@ -199,6 +199,27 @@ class ProfileView(generics.RetrieveAPIView):
     def get_object(self):
         return self.request.user
     
+    # +++ START: ADDED FOR EDIT PROFILE +++
+class ProfileUpdateView(generics.UpdateAPIView):
+    serializer_class = ProfileUpdateSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        
+        # After updating, re-serialize the user object with the read-only ProfileSerializer
+        # to get all fields, including the updated team_name.
+        updated_user_data = ProfileSerializer(instance).data
+        
+        return Response({"user": updated_user_data})
+# +++ END: ADDED FOR EDIT PROFILE +++
+    
 class TeamMembersViewSet(viewsets.ModelViewSet):
     queryset = TeamMembers.objects.all() 
     serializer_class = TeamMembersSerializer
@@ -228,7 +249,8 @@ def google_complete_profile(request):
         not user.phone_number,
         not user.collegename,
         not user.city,
-        not user.state
+        not user.state,
+        not hasattr(user, 'team') # <-- ADD THIS CHECK
     ])
     return Response({
         'refresh': str(refresh),
@@ -241,6 +263,8 @@ def google_complete_profile(request):
 @permission_classes([IsAuthenticated])
 def complete_profile(request):
     user = request.user
+    team_name = request.data.get('team_name')
+
     user.fullname = request.data.get('fullname', user.fullname)
     user.phone_number = request.data.get('phone_number', user.phone_number)
     user.alternate_phone = request.data.get('alternate_phone', user.alternate_phone)
@@ -249,6 +273,15 @@ def complete_profile(request):
     user.state = request.data.get('state', user.state)
     user.pixel_highlight = request.data.get('pixel_highlight', user.pixel_highlight)
     user.save()
+
+    # --- STEP 2: Create or update the Team object for this user ---
+    if team_name:
+        Team.objects.update_or_create(
+            leader=user, 
+            defaults={'name': team_name}
+        )
+    user.refresh_from_db()
+
     return Response({'detail': 'Profile updated', 'user': ProfileSerializer(user).data})
 
 
@@ -288,7 +321,8 @@ def google_login(request):
             not user.phone_number,
             not user.collegename,
             not user.city,
-            not user.state
+            not user.state,
+            not hasattr(user, 'team') # <-- ADD THIS CHECK
         ])
 
         return Response({
