@@ -5,7 +5,7 @@ from .views import (
     google_complete_profile, complete_profile, google_login,
     TeamMembersViewSet, TeamViewSet, PriceViewSet,
     # Import the new views for password reset
-    ForgotPasswordView, ResetPasswordConfirmView
+    ForgotPasswordView, ResetPasswordConfirmView,ProfileUpdateView
 )
 
 Participant_list =  ParticipantviewSet.as_view({
@@ -39,6 +39,10 @@ urlpatterns = [
     path('reset-password-confirm/', ResetPasswordConfirmView.as_view(), name='reset-password-confirm'),
 
     path('profile/', ProfileView.as_view(), name='profile'),
+    
+    # +++ START: ADDED FOR EDIT PROFILE +++
+    path('auth/edit-profile/', ProfileUpdateView.as_view(), name='edit-profile'),
+    # +++ END: ADDED FOR EDIT PROFILE +++
 
     # Google authentication
     path('accounts/', include('allauth.urls')),

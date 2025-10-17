@@ -5,7 +5,7 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from django.contrib.auth import authenticate
 from .models import RegistrationSession, NewUser, TeamMembers, Team, Price
-from .serializers import RegisterSerializer, VerifyOTPSerializer, LoginSerializer, ProfileSerializer , TeamMembersSerializer, TeamSerializer, PriceSerializer, ForgotPasswordSerializer, ResetPasswordConfirmSerializer 
+from .serializers import RegisterSerializer, VerifyOTPSerializer, LoginSerializer, ProfileSerializer , TeamMembersSerializer, TeamSerializer, PriceSerializer, ForgotPasswordSerializer, ResetPasswordConfirmSerializer ,ProfileUpdateSerializer
 from django.core.mail import send_mail
 from django.conf import settings
 import secrets
@@ -198,6 +198,27 @@ class ProfileView(generics.RetrieveAPIView):
     permission_classes = [permissions.IsAuthenticated]
     def get_object(self):
         return self.request.user
+    
+    # +++ START: ADDED FOR EDIT PROFILE +++
+class ProfileUpdateView(generics.UpdateAPIView):
+    serializer_class = ProfileUpdateSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        
+        # After updating, re-serialize the user object with the read-only ProfileSerializer
+        # to get all fields, including the updated team_name.
+        updated_user_data = ProfileSerializer(instance).data
+        
+        return Response({"user": updated_user_data})
+# +++ END: ADDED FOR EDIT PROFILE +++
     
 class TeamMembersViewSet(viewsets.ModelViewSet):
     queryset = TeamMembers.objects.all() 
