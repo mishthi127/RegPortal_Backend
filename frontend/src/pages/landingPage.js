@@ -21,9 +21,11 @@ import hamburgerIcon from '../assets/hamburger-icon.svg';
 import backgroundPattern from '../assets/background-pattern.svg';
 import mbbgpattern from "../assets/mbbgpatternwh.svg"
 import { AddMembers } from '../components/AddMembers';
+import { useNavigate } from 'react-router-dom';
 
 
 const LandingPage = () => {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -35,7 +37,13 @@ const LandingPage = () => {
   const faqRef = useRef(null);
   const testimonialRef = useRef(null);
   const footerRef = useRef(null);
+  const [openindex, setOpenindex] = useState([]);
 
+  const handleTabClickFromDropdown = (tabIndex) => {
+    setOpenindex([tabIndex]); 
+    console.log(tabIndex);
+    navigate("/profile", { state: { tabIndex } });
+  };
 
   const scrollToFAQ = () => {
     faqRef.current?.scrollIntoView({ 
@@ -133,7 +141,7 @@ const LandingPage = () => {
           <div className="hidden lg:flex items-center space-x-6">
             <Link className="text-alch-cream hover:text-white" onClick={scrollToFooter}>Contact us</Link>
             {isAuthenticated ? (
-              <ProfileDropdown user={user} onLogout={handleLogout} />
+              <ProfileDropdown user={user} onLogout={handleLogout} onTabClick={handleTabClickFromDropdown}/>
             ) : (
               <DecorativeButton to="/login" variant="orange-sm">Login</DecorativeButton>
             )}
@@ -199,7 +207,7 @@ const LandingPage = () => {
           {isAuthenticated ? (
             <>
               <Link to="/profile" onClick={toggleMenu} className="text-alch-cream hover:text-white">My Profile</Link>
-              <Link to="/team" onClick={toggleMenu} className="text-alch-cream hover:text-white">Team Members</Link>
+              <Link to="/profile" onClick={toggleMenu} className="text-alch-cream hover:text-white">Team Members</Link>
               <button
                 onClick={() => {
                   toggleMenu();
@@ -211,7 +219,7 @@ const LandingPage = () => {
               </button>
             </>
           ) : (
-            <DecorativeButton to="/login" variant="orange-sm" onClick={toggleMenu}>Login</DecorativeButton>
+            <DecorativeButton to="/profile" variant="orange-sm" onClick={toggleMenu}>Login</DecorativeButton>
           )}
         </div>
       </div>

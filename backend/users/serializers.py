@@ -108,6 +108,35 @@ class ProfileSerializer(serializers.ModelSerializer):
         exclude = [
             'password', 'otp', 'otp_created_at', 'otp_used', 'password_reset_token', 'password_reset_expiry'
         ]
+        
+        # +++ START: ADDED FOR EDIT PROFILE +++
+class ProfileUpdateSerializer(serializers.ModelSerializer):
+    team_name = serializers.CharField(max_length=150, required=False)
+
+    class Meta:
+        model = NewUser
+        fields = [
+            'fullname', 'gender', 'phone_number', 
+            'alternate_phone', 'collegename', 'city', 'state', 'team_name'
+        ]
+
+    def update(self, instance, validated_data):
+        # Handle the team_name separately as it's on a related model
+        team_name = validated_data.pop('team_name', None)
+        if team_name:
+            # Get or create a team for the user and update its name
+            Team.objects.update_or_create(
+                leader=instance,
+                defaults={'name': team_name}
+            )
+
+        # Update the NewUser instance with the remaining data
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        
+        instance.save()
+        return instance
+# +++ END: ADDED FOR EDIT PROFILE +++
 
 class TeamMembersSerializer(serializers.ModelSerializer):
     class Meta:
