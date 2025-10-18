@@ -1,7 +1,10 @@
 // src/pages/landingPage.js
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import axiosInstance from '../utils/axiosInstance'; // Using the custom axios instance
+
+// Component Imports
 import HeroSection from '../components/landingPage/heroSection';
 import Preloader from '../components/Preloader';
 import AfterMovieSection from '../components/landingPage/AfterMovieSection';
@@ -10,38 +13,161 @@ import {CompModules } from '../components/landingPage/compModules';
 import { Pixel } from '../components/landingPage/Pixel';
 import { Footer } from '../components/landingPage/Footer';
 import { FAQS } from '../components/landingPage/FAQS';
-
 import DecorativeButton from '../components/DecorativeButton';
+import ProfileDropdown from '../components/ProfileDropdown';
+
+// Asset Imports
 import logo from '../assets/logo.svg';
 import hamburgerIcon from '../assets/hamburger-icon.svg';
 import backgroundPattern from '../assets/background-pattern.svg';
+import mbbgpattern from "../assets/mbbgpatternwh.svg"
+import { AddMembers } from '../components/AddMembers';
+import { useNavigate } from 'react-router-dom';
 
 
 const LandingPage = () => {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  // State for authentication and user data
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState(null);
+
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const faqRef = useRef(null);
+  const testimonialRef = useRef(null);
+  const footerRef = useRef(null);
+  const [openindex, setOpenindex] = useState([]);
+
+  const handleTabClickFromDropdown = (tabIndex) => {
+    setOpenindex([tabIndex]); 
+    console.log(tabIndex);
+    navigate("/profile", { state: { tabIndex } });
+  };
+
+  const scrollToFAQ = () => {
+    faqRef.current?.scrollIntoView({ 
+      behavior: 'smooth', 
+      block: 'center', // center the element vertically in the viewport
+      inline: 'nearest'
+    });
+    
+  };
+
+  const scrollToTestimonials = () => {
+    testimonialRef.current?.scrollIntoView({ 
+      behavior: 'smooth',
+      block: 'center', // center the element vertically in the viewport
+      inline: 'nearest'
+    });
+  };
+
+  const scrollToFooter = () => {
+    footerRef.current?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center',
+    });
+  };
 
   useEffect(() => {
     const timer = setTimeout(() => { setLoading(false); }, 2000);
+
+    // Check for authentication token on component mount
+    const token = localStorage.getItem('access');
+    if (token) {
+      axiosInstance.get('/profile/')
+        .then(res => {
+          setUser(res.data);
+          setIsAuthenticated(true);
+        })
+        .catch(err => {
+          // This will only run if the token and refresh token are both invalid
+          console.error("Auth check failed:", err);
+        });
+    }
+
     return () => clearTimeout(timer);
   }, []);
 
-  // Style for the background pattern
+  // Function to handle user logout
+  const handleLogout = () => {
+    localStorage.removeItem('access');
+    localStorage.removeItem('refresh');
+    setIsAuthenticated(false);
+    setUser(null);
+    window.location.href = '/';
+  };
+
   const headerBgStyle = {
     backgroundImage: `url(${backgroundPattern})`,
     backgroundPosition: 'center',
+    backgroundSize: "100% auto",
+    backgroundRepeat: "no-repeat",
+  };
+
+  const mbheaderBgStyle = {
+    backgroundImage: `url(${mbbgpattern})`,
+    backgroundPosition: 'center',
+    backgroundSize: "100% auto",
+    backgroundRepeat: "no-repeat",
   };
 
   return (
     <div>
       {loading && <Preloader />}
-      
-      <header className="sticky top-0 z-30 shadow-lg">
+    {/* laptop */}
+      <header className="sticky top-0 z-30 shadow-lg hidden lg:block border-b-[2px] border-alch-cream">
         <div className="absolute inset-0 bg-alch-dark" style={headerBgStyle}></div>
         <nav className="relative z-10 flex justify-between items-center py-4 px-4 sm:px-8">
           <Link to="/">
-            <img src={logo} alt="Alcheringa Logo" className="h-8 sm:h-10" />
+            <div>
+              <div className='flex flex-row justify-center items-center gap-[10px] h-[69px]'>
+                  <img className="lg:w-[37.99px] lg:h-[43.71px] w-[24px] h-[27.61px]" src={logo} alt="logo"/>
+                  <div className='text-alch-cream h-[32px] lg:h-[65.83px] flex flex-col justify-center'>
+                      <p className='font-modernoir font-bold lg:text-[37.99px] text-[18px] h-[42px] leading-none'>ALCHERINGA</p>
+                      <p className='font-sans h-[27px]  font-normal lg:text-[18.99px] text-[10px] leading-none self-end'>IIT GUWAHATI</p>
+                  </div>
+              </div>    
+            </div> 
+          </Link>
+          <div className="hidden lg:flex items-center">
+            <DecorativeButton to="#" variant="nav">
+              <div className="flex space-x-8 px-4 text-sm">
+                <Link to="/about" className="text-alch-cream hover:text-white whitespace-nowrap">About us</Link>
+                <Link to="/competitions" className="text-alch-cream hover:text-white whitespace-nowrap">Modules & Competitions</Link>
+              </div>
+            </DecorativeButton>
+          </div>
+          <div className="hidden lg:flex items-center space-x-6">
+            <Link className="text-alch-cream hover:text-white" onClick={scrollToFooter}>Contact us</Link>
+            {isAuthenticated ? (
+              <ProfileDropdown user={user} onLogout={handleLogout} onTabClick={handleTabClickFromDropdown}/>
+            ) : (
+              <DecorativeButton to="/login" variant="orange-sm">Login</DecorativeButton>
+            )}
+          </div>
+          {/* mobile */}
+          <div className="lg:hidden">
+            <button onClick={toggleMenu}><img src={hamburgerIcon} alt="Menu" className="h-12 w-12" /></button>
+          </div>
+        </nav>
+      </header>
+
+      {/* mobile */}
+      <header className="sticky top-0 z-30 shadow-lg lg:hidden border-b-[2px] border-alch-cream">
+        <div className="absolute inset-0 bg-alch-dark" style={mbheaderBgStyle}></div>
+        <nav className="relative z-10 flex justify-between items-center py-4 px-4 sm:px-8">
+          <Link to="/">
+            <div>
+              <div className='flex flex-row justify-center items-center gap-[10px] h-[69px]'>
+                  <img className="lg:w-[37.99px] lg:h-[43.71px] w-[24px] h-[27.61px]" src={logo} alt="logo"/>
+                  <div className='text-alch-cream h-[32px] lg:h-[65.83px] flex flex-col justify-center'>
+                      <p className='font-modernoir font-bold lg:text-[37.99px] text-[18px] h-[42px] leading-none'>ALCHERINGA</p>
+                      <p className='font-sans h-[27px]  font-normal lg:text-[18.99px] text-[10px] leading-none self-end'>IIT GUWAHATI</p>
+                  </div>
+              </div>    
+            </div> 
           </Link>
           <div className="hidden lg:flex items-center">
             <DecorativeButton to="#" variant="nav">
@@ -53,50 +179,65 @@ const LandingPage = () => {
           </div>
           <div className="hidden lg:flex items-center space-x-6">
             <Link to="/contact" className="text-alch-cream hover:text-white">Contact us</Link>
-            <DecorativeButton to="/login" className = "" variant="orange-sm">Login</DecorativeButton>
+            {isAuthenticated ? (
+              <ProfileDropdown user={user} onLogout={handleLogout} />
+            ) : (
+              <DecorativeButton to="/login" variant="orange-sm">Login</DecorativeButton>
+            )}
           </div>
+          {/* mobile */}
           <div className="lg:hidden">
-            <button onClick={toggleMenu}><img src={hamburgerIcon} alt="Menu" className="h-8 w-8" /></button>
+            <button onClick={toggleMenu}><img src={hamburgerIcon} alt="Menu" className="h-12 w-12" /></button>
           </div>
         </nav>
       </header>
-      
+
       {/* Mobile Menu Overlay */}
-      <div className={`fixed top-0 right-0 h-full w-full bg-black bg-opacity-95 z-40 transform transition-transform duration-300 ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-        {/* --- ADDED: Mobile Menu Content --- */}
+      <div className={`fixed top-0 left-0 h-full w-[100%] bg-black bg-opacity-95 z-40 transform transition-transform duration-300 ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
         <div className="flex justify-end p-8">
-            <button onClick={toggleMenu}>
-                {/* Close Icon */}
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-            </button>
+          <button onClick={toggleMenu}>
+            <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+          </button>
         </div>
         <div className="flex flex-col items-center justify-center h-3/4 space-y-8 text-2xl">
           <Link to="/about" onClick={toggleMenu} className="text-alch-cream hover:text-white">About us</Link>
           <Link to="/competitions" onClick={toggleMenu} className="text-alch-cream hover:text-white">Modules & Competitions</Link>
           <Link to="/contact" onClick={toggleMenu} className="text-alch-cream hover:text-white">Contact us</Link>
-          <DecorativeButton to="/login" variant="orange-sm" onClick={toggleMenu}>Login</DecorativeButton>
+
+          {/* Conditional links for mobile menu */}
+          {isAuthenticated ? (
+            <>
+              <Link to="/profile" onClick={toggleMenu} className="text-alch-cream hover:text-white">My Profile</Link>
+              <Link to="/profile" onClick={toggleMenu} className="text-alch-cream hover:text-white">Team Members</Link>
+              <button
+                onClick={() => {
+                  toggleMenu();
+                  handleLogout();
+                }}
+                className="text-alch-red hover:text-white font-bold text-2xl bg-transparent border-none"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <DecorativeButton to="/profile" variant="orange-sm" onClick={toggleMenu}>Login</DecorativeButton>
+          )}
         </div>
-        {/* --- END: Mobile Menu Content --- */}
       </div>
-      
+
       {/* Page Content */}
-      <HeroSection />
-      <CompModules/>
+      <HeroSection isAuthenticated={isAuthenticated} />
+      <CompModules />
       <Pixel />
-      <AfterMovieSection />
-      <TestimonialsSection />
       
         <div
-          className='bg-[rgba(238,236,217,1)]'
-          style={{
-              backgroundImage: "url('/whitevector.png')",
-              
-              backgroundRepeat: "repeat",
-          }}   
+          className='bg-alch-cream landingbg'  
         >
-          <FAQS />
-          <Footer />
-        </div>
+            <AfterMovieSection />
+            <TestimonialsSection ref={testimonialRef}/>
+            <FAQS ref={faqRef}/>
+            <Footer scrollToFAQ={scrollToFAQ} scrollToTestimonials={scrollToTestimonials} ref={footerRef}/>
+        </div> 
     </div>
   );
 };

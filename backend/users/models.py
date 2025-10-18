@@ -11,18 +11,24 @@ from django.utils.crypto import get_random_string
 from django.db.models import JSONField #rohit
 class RegistrationSession(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    # Profile fields
-    fullname = models.CharField(max_length=150)
-    phone_number = PhoneNumberField()
-    alternate_phone = PhoneNumberField(blank=True, null=True)
-    username = models.CharField(max_length=150)
-    email = models.EmailField()
-    password = models.CharField(max_length=128)
-    # Team fields (required)
-    collegename = models.CharField(max_length=150 , null=True , blank=True)
-    city = models.CharField(max_length=150 ,null=True , blank=True)
-    state = models.CharField(max_length=200, null=True , blank=True)
+    
+    # fullname = models.CharField(max_length=150)
+    # phone_number = PhoneNumberField()
+    # alternate_phone = PhoneNumberField(blank=True, null=True)
+    # username = models.CharField(max_length=150)
+    # email = models.EmailField()
+    # password = models.CharField(max_length=128)
+
+    # collegename = models.CharField(max_length=150 , null=True , blank=True)
+    # city = models.CharField(max_length=150 ,null=True , blank=True)
+    # state = models.CharField(max_length=200, null=True , blank=True)
     # OTP
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        null=True, # Make it optional for now
+        blank=True
+    )
     otp = models.CharField(max_length=6, blank=True)
     otp_created_at = models.DateTimeField(blank=True, null=True)
     otp_verified = models.BooleanField(default=False)
@@ -82,7 +88,10 @@ class NewUser(AbstractBaseUser, PermissionsMixin):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(_('email address'), unique=True, db_index=True)
     pixel_highlight = models.JSONField(default=list, blank=True) #rohit
-    username = models.CharField(max_length=150, unique=True, blank=True, null=True)
+    
+    # --- CHANGE 1 OF 2: `unique=True` has been removed from this line ---
+    username = models.CharField(max_length=150, blank=True, null=True)
+    
     provider = models.CharField(max_length=200, default='email')
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
@@ -116,7 +125,10 @@ class NewUser(AbstractBaseUser, PermissionsMixin):
     img = models.ImageField(upload_to="image_uploads/userdp/%Y/%m/%d/", default='user-default.png')
     about = models.TextField(max_length=500, blank=True)
     percentage_complete = models.IntegerField(default=0)
-    phone_number = PhoneNumberField(unique=True)
+    
+    # --- CHANGE 2 OF 2: `unique=True` has been removed from this line ---
+    phone_number = PhoneNumberField()
+    
     alternate_phone = PhoneNumberField(blank=True, null=True)
     # Team info (required on registration)
     collegename = models.CharField(max_length=150 , null=True , blank=True)

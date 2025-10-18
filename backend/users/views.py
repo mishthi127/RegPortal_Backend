@@ -1,15 +1,18 @@
+# src/views.py
+
 from rest_framework import generics, status, permissions
 from rest_framework import viewsets
 from rest_framework.response import Response
 from django.contrib.auth import authenticate
 from .models import RegistrationSession, NewUser, TeamMembers, Team, Price
-from .serializers import RegisterSerializer, VerifyOTPSerializer, LoginSerializer, ProfileSerializer , TeamMembersSerializer, TeamSerializer, PriceSerializer
-from rest_framework_simplejwt.tokens import RefreshToken
+from .serializers import RegisterSerializer, VerifyOTPSerializer, LoginSerializer, ProfileSerializer , TeamMembersSerializer, TeamSerializer, PriceSerializer, ForgotPasswordSerializer, ResetPasswordConfirmSerializer ,ProfileUpdateSerializer
 from django.core.mail import send_mail
 from django.conf import settings
-
+import secrets
 from django.utils import timezone
 from datetime import timedelta
+
+from django.db.models import Q 
 
 from allauth.socialaccount.models import SocialAccount
 from rest_framework.decorators import api_view, permission_classes
@@ -26,6 +29,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login as auth_login, logout
 from .models import  TeamMembers
 from .serializers import ParticipantSerializer
+from rest_framework_simplejwt.tokens import RefreshToken
 
 def clean_old_unverified_users():
     cutoff = timezone.now() - timedelta(minutes=5)
@@ -47,8 +51,39 @@ def send_otp_email(user):
 
 class RegisterView(generics.CreateAPIView):
     serializer_class = RegisterSerializer
+
+    def create(self, request, *args, **kwargs):
+        """
+        Overrides the default create method to handle existing but unverified users
+        based ONLY on their email address.
+        """
+        clean_old_unverified_users()
+
+        email = request.data.get('email')
+
+        # Check for an existing user using ONLY the email field.
+        existing_user = NewUser.objects.filter(email=email).first()
+
+        if existing_user:
+            # Case 1: An existing user with this email is found
+            if existing_user.verified_email:
+                # User is fully verified, so this is a legitimate conflict.
+                return Response(
+                    {'email': 'new user with this email address already exists.'}, 
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            else:
+                # User exists but is NOT verified. Update them and resend the OTP.
+                serializer = self.get_serializer(instance=existing_user, data=request.data)
+                serializer.is_valid(raise_exception=True)
+                user = serializer.save()
+                send_otp_email(user)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+
+        # Case 2: No user with this email found. Proceed with standard creation.
+        return super().create(request, *args, **kwargs)
+
     def perform_create(self, serializer):
-        clean_old_unverified_users() 
         user = serializer.save()
         send_otp_email(user)
 
@@ -61,7 +96,28 @@ class VerifyOTPView(generics.GenericAPIView):
         otp = serializer.validated_data['otp']
         try:
             user = NewUser.objects.get(email=email)
-            if user.otp == otp and user.is_otp_valid():
+
+            if user.otp != otp or not user.is_otp_valid():
+                return Response({"detail": "Invalid or expired OTP."}, status=status.HTTP_400_BAD_REQUEST)
+
+            # --- MODIFICATION START ---
+            # Differentiate flow based on user's active status
+            if user.is_active:
+                # This is a PASSWORD RESET flow for an existing, active user
+                user.otp_used = True
+                
+                # Generate a secure, temporary token for password reset
+                token = secrets.token_urlsafe(32)
+                user.password_reset_token = token
+                user.password_reset_expiry = timezone.now() + timedelta(minutes=10) # Token expires in 10 minutes
+                user.save()
+                
+                return Response({
+                    "detail": "OTP verified successfully. Proceed to reset password.",
+                    "reset_token": token
+                })
+            else:
+                # This is the original REGISTRATION flow
                 user.is_active = True
                 user.otp_used = True
                 user.verified_email = True
@@ -72,10 +128,55 @@ class VerifyOTPView(generics.GenericAPIView):
                     'access': str(refresh.access_token),
                     'user': ProfileSerializer(user).data,
                 })
-            else:
-                return Response({"detail": "Invalid or expired OTP."}, status=status.HTTP_400_BAD_REQUEST)
+            # --- MODIFICATION END ---
+                
         except NewUser.DoesNotExist:
             return Response({"detail": "User not found."}, status=status.HTTP_404_NOT_FOUND)
+
+# --- NEW VIEW 1: ForgotPasswordView ---
+class ForgotPasswordView(generics.GenericAPIView):
+    serializer_class = ForgotPasswordSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        email = serializer.validated_data['email']
+        
+        try:
+            user = NewUser.objects.get(email=email, is_active=True)
+            user.generate_otp()
+            send_otp_email(user)
+            return Response({"detail": "An OTP has been sent to your email address."}, status=status.HTTP_200_OK)
+        except NewUser.DoesNotExist:
+            return Response({"detail": "No active account found with this email address."}, status=status.HTTP_404_NOT_FOUND)
+
+# --- NEW VIEW 2: ResetPasswordConfirmView ---
+class ResetPasswordConfirmView(generics.GenericAPIView):
+    serializer_class = ResetPasswordConfirmSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        
+        token = serializer.validated_data['token']
+        password = serializer.validated_data['password']
+
+        try:
+            user = NewUser.objects.get(password_reset_token=token)
+            
+            if user.password_reset_expiry < timezone.now():
+                return Response({"detail": "Password reset token has expired."}, status=status.HTTP_400_BAD_REQUEST)
+            
+            user.set_password(password)
+            # Invalidate the token after use
+            user.password_reset_token = None
+            user.password_reset_expiry = None
+            user.save()
+            
+            return Response({"detail": "Your password has been reset successfully."}, status=status.HTTP_200_OK)
+        except NewUser.DoesNotExist:
+            return Response({"detail": "Invalid password reset token."}, status=status.HTTP_400_BAD_REQUEST)
+
 
 class LoginView(generics.GenericAPIView):
     serializer_class = LoginSerializer
@@ -97,6 +198,27 @@ class ProfileView(generics.RetrieveAPIView):
     permission_classes = [permissions.IsAuthenticated]
     def get_object(self):
         return self.request.user
+    
+    # +++ START: ADDED FOR EDIT PROFILE +++
+class ProfileUpdateView(generics.UpdateAPIView):
+    serializer_class = ProfileUpdateSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        
+        # After updating, re-serialize the user object with the read-only ProfileSerializer
+        # to get all fields, including the updated team_name.
+        updated_user_data = ProfileSerializer(instance).data
+        
+        return Response({"user": updated_user_data})
+# +++ END: ADDED FOR EDIT PROFILE +++
     
 class TeamMembersViewSet(viewsets.ModelViewSet):
     queryset = TeamMembers.objects.all() 
@@ -127,7 +249,8 @@ def google_complete_profile(request):
         not user.phone_number,
         not user.collegename,
         not user.city,
-        not user.state
+        not user.state,
+        not hasattr(user, 'team') # <-- ADD THIS CHECK
     ])
     return Response({
         'refresh': str(refresh),
@@ -140,14 +263,25 @@ def google_complete_profile(request):
 @permission_classes([IsAuthenticated])
 def complete_profile(request):
     user = request.user
+    team_name = request.data.get('team_name')
+
     user.fullname = request.data.get('fullname', user.fullname)
     user.phone_number = request.data.get('phone_number', user.phone_number)
-    user.alternate_phone = request.data.get('alternate_phone', user.alternate_phone)  # Add this line
+    user.alternate_phone = request.data.get('alternate_phone', user.alternate_phone)
     user.collegename = request.data.get('collegename', user.collegename)
     user.city = request.data.get('city', user.city)
     user.state = request.data.get('state', user.state)
     user.pixel_highlight = request.data.get('pixel_highlight', user.pixel_highlight)
     user.save()
+
+    # --- STEP 2: Create or update the Team object for this user ---
+    if team_name:
+        Team.objects.update_or_create(
+            leader=user, 
+            defaults={'name': team_name}
+        )
+    user.refresh_from_db()
+
     return Response({'detail': 'Profile updated', 'user': ProfileSerializer(user).data})
 
 
@@ -187,7 +321,8 @@ def google_login(request):
             not user.phone_number,
             not user.collegename,
             not user.city,
-            not user.state
+            not user.state,
+            not hasattr(user, 'team') # <-- ADD THIS CHECK
         ])
 
         return Response({
@@ -209,96 +344,51 @@ def competition_list(request):
 
 class ParticipantviewSet(viewsets.ModelViewSet):
     serializer_class = ParticipantSerializer
-    permission_classes = [IsAuthenticated]  # Changed from AllowAny - users must be logged in
+    permission_classes = [IsAuthenticated]
     
     def get_queryset(self):
-        """
-        This method filters the queryset to show only team members 
-        that belong to the current user's team.
-        
-        The key insight: each user has a Team (via the OneToOneField 'leader'),
-        and each Team has multiple TeamMembers (via ManyToManyField 'members').
-        """
         user = self.request.user
-        
-        # Get the user's team (or return empty queryset if they don't have one)
         try:
-            team = user.team  # This uses the related_name="team" from the Team model
-            return team.members.all()  # Return all members in this team
+            team = user.team
+            return team.members.all()
         except Team.DoesNotExist:
-            # If user doesn't have a team yet, return empty queryset
             return TeamMembers.objects.none()
     
     def perform_create(self, serializer):
-        """
-        When creating a new team member, we need to:
-        1. Save the TeamMember instance
-        2. Add it to the user's team
-        3. Create a team if the user doesn't have one yet
-        """
         user = self.request.user
-        
-        # Save the new team member
         team_member = serializer.save()
-        
-        # Get or create the user's team
         team, created = Team.objects.get_or_create(
             leader=user,
-            defaults={'name': f"{user.fullname}'s Team"}  # Default team name
+            defaults={'name': f"{user.fullname}'s Team"}
         )
-        
-        # Add this member to the team
         team.members.add(team_member)
-        
-        # Update the user's team_members count
         user.team_members = team.members.count()
         user.save(update_fields=['team_members'])
     
     def perform_destroy(self, instance):
-        """
-        When deleting a team member:
-        1. Remove them from the team
-        2. Delete the TeamMember instance
-        3. Update the team member count
-        """
         user = self.request.user
-        
         try:
             team = user.team
-            # Remove the member from the team before deleting
             team.members.remove(instance)
-            
-            # Update the count
             user.team_members = team.members.count()
             user.save(update_fields=['team_members'])
         except Team.DoesNotExist:
-            pass  # If no team exists, just delete the member
-        
-        # Now delete the actual TeamMember instance
+            pass
         instance.delete()
     
     def list(self, request, *args, **kwargs):
-        """
-        Override list to provide consistent response format.
-        Returns all team members for the authenticated user's team.
-        """
         queryset = self.get_queryset()
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
     def create(self, request, *args, **kwargs):
-        """
-        Override create to provide better error handling and response.
-        """
         serializer = self.get_serializer(data=request.data)
-        
         if serializer.is_valid():
             self.perform_create(serializer)
             return Response(
                 serializer.data, 
                 status=status.HTTP_201_CREATED
             )
-        
         return Response(
             serializer.errors, 
             status=status.HTTP_400_BAD_REQUEST
