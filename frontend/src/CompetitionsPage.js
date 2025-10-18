@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import addformbg from "./assets/backflowers.svg";
-import { Footer } from "./components/landingPage/Footer";
 import logo from "./assets/alcherlogo.svg";
 import "./CompetitionPage.css";
 import DecorativeButton from "./components/DecorativeButton";
 import flower from "./assets/heading-icon-red.svg";
-
+import dropdown_back from "./assets/dropdown_back.svg";
+import searchbar_back from "./assets/searchbar_back.svg";
+import competitions from "./assets/competitions.svg";
+import dropbutton from "./assets/dropbutton.svg";
 function ModuleDropdown({ modules, selectedModule, setSelectedModule }) {
   const [open, setOpen] = useState(false);
 
@@ -14,34 +16,41 @@ function ModuleDropdown({ modules, selectedModule, setSelectedModule }) {
     setSelectedModule(module);
     setOpen(false);
   };
+  
+
 
   return (
     <div
+      className=" relative   relative flex justify-center items-center p-4 w-full max-w-[560px] box-border  w-[90%] sm:w-[80%] md:w-[560px]
+    h-[60px] sm:h-[65px] md:h-[71px]"
       style={{
+        backgroundImage: `url(${dropdown_back})`,
+        backgroundPosition: "center",
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
+        // backgroundColor:"black",
         position: "relative",
+        display: "flex",
+        justifyContent: "center",  
+        alignItems: "center",
         width: 560,
         height: 71,
-        borderLeft: "20px solid black",
-        borderTop: "20px solid transparent",
-        borderBottom: "20px solid transparent",
-        borderRight: "20px solid black",
-        borderRadius: 12,
-        boxShadow: "0 3px 6px rgba(0,0,0,0.2)",
-        backgroundColor: "#FDF6E3",
         cursor: "pointer",
-        padding: "25px",
         fontFamily: "'TT Modernoir', sans-serif",
       }}
     >
       {/* Header / Button */}
       <div
+        className="w-full p-2 sm:p-3 md:p-4 text-sm sm:text-base md:text-lg rounded-lg flex items-center justify-center relative"
         onClick={() => setOpen(!open)}
         style={{
+          backgroundImage: `url(${searchbar_back})`,
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
           position: "relative",
-          width: "100%",
-          height: "100%",
-          backgroundColor: "#FDF6E3",
-          borderRadius: 12,
+          width: "419px",
+          height: "49px",
+          backgroundColor: "transparent",
           cursor: "pointer",
           display: "flex",
           alignItems: "center",
@@ -49,16 +58,16 @@ function ModuleDropdown({ modules, selectedModule, setSelectedModule }) {
           boxShadow: "0 3px 6px rgba(0,0,0,0.2)",
           fontWeight: "bold",
           color: "#EF5243",
+          
         }}
       >
-        <span>{selectedModule === "all" ? "All Modules" : selectedModule}</span>
+        <span style={{marginRight:"10px"}}>{selectedModule === "all" ? "All Module" : selectedModule}
 
         {/* Dropdown Arrow Button */}
         <button
           aria-label={open ? "Close modules list" : "Open modules list"}
           style={{
             position: "absolute",
-            right: "20px",
             top: "50%",
             transform: open ? "translateY(-50%) rotate(180deg)" : "translateY(-50%)",
             background: "none",
@@ -69,61 +78,72 @@ function ModuleDropdown({ modules, selectedModule, setSelectedModule }) {
             transition: "transform 0.2s ease",
             padding: 0,
             lineHeight: 1,
+            left:" calc(100% - 50px)",
           }}
           onClick={(e) => {
             e.stopPropagation(); // don't trigger header click twice
             setOpen((s) => !s);
           }}
         >
-          ▼
+          <img src={dropbutton} alt="dropdown arrow" style={{ width: "20px", height: "20px",marginLeft:"10px" }} />
         </button>
+        </span>
       </div>
 
       {/* List */}
       {open && (
         <div
+        className="no-scrollbar "
           style={{
             position: "absolute",
             top: 71,
             left: 0,
+            backgroundColor: "transparent",
             width: "100%",
-            background: "#FDF6E3",
-            borderRadius: 12,
             overflow: "hidden",
+            textAlign: "center",
             zIndex: 10,
-            boxShadow: "0 4px 6px rgba(0,0,0,0.3)",
-            maxHeight: "300px",
+            maxHeight: "180px",
             overflowY: "auto",
             fontFamily: "'TT Modernoir', sans-serif",
           }}
         >
           <div
-            onClick={() => handleSelect("all")}
+            className="searchh-input  double-notch-all"
             style={{
-              padding: "10px",
+              border:"1px solid rgba(0,0,0,0.2)",
+              width: "100%",
+              height: "90%",
+              backgroundColor: "#FFB261",
               cursor: "pointer",
               borderBottom: "1px solid rgba(0,0,0,0.2)",
               transition: "background-color 0.2s",
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#D3D3D3")}
-            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#FDF6E3")}
+            onClick={() => handleSelect("all")}
+           
+            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#EF5243")}
+            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#FFB261")}
           >
             All Modules
           </div>
 
           {modules.map((mod) => (
             <div
+              className="   searchh-input double-notch-all"
               key={mod.id}
               onClick={() => handleSelect(mod.module)}
               style={{
-                padding: "10px",
+                width: "100%",
+                height: "90%",
                 cursor: "pointer",
+               
+                backgroundColor: "#FFB261",
                 borderBottom: "1px solid rgba(0,0,0,0.2)",
                 transition: "background-color 0.2s",
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#D3D3D3")}
-              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#FDF6E3")}
-            >
+              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#EF5243")}
+            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#FFB261")}
+            > 
               {mod.module}
             </div>
           ))}
@@ -182,14 +202,16 @@ function CompetitionsList() {
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",
     backgroundColor: "#EEECD9",
-    minHeight: "100vh",
-    padding: "2rem",
+    padding: "20px",
+    height: "100vh",
+    width: "100vw",
     display: "flex",
     flexDirection: "column",
   };
 
   return (
-    <div style={formBgStyle} className="no-scrollbar">
+    <div style={formBgStyle} className=" min-h-screen bg-cover bg-center bg-no-repeat overflow-x-hidden box-border">
+      <div className="w-full max-w-[1200px] mx-auto  box-border">
       {/* Header */}
       <div
         style={{
@@ -200,37 +222,39 @@ function CompetitionsList() {
           flexWrap: "wrap",
           marginBottom: "1rem",
         }}
-        className="lg:flex-row flex-col"
+        className="flex flex-col lg:flex-row items-center gap-4 justify-between w-full"
       >
         <Link to="/" >
-          <img src={logo} alt="Alcheringa Logo" style={{ height: "50px", cursor: "pointer" }} />
+          <img src={logo} alt="Alcheringa Logo" style={{ height: "50px", cursor: "pointer" }} className="flex-shrink"/>
         </Link>
-
+         <div  className="w-full lg:w-1/2 flex-shrink">
         <ModuleDropdown
           modules={data2}
           selectedModule={selectedModule}
           setSelectedModule={setSelectedModule}
          
-        />
-
+        /></div>
+        <div className="w-full lg:w-1/6 max-w-[360px]">
         <input
           type="text"
           placeholder="Search..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className=" search-input w-full flex flex-col sm:flex-row items-center sm:justify-between gap-3 px-4 sm:px-8 mt-4"
+          className=" searchh-input double-notch-all2 "
           style={{
-            width: 220,
+            backgroundPosition: "center",
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
+            width: 230,
             height: 28,
             padding: "0 8px",
-            borderRadius: 6,
-            border: "2px solid #000",
-            backgroundColor: "#FDF6E3",
-            boxShadow: "0 3px 6px rgba(0,0,0,0.2)",
+            backgroundColor: "#FFD09F",
+            border: "none",
             fontSize: "0.9rem",
             color: "#000",
+            boxShadow: "0 3px 6px rgba(0,0,0,0.2)",
           }}
-        />
+        /></div>
       </div>
 
       {/* Mode Filters */}
@@ -261,9 +285,9 @@ function CompetitionsList() {
       </div>
 
       {/* Competitions Grid */}
-      <div style={{ display: "flex", justifyContent: "center", flexDirection: "column" }}>
-        <div
-          className="competitions-grid flex flex-col lg:flex-wrap gap-4 justify-center lg:justify-start max-w-full overflow-y-auto overscroll-auto no-scrollbar"
+      <div style={{ display: "flex", justifyContent: "center", flexDirection: "column",width:"100vw" }}>
+        <div 
+          className="competitions-grid w-full flex transform scale-100 sm:scale-95 md:scale-90  flex-wrap justify-center lg:justify-center overflow-y-auto overscroll-auto no-scrollbar"
           style={{
             display: "flex",
             flexWrap: "wrap",
@@ -278,19 +302,19 @@ function CompetitionsList() {
             filteredData.map((comp) => (
               <div
                 key={comp.id}
-                className="competition-card"
+                className="competition-card card double-notch-all"
                 style={{
-                  width: "416px",
+                  
+                  width: "390px",
                   height: "281px",
-                  background: comp.image ? `url(${comp.image}) center/cover no-repeat` : "#000",
-                  borderRadius: "12px",
-                  boxShadow: "0 3px 6px rgba(0,0,0,0.2)",
+                  background: comp.image ? `url(${competitions}) center/cover no-repeat ` : "#000",
                   position: "relative",
                   overflow: "hidden",
                   margin: "0.5rem",
                 }}
               >
-                  <div
+               
+                <div
                   className="competition-default"
                   style={{
                     position: "absolute",
@@ -302,17 +326,17 @@ function CompetitionsList() {
                     flexDirection: "column",
                     justifyContent: "space-around",
                     alignItems: "center",
-                    padding: "1rem",
+                   
                     color: "#fff",
-                  
+                    backgroundColor: "rgba(0, 0, 0, 0.4)", // adjust opacity for darkness
                     transition: "opacity 0.3s ease",
                   }}
                 >
-                  <h3 style={{ margin: 0, fontSize: "1.2rem", fontWeight: "bold",display:"flex",color:"#EF5243" }}><img src={flower} alt="Alcheringa Logo" style={{ height: "20px", cursor: "pointer" ,margin:"7px"}} /> {comp.event_name} <img src={flower} alt="Alcheringa Logo" style={{ height: "20px", cursor: "pointer" ,margin:"7px"}} /></h3>
-                  <p className="prize" style={{ margin: 0, fontSize: "0.9rem", textAlign: "center", color:"#000"}}>{comp.event_desc}</p>
-                  <p className="prize" style={{ margin: 0, fontSize: "0.9rem", textAlign: "center", color:"#000"}}>${comp.prize_worth}</p>
+                  <h3 style={{ margin: 0, fontSize: "1.2rem", fontWeight: "bold",display:"flex",color:"#fff" }}><img src={flower} alt="Alcheringa Logo" style={{ height: "20px", cursor: "pointer" ,margin:"7px"}} /> {comp.event_name} <img src={flower} alt="Alcheringa Logo" style={{ height: "20px", cursor: "pointer" ,margin:"7px"}} /></h3>
+                  <p className="prize" style={{ margin: 0, fontSize: "0.9rem", textAlign: "center", color:"#fff"}}>{comp.event_desc}</p>
+                  <p className="prize" style={{ margin: 0, fontSize: "0.9rem", textAlign: "center", color:"#fff"}}>${comp.prize_worth}</p>
 
-                  <DecorativeButton to={`/register/${comp.event_name}`} onClick={() => setSelectedComp(comp)} className = "dec-btn" variant="orange-sm"> Register</DecorativeButton>
+                  <DecorativeButton to={`/register/${comp.event_name}`} onClick={() => setSelectedComp(comp)} className = "dec-btn" variant="orange-sm">Register</DecorativeButton>
                  
                 </div>
               
@@ -389,7 +413,7 @@ function CompetitionsList() {
         </div>
       )}
 
-      <Footer />
+    </div>
     </div>
   );
 }

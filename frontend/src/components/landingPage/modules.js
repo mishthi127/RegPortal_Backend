@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import compimage from "../../assets/competitions.svg";
-
+import DecorativeButton from "../DecorativeButton.js";
 export default function Modules({ module }) {
   const navigate = useNavigate();
   const [competitions, setCompetitions] = useState([]);
@@ -53,21 +53,16 @@ export default function Modules({ module }) {
 
   return (
     <motion.div
-      className="relative inline-block rounded-xl overflow-hidden shadow-lg cursor-pointer"
+      className=" card double-notch-all relative inline-block rounded-xl overflow-hidden shadow-lg cursor-pointer"
+      style={{backgroundImage: `url(${compimage})`, backgroundSize: 'cover', backgroundPosition: 'center',width: 300, height: 380}}
       initial="rest"
       whileHover="hover"
       animate="rest"
       onHoverStart={fetchCompetitions} // fetch competitions on hover
-      style={{ width: 300, height: 380 }}
+      
     >
-      {/* Background image */}
-      <motion.img
-        src={compimage}
-        alt={module.module}
-        className="w-full h-full object-cover"
-        whileHover={{ scale: 1.05 }}
-        transition={{ duration: 0.4 }}
-      />
+     
+      
 
       {/* Overlay */}
       <motion.div
@@ -91,7 +86,7 @@ export default function Modules({ module }) {
           {loading ? (
             <p className="text-sm opacity-90">Loading competitions...</p>
           ) : competitions.length > 0 ? (
-            <ul className="text-sm space-y-1">
+            <ul className="text-sm space-y-1 no-scrollbar" style={{height:"100px",overflow:"scroll"}}>
               {competitions.map((comp) => (
                 <li key={comp.id} className="bg-black/2 rounded-md p-1">
                   {comp.event_name}
@@ -105,15 +100,18 @@ export default function Modules({ module }) {
 
         {/* Explore button */}
         <motion.button
-          className="absolute bottom-6 bg-orange-500 px-5 py-2 rounded-lg font-semibold shadow-md"
+          className="absolute bottom-6 px-4  font-semibold shadow-md"
           variants={buttonVariants}
           onClick={(e) => {
     e.stopPropagation(); // prevent parent click
     navigate("/competitions", { state: { module: module.module } });
   }}
         >
-          EXPLORE
+          <DecorativeButton>Explore</DecorativeButton>
+        
+        
         </motion.button>
+
       </motion.div>
     </motion.div>
   );
