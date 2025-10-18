@@ -13,6 +13,7 @@ import { Pixel } from '../components/landingPage/Pixel';
 import { Footer } from '../components/landingPage/Footer';
 import { FAQS } from '../components/landingPage/FAQS';
 import DecorativeButton from '../components/DecorativeButton';
+import DecoratedButton from '../components/AuthPage/DecoratedButton';
 import ProfileDropdown from '../components/ProfileDropdown';
 
 // Asset Imports
@@ -143,7 +144,7 @@ const LandingPage = () => {
             {isAuthenticated ? (
               <ProfileDropdown user={user} onLogout={handleLogout} onTabClick={handleTabClickFromDropdown}/>
             ) : (
-              <DecorativeButton to="/login" variant="orange-sm">Login</DecorativeButton>
+              <DecoratedButton to="/login" variant="orange-sm">Login</DecoratedButton>
             )}
           </div>
           {/* mobile */}
@@ -181,7 +182,7 @@ const LandingPage = () => {
             {isAuthenticated ? (
               <ProfileDropdown user={user} onLogout={handleLogout} />
             ) : (
-              <DecorativeButton to="/login" variant="orange-sm">Login</DecorativeButton>
+              <DecoratedButton to="/login" variant="orange-sm">Login</DecoratedButton>
             )}
           </div>
           {/* mobile */}

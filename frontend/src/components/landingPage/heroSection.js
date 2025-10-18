@@ -1,12 +1,8 @@
-// src/components/landingPage/heroSection.js
-
-import React from 'react';
-import { motion } from 'framer-motion';
-
-import DecorativeButton from '../AuthPage/DecoratedButton';
-import bottomBorder from '../../assets/bottom-border.svg';
-import backgroundPattern from '../../assets/background-pattern.svg';
-import mbbgpattern from "../../assets/mbbgpatternwh.svg"
+import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import DecorativeButton from "../AuthPage/DecoratedButton";
+import bottomBorder from "../../assets/bottom-border.svg";
+import backgroundPattern from "../../assets/background-pattern.svg";
 import flower from "../../assets/star-filled.svg";
 
 const HeroSection = ({ isAuthenticated }) => {
@@ -14,39 +10,52 @@ const HeroSection = ({ isAuthenticated }) => {
     backgroundImage: `url(${backgroundPattern})`,
     backgroundRepeat: "repeat-y",
     backgroundPosition: "center",
-    backgroundSize: "100% auto",
-  };
-  const bgmainContentStyle = {
-    backgroundImage: `url(${mbbgpattern})`,
-    backgroundRepeat: 'repeat-y',
-    backgroundPosition: 'center',
-    backgroundSize: "100% auto",
+    backgroundSize: "cover",
   };
 
-  // Fixed flower positions, computed once
-  const flowers = React.useMemo(
-    () =>
-      Array.from({ length: 8 }).map((_, i) => ({
-        left: 45 + Math.sin(i * 36) * 15 + Math.random() * 5,
-        top: 35 + Math.cos(i * 36) * 8 + Math.random() * 5,
-        size: 80 + Math.random() * 80,
-        duration: 2 + Math.random(), // faster fade
-        delay: i * 0.15, // stagger
+  // Dynamic, responsive flower positions
+  const [flowers, setFlowers] = useState([]);
+
+  useEffect(() => {
+  const createFlowers = () => {
+    const width = window.innerWidth;
+
+    // Adjust responsiveness
+    const isMobile = width < 640;
+    const isTablet = width >= 640 && width < 1024;
+
+    return Array.from({ length: 8 }).map((_, i) => {
+      // Scale position closer and size smaller on smaller screens
+      const positionScale = isMobile ? 0.6 : isTablet ? 0.85 : 1;
+      const sizeScale = isMobile ? 0.5 : isTablet ? 0.8 : 1;
+
+      return {
         rotateDir: Math.random() > 0.5 ? 1 : -1,
-      })),
-    []
-  );
+        delay: i * 0.15,
+        duration: 2 + Math.random(),
+        // Same pattern as your original but scaled responsively
+        top: `${35 + Math.cos(i * 36) * 8 * positionScale + Math.random() * 3}vh`,
+        left: `${45 + Math.sin(i * 36) * 15 * positionScale + Math.random() * 3}vw`,
+        size: `${(80 + Math.random() * 80) * sizeScale}px`,
+      };
+    });
+  };
+
+  setFlowers(createFlowers());
+
+  // Update flowers on window resize
+  const handleResize = () => setFlowers(createFlowers());
+  window.addEventListener("resize", handleResize);
+  return () => window.removeEventListener("resize", handleResize);
+}, []);
 
   return (
     <div className="text-alch-cream overflow-hidden">
-      <main className="relative flex flex-col justify-center items-center text-center min-h-[70vh] py-24 sm:py-32">
+      <main className="relative flex flex-col justify-center items-center text-center min-h-screen py-16 sm:py-24 md:py-32">
         {/* Dark background with pattern */}
-        <div
-          className="absolute inset-0 bg-alch-dark"
-          style={mainContentStyle}
-        ></div>
+        <div className="absolute inset-0 bg-alch-dark" style={mainContentStyle}></div>
 
-        {/* Flowers appearing and disappearing naturally */}
+        {/* Flowers */}
         <div className="absolute inset-0 w-full h-full pointer-events-none">
           {flowers.map((f, i) => (
             <motion.img
@@ -55,7 +64,7 @@ const HeroSection = ({ isAuthenticated }) => {
               alt="flower"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{
-                opacity: [0, 0.7, 0], // fade in and out
+                opacity: [0, 0.7, 0],
                 scale: [0.9, 1.1, 0.95],
                 translateY: [0, -8, 0],
                 rotate: [0, 5 * f.rotateDir, -5 * f.rotateDir, 0],
@@ -67,8 +76,8 @@ const HeroSection = ({ isAuthenticated }) => {
               }}
               style={{
                 position: "absolute",
-                top: `${f.top}%`,
-                left: `${f.left}%`,
+                top: f.top,
+                left: f.left,
                 width: f.size,
                 height: f.size,
                 transform: "translate(-50%, -50%)",
@@ -78,7 +87,7 @@ const HeroSection = ({ isAuthenticated }) => {
           ))}
         </div>
 
-        {/* Text appears after flowers start fading */}
+        {/* Text */}
         <motion.h1
           initial={{ opacity: 0, scale: 0.85 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -111,6 +120,7 @@ const HeroSection = ({ isAuthenticated }) => {
         </motion.div>
       </main>
 
+      {/* Footer */}
       <footer className="bg-alch-cream py-4">
         <img src={bottomBorder} alt="Decorative Footer Border" className="w-full" />
         <img src={bottomBorder} alt="Decorative Footer Border" className="w-full transform scale-y-[-1]" />

@@ -46,7 +46,7 @@ const AfterMovieSection = () => {
           className="max-w-4xl mx-auto"
         >
           {/* FINAL BORDER: Built with 4 positioned divs */}
-          <div className="relative p-4"> {/* Padding creates space for the border */}
+          <div className="relative p-6"> {/* Padding creates space for the border */}
             
             {/* The video player sits inside the padded area */}
             <div className="relative pt-[56.25%] bg-black rounded-2xl overflow-hidden">
