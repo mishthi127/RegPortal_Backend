@@ -5,6 +5,7 @@ import addformbg from "../../assets/backflowers.svg";
 import addbottom1 from "../../assets/bottomcompborder.svg";
 import pentagonborder from "../../assets/pentagonborder.svg";
 import Modulename from "../../assets/modulename.svg";
+import middle_line from "../../assets/Middle_line.svg";
 
 export function CompModules() {
   const [modulesFromBackend, setModulesFromBackend] = useState([]);
@@ -93,8 +94,13 @@ export function CompModules() {
         )}
       </div>
 
-      <div className="h-12 w-full" style={formbottom}></div>
-      <div style={formbottompentagon} className="h-10 w-full bg-black"></div>
+      <img src={addbottom1} alt="Decorative Footer Border" className="w-full" />
+      <div className="bg-alch-dark">
+        <img src={middle_line} alt="Decorative Footer Border" className="w-full" />
+        <div  className="h-10 w-full mx-auto flex items-center bg-black mt-[5px]">
+          <img src={pentagonborder} className="w-full h-full " alt="pentagon" />
+        </div>
+       </div>
     </div>
   );
 }

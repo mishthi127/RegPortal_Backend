@@ -87,11 +87,16 @@ body {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none;    /* Firefox */
 }
+<<<<<<< HEAD
 /* ADD THIS RULE FOR THE SWIPER FIX */
 .swiper-wrapper {
   /* This forcefully ensures all slides stretch to match the tallest one */
   align-items: stretch !important;
 }
+=======
+
+<<<<<<< HEAD
+>>>>>>> origin/main
 /* Hide scrollbar but still allow scrolling */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
@@ -101,3 +106,24 @@ body {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;     /* Firefox */
 }
+<<<<<<< HEAD
+=======
+=======
+@layer utilities {
+  input:-webkit-autofill,
+  textarea:-webkit-autofill,
+  select:-webkit-autofill {
+    /* Remove Chrome autofill background */
+    -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
+    box-shadow: 0 0 0px 1000px transparent inset !important;
+
+    /* Keep text color normal */
+    -webkit-text-fill-color: inherit !important;
+
+    /* Prevent delayed recolor animation */
+    transition: background-color 9999s ease-in-out 0s;
+  }
+}
+
+>>>>>>> 89e01ecb9db44f729a18ceae27f6c481495209c0
+>>>>>>> origin/main

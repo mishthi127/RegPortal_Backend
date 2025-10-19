@@ -1,11 +1,13 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
+from django.conf import settings
+from django.conf.urls.static import static
 from .views import (
     RegisterView, VerifyOTPView, LoginView, ProfileView, homepage, ParticipantviewSet,
     google_complete_profile, complete_profile, google_login,
     TeamMembersViewSet, TeamViewSet, PriceViewSet,
     # Import the new views for password reset
-    ForgotPasswordView, ResetPasswordConfirmView
+    ForgotPasswordView, ResetPasswordConfirmView,ProfileUpdateView
 )
 
 Participant_list =  ParticipantviewSet.as_view({
@@ -40,6 +42,10 @@ urlpatterns = [
     path('reset-password-confirm/', ResetPasswordConfirmView.as_view(), name='reset-password-confirm'),
 
     path('profile/', ProfileView.as_view(), name='profile'),
+    
+    # +++ START: ADDED FOR EDIT PROFILE +++
+    path('auth/edit-profile/', ProfileUpdateView.as_view(), name='edit-profile'),
+    # +++ END: ADDED FOR EDIT PROFILE +++
 
     # Google authentication
     path('accounts/', include('allauth.urls')),
@@ -52,3 +58,6 @@ urlpatterns = [
     path('Participant/',  Participant_list, name=' Participant-list'),
     path('Participant/<uuid:pk>/',  Participant_detail, name=' Participant-detail'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
