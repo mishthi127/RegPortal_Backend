@@ -5,6 +5,8 @@ import axiosInstance from "../../utils/axiosInstance"; // Using the custom axios
     import lotus from "../../assets/lotus.svg"
     import flower from "../../assets/heading-icon-red.svg"
     import "../media.css";
+    import DecorativeButton from "../AuthPage/DecoratedButton";
+
 
     export function Pixel() {
         const token = localStorage.getItem("access"); // check login
@@ -290,7 +292,7 @@ import axiosInstance from "../../utils/axiosInstance"; // Using the custom axios
                             ))}
                             
                             {( yourturn &&
-                                <div className="flex justify-center items-center gap-[10px] absolute  w-full h-full text-[#EF5243] text-center font-modernoir text-[16px]  lg:text-[60px] font-extrabold">
+                                <div className="flex justify-center items-center gap-[10px] absolute  w-full h-full text-[#EF5243] text-center font-display text-[16px]  lg:text-[60px] font-extrabold">
                                     <img className="w-[10px] lg:w-[30px]" src={flower} alt="flower"/>
                                     <p className="" >Now it’s your turn</p>
                                     <img className="w-[10px] lg:w-[30px]" src={flower} alt="flower"/>
@@ -336,28 +338,38 @@ import axiosInstance from "../../utils/axiosInstance"; // Using the custom axios
                         </div>
                     </div>
                     <div className="relative h-[46px] mt-[10px] lg:mt-[50px] flex justify-center items-center">
-                        {/* Explore button */}
-                        <div
-                            className={`absolute transition-opacity duration-500 ${
-                            animationstart ? "opacity-0 pointer-events-none" : "opacity-100"
-                            } lg:w-[200px] w-[80px] h-[30px] lg:h-[46px] flex justify-center items-center font-sans font-bold lg:text-base text-[6.8px] lg:text-[15px] cursor-pointer`}
-                            style={{ backgroundImage: "url('/explorebg.png')", backgroundSize: "contain", backgroundPosition: "center", backgroundRepeat: "no-repeat" }}
-                            onClick={() => animation()}
-                        >
-                            Explore the Fun Side
-                        </div>
+                        <div className="relative h-[46px] mt-[10px] lg:mt-[50px] flex justify-center items-center">
 
+                   {/* Explore button */}
+                   <div
+                     className={`absolute transition-opacity duration-500 ${
+                       animationstart ? "opacity-0 pointer-events-none" : "opacity-100"
+                     } lg:w-[200px] w-[80px] h-[30px] lg:h-[46px] flex justify-center items-center`}
+                   >
+                     <DecorativeButton
+                       className="w-full h-full font-sans font-bold lg:text-base text-[6.8px] lg:text-[15px]"
+                       onClick={animation}
+                     >
+                       Explore the Fun 
+                     </DecorativeButton>
+                   </div>
+                 
+                   {/* Submit button */}
+                   <div
+                     className={`absolute transition-opacity duration-500 ${
+                       animationdone ? "opacity-100" : "opacity-0 pointer-events-none"
+                     } lg:w-[116.29px] w-[50px] h-[19px] lg:h-[46px] flex justify-center items-center`}
+                   >
+                     <DecorativeButton
+                       className="w-full h-full font-sans font-bold text-[8px] lg:text-[15px] lg:text-base"
+                       onClick={submit}
+                     >
+                       Submit
+                     </DecorativeButton>
+                   </div>
+                 
+                 </div>
 
-                        {/* Submit button */}
-                        <div
-                            className={`absolute transition-opacity duration-500 ${
-                            animationdone ? "opacity-100" : "opacity-0 pointer-events-none"
-                            } lg:w-[116.29px] w-[50px] h-[19px] lg:h-[46px] flex justify-center items-center font-sans font-bold text-[8px] lg:text-[15px] lg:text-base cursor-pointer`}
-                            style={{ backgroundImage: "url('/Submit.png')", backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat" }}
-                            onClick={() => submit()}
-                        >
-                            Submit
-                        </div>
                     </div>
                     <img className="w-[100%] h-[10.94px] lg:h-[40px] mt-[47px] lg:mt-auto" src="/image131.png" alt="image131"/>
             </div>

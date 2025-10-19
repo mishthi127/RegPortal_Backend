@@ -88,6 +88,41 @@ body {
   scrollbar-width: none;    /* Firefox */
 }
 
+/* ---------- Flower rotation helpers ---------- */
+@layer utilities {
+  .flower-rotating {
+    @apply animate-flower-spin;
+    transform-origin: center;
+    transform-box: fill-box;
+  }
+
+  .flower-rotating-slow {
+    @apply animate-flower-spin-slow;
+    transform-origin: center;
+    transform-box: fill-box;
+  }
+
+  .flower-breathe {
+    @apply animate-flower-breathe;
+    transform-origin: center;
+    transform-box: fill-box;
+  }
+
+  img[src*="star-filled.svg"],
+  img[src*="star-empty.svg"],
+  img[src*="flower.svg"],
+  img[src*="star-filled"],
+  img[src*="heading-icon-red"],
+  img[src*="star-empty"] {
+    @apply animate-flower-spin;
+    transform-origin: center;
+    transform-box: fill-box;
+  }
+
+  .no-spin {
+    animation: none !important;
+  }
+}
 /* Hide scrollbar but still allow scrolling */
 .no-scrollbar::-webkit-scrollbar {
   display: none;

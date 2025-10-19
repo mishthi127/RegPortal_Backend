@@ -14,7 +14,7 @@ export const FAQS = forwardRef((props, ref) => {
 
     return(
         <div className="h-auto w-full  flex flex-col" ref={ref}>
-            <div className=" flex justify-center items-center mt-[20px] gap-[10px]  text-center font-modernoir text-4xl sm:text-5xl font-extrabold text-alch-dark">
+            <div className=" flex justify-center items-center mt-[20px] gap-[10px]  text-center font-display text-4xl sm:text-5xl font-extrabold text-alch-dark">
                 
                     <img src={flower} alt="red"/>
                     FAQS

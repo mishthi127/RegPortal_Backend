@@ -32,7 +32,7 @@ export function Footer({ scrollToFAQ, scrollToTestimonials, scrollToComp ,ref })
                                     <div className='flex flex-row justify-center items-center gap-[10px] h-[69px]'>
                                         <img className="w-[37.99px] h-[43.71px]" src={logo} alt="logo"/>
                                         <div className='text-alch-cream  h-[65.83px] flex flex-col justify-center'>
-                                            <p className='font-modernoir font-bold text-[37.99px] h-[42px] leading-none'>ALCHERINGA</p>
+                                            <p className='font-display font-bold text-[37.99px] h-[42px] leading-none'>ALCHERINGA</p>
                                             <p className='font-sans h-[27px]  font-normal text-[18.99px] leading-none self-end'>IIT GUWAHATI</p>
                                         </div>
                                     </div>    
