@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import ShowAllCompetitionsView, RegisterCompetitionView, CompetitionDetailView, CompetitionViewSet
+from .views import ShowAllCompetitionsView, RegisterCompetitionView, CompetitionDetailView, CompetitionViewSet, MyRegisteredCompetitionsView
 
 router = DefaultRouter()
 router.register(r'competitions', CompetitionViewSet, basename='competition')
@@ -14,6 +14,9 @@ urlpatterns = [
 
     # Register team for competition
     path('register-competition/', RegisterCompetitionView.as_view(), name='register_competition'),
+    
+    # My registered competitions
+    path('my-registered-competitions/', MyRegisteredCompetitionsView.as_view(), name='my_registered_competitions'),
 
     # Include router URLs
     path('', include(router.urls)),

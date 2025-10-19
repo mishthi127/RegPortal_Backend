@@ -17,6 +17,8 @@ import LoginIcon from "./assets/login-icon.svg";
 const RegisterPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [competition, setCompetition] = useState(null);
+
 
   const [formData, setFormData] = useState({
     teamVideo: "",
@@ -29,6 +31,27 @@ const RegisterPage = () => {
   const [guidelinesOpen, setGuidelinesOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+  const fetchCompetition = async () => {
+    try {
+      const token = localStorage.getItem("access");
+      const res = await fetch(`http://127.0.0.1:8000/api/competitions/${id}/`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      if (!res.ok) throw new Error("Failed to fetch competition data");
+      const data = await res.json();
+      setCompetition(data); // ✅ sets the competition state
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  fetchCompetition();
+}, [id]);
 
 
   const handleChange = (e) =>
@@ -65,8 +88,9 @@ const RegisterPage = () => {
       }
 
       const response = await fetch(
-        `http://127.0.0.1:8000/api/competitions/${id}`,
+      "http://127.0.0.1:8000/api/register-competition/",
         {
+        method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
@@ -104,7 +128,7 @@ const RegisterPage = () => {
         JSON.stringify([...stored, newEntry])
       );
 
-      navigate("/my-registered-competitions");
+      navigate("/my-competitions");
     } catch (err) {
       setError(err.message || "Something went wrong.");
     } finally {
@@ -190,13 +214,23 @@ const RegisterPage = () => {
           <div className="flex items-start justify-between flex-wrap gap-4 mb-3">
             <div>
               {/* //<h2 className="text-2xl font-bold flex items-center gap-2"> */}
-                <img src={CompNameIcon} alt="" className="h-8" />
+                <h2 className="text-2xl font-bold flex items-center gap-2">
+                {competition?.event_name || "Loading..."}
+              </h2>
                 
               {/*</h2>*/}
-              <p className="text-sm text-gray-600 mt-1">MODULE</p>
+              <p className="text-sm text-gray-600 mt-1"></p>
               <div className="flex items-center gap-3 mt-1">
-                <img src={GroupSoloIcon} alt="" className="h-6" />
-                <img src={OnGroundIcon} alt="" className="h-6" />
+                <div className="flex items-center gap-3 mt-1">
+                  <span className="text-sm text-gray-700">
+                    {competition?.solo_or_group || "N/A"}
+                  </span>
+
+                  <span className="text-sm text-gray-700">
+                    {competition?.event_mode === "true" ? "Online" : "Offline"}
+                  </span>
+                </div>
+
               </div>
             </div>
 
@@ -217,14 +251,14 @@ const RegisterPage = () => {
               {guidelinesOpen && (
                 <div className="absolute right-0 top-full mt-2 bg-[#111] text-white w-72 rounded-lg p-4 text-sm z-40 shadow-xl border border-[#333]">
                   <h3 className="text-base font-semibold mb-2">
-                    Competition Guidelines
+                    {competition?.event_rules}
                   </h3>
-                  <ol className="list-decimal list-inside space-y-1">
+                  {/* <ol className="list-decimal list-inside space-y-1">
                     <li>Complete your profile before registration.</li>
                     <li>Add all members to your team.</li>
                     <li>Provide a valid performance link.</li>
                     <li>Follow all time limits strictly.</li>
-                  </ol>
+                  </ol> */}
                   <div className="mt-4 flex justify-end">
                     <button
                       className="bg-[#f79b2b] hover:bg-[#f58e1f] text-black px-4 py-1.5 rounded"
@@ -240,9 +274,7 @@ const RegisterPage = () => {
 
           {/* Short Description */}
           <p className="text-sm text-gray-700 mb-6 max-w-3xl">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry’s standard dummy text
-            ever since the 1500s.
+            {competition?.event_desc}
           </p>
 
           {/* Form */}

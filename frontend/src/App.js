@@ -22,7 +22,7 @@ import ForgotPasswordPage from './pages/ForgotPasswordPage.js';
 import NotFoundPage from './pages/NotFoundPage.js';
 
 import MyRegisteredCompetitions from "./pages/MyRegisteredCompetitions";
-import CompetitionsList from './components/landingPage/competitionsList';
+import CompetitionsList from './CompetitionsPage.js';
 //import CompetitionModal from './CompetitionModal';
 //import CompetitionRegistration from './CompetitionRegistration';
 

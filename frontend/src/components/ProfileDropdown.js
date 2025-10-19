@@ -44,7 +44,7 @@ const ProfileDropdown = ({ user, onLogout }) => {
           <Link to="/team" className="block px-4 py-2 text-sm text-alch-cream hover:bg-alch-red">
             Team Members
           </Link>
-          <Link to="/registrations" className="block px-4 py-2 text-sm text-alch-cream hover:bg-alch-red">
+          <Link to="/my-competitions" className="block px-4 py-2 text-sm text-alch-cream hover:bg-alch-red">
             My Registrations
           </Link>
           <div className="border-t border-alch-cream/20 my-1"></div>

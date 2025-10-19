@@ -87,3 +87,17 @@ body {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none;    /* Firefox */
 }
+/* ADD THIS RULE FOR THE SWIPER FIX */
+.swiper-wrapper {
+  /* This forcefully ensures all slides stretch to match the tallest one */
+  align-items: stretch !important;
+}
+/* Hide scrollbar but still allow scrolling */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+}

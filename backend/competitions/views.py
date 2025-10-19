@@ -12,14 +12,30 @@ from .serializers import (
 )
 
 # ------------------------------
-# Existing View (kept as is)
+# FIXED Competition Detail View (GET only)
 # ------------------------------
 
 class CompetitionDetailView(generics.RetrieveAPIView):
+    """
+    Used to fetch a single competition by ID (GET request).
+    Example: GET /api/competitions/<uuid:pk>/
+    """
     queryset = Competition.objects.all()
     serializer_class = CompetitionSerializer
+    
+    
+class MyRegisteredCompetitionsView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        teams = CompTeam.objects.filter(leader=request.user)
+        serializer = CompTeamSerializer(teams, many=True)
+        return Response(serializer.data)
 
 
+# ------------------------------
+# Existing view: show all competitions (kept as is)
+# ------------------------------
 class ShowAllCompetitionsView(APIView):
     permission_classes = [AllowAny]
 
@@ -111,7 +127,7 @@ class RegisterCompetitionView(APIView):
             "event": str(competition.id),
             "leader": str(request.user.id),
             "team_name": request.data.get('team_name', "Untitled Team"),
-            "members": request.data.get('team_members', []),  # Ensure matches your serializer field
+            "team_members": request.data.get('team_members', []),  # ✅ fixed field name
         }
 
         # Step 4: Validate and save
