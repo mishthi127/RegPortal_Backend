@@ -35,7 +35,7 @@
 @font-face {
   font-family: 'TT Modernoir';
   src: url('./fonts/TT_Modernoir_Trial_Light.ttf') format('truetype');
-  font-weight: 700;/* Bold */
+  font-weight: 700;/* Bold */
 }
 
 
@@ -88,7 +88,41 @@ body {
   scrollbar-width: none;    /* Firefox */
 }
 
-<<<<<<< HEAD
+/* ---------- Flower rotation helpers ---------- */
+@layer utilities {
+  .flower-rotating {
+    @apply animate-flower-spin;
+    transform-origin: center;
+    transform-box: fill-box;
+  }
+
+  .flower-rotating-slow {
+    @apply animate-flower-spin-slow;
+    transform-origin: center;
+    transform-box: fill-box;
+  }
+
+  .flower-breathe {
+    @apply animate-flower-breathe;
+    transform-origin: center;
+    transform-box: fill-box;
+  }
+
+  img[src*="star-filled.svg"],
+  img[src*="star-empty.svg"],
+  img[src*="flower.svg"],
+  img[src*="star-filled"],
+  img[src*="heading-icon-red"],
+  img[src*="star-empty"] {
+    @apply animate-flower-spin;
+    transform-origin: center;
+    transform-box: fill-box;
+  }
+
+  .no-spin {
+    animation: none !important;
+  }
+}
 /* Hide scrollbar but still allow scrolling */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
@@ -98,7 +132,6 @@ body {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;     /* Firefox */
 }
-=======
 @layer utilities {
   input:-webkit-autofill,
   textarea:-webkit-autofill,
@@ -114,5 +147,3 @@ body {
     transition: background-color 9999s ease-in-out 0s;
   }
 }
-
->>>>>>> 89e01ecb9db44f729a18ceae27f6c481495209c0
