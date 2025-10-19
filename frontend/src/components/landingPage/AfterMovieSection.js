@@ -29,7 +29,7 @@ const AfterMovieSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.8 }}
-          className="flex items-center justify-center text-center font-modernoir font-extrabold text-alch-dark mb-12"
+          className="flex items-center justify-center text-center font-display font-extrabold text-alch-dark mb-12"
         >
           <img src={headingIconRed} alt="Decorative Icon" className="h-5 sm:h-6" />
           <span className="whitespace-nowrap px-3 font-extrabold text-[25px] lg:text-[48px]">
@@ -46,7 +46,7 @@ const AfterMovieSection = () => {
           className="max-w-4xl mx-auto"
         >
           {/* FINAL BORDER: Built with 4 positioned divs */}
-          <div className="relative p-4"> {/* Padding creates space for the border */}
+          <div className="relative p-6"> {/* Padding creates space for the border */}
             
             {/* The video player sits inside the padded area */}
             <div className="relative pt-[56.25%] bg-black rounded-2xl overflow-hidden">
