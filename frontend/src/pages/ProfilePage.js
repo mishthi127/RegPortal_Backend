@@ -348,8 +348,8 @@ if (alternate_phone && !phoneRegex.test(alternate_phone)) {
        {/* END: New image block */}
 
         <div className="flex-grow">
-      <h3 className="text-xl font-bold">{formData.fullname}</h3>
-      <p className="text-gray-500 text-sm">{profileData.email}</p>
+          <h3 className="text-xl font-bold">{formData.fullname}</h3>
+          <p className="text-gray-500 text-sm">{profileData.email}</p>
          </div>
          </div>
                 <hr className="my-6 border-gray-300" />

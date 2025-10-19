@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { data, useNavigate } from 'react-router-dom';
 import { Alert } from './Alert';
 import axios from 'axios';
 import background from '../assets/bg_add.svg';
@@ -19,6 +19,7 @@ import mbserach from "../assets/mbsearch.svg";
 import mbaddforminpbg from "../assets/mbaddforminpbg.svg";
 import mbmembg from "../assets/mbmembg.svg";
 import mbaddmem from "../assets/mbaddmem.svg";
+import authorPlaceholder from "../assets/author-placeholder.png";
 
 export function AddMembers(){
     const scrollRef = useRef(null);
@@ -55,7 +56,33 @@ export function AddMembers(){
         .get(`http://localhost:8000/profile/`, {
             headers: { Authorization: `Bearer ${token}` },
         })
-        .then((res) => setProfile(res.data))
+        .then((res) => {
+
+            let pic;
+            // Priority 1: User has a manually uploaded image that isn't the DB default.
+            if (res.data.img && !res.data.img.includes('user-default.png')) {
+                pic = res.data.img;
+            } 
+            // Priority 2: User signed up with Google and has a Google picture URL.
+            else if (res.data.provider === 'google' && res.data.profile_pic_url) {
+                pic = res.data.profile_pic_url;
+            } 
+            // Priority 3: Fallback for manual sign-ups or any other case.
+            else {
+                pic = authorPlaceholder;
+            }
+
+            const dataFromApi = {
+                ...res.data,
+                profilePic: pic,
+                // Ensure phone numbers are empty strings if null
+                phone_number: res.data.phone_number || "",
+                alternate_phone: res.data.alternate_phone || "",
+            };
+
+            setProfile(dataFromApi);
+        
+        })
         .catch(() => setMessage('Failed to load profile.'));
     }, []);
 
@@ -714,7 +741,7 @@ export function AddMembers(){
             }
 
             <div 
-                className='lg:h-full lg:w-full h-[952px] w-[371px] flex items-center lg:justify-center flex-col'
+                className='lg:h-full lg:w-full h-auto w-[371px] flex items-center lg:justify-center flex-col'
                 // style={headerBgStyle}
             >
                     <div className=' w-[100%] flex items-center justify-center'>

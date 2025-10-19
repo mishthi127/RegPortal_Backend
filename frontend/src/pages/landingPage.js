@@ -87,7 +87,30 @@ const LandingPage = () => {
     if (token) {
       axiosInstance.get('/profile/')
         .then(res => {
-          setUser(res.data);
+        // +++ START: THIS IS THE LOGIC TO CHANGE +++
+                let pic;
+                // Priority 1: User has a manually uploaded image that isn't the DB default.
+                if (res.data.img && !res.data.img.includes('user-default.png')) {
+                  pic = res.data.img;
+                } 
+                // Priority 2: User signed up with Google and has a Google picture URL.
+                else if (res.data.provider === 'google' && res.data.profile_pic_url) {
+                  pic = res.data.profile_pic_url;
+                } 
+                // Priority 3: Fallback for manual sign-ups or any other case.
+                else {
+                  pic = authorPlaceholder;
+                }
+                // +++ END: LOGIC CHANGE +++
+
+          const dataFromApi = {
+            ...res.data,
+            profilePic: pic,
+            // Ensure phone numbers are empty strings if null
+            phone_number: res.data.phone_number || "",
+            alternate_phone: res.data.alternate_phone || "",
+          };
+          setUser(dataFromApi);
           setIsAuthenticated(true);
         })
         .catch(err => {
