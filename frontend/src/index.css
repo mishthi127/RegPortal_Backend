@@ -88,17 +88,6 @@ body {
   scrollbar-width: none;    /* Firefox */
 }
 
-<<<<<<< HEAD
-/* Hide scrollbar but still allow scrolling */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-
-.no-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;     /* Firefox */
-}
-=======
 @layer utilities {
   input:-webkit-autofill,
   textarea:-webkit-autofill,
@@ -115,4 +104,3 @@ body {
   }
 }
 
->>>>>>> 89e01ecb9db44f729a18ceae27f6c481495209c0
