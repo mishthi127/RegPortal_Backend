@@ -54,6 +54,8 @@ const ProfileDropdown = ({ user, onLogout, onTabClick }) => {
             className="block w-full text-left px-4 py-2 text-sm text-alch-cream hover:bg-alch-red"
           >
             Team Members
+        
+          <Link to="/my-competitions" className="block px-4 py-2 text-sm text-alch-cream hover:bg-alch-red"> </Link>
           </button>
 
           <button

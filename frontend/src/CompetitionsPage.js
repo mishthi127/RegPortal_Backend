@@ -274,16 +274,19 @@ function CompetitionsList() {
                     <p className="prize" style={{ margin: 0, fontSize: "0.9rem", textAlign: "center", color:"#fff"}}>{comp.event_desc}</p>
                     <p className="prize" style={{ margin: 0, fontSize: "0.9rem", textAlign: "center", color:"#fff"}}>${comp.prize_worth}</p>
 
-                    <DecorativeButton to={`/register/${comp.event_name}`} onClick={() => setSelectedComp(comp)} className = "dec-btn" variant="orange-sm">Register</DecorativeButton>
-                  
-                  </div>   
+                  <DecorativeButton to={`/register/${comp.id}`} onClick={() => setSelectedComp(comp)} className = "dec-btn" variant="orange-sm"> Register</DecorativeButton>
+                 
                 </div>
-              ))
-            ) : (
-              <p>No competitions found.</p>
-            )}
-          </div>
+              
+                    
+          
+              </div>
+            ))
+          ) : (
+            <p>No competitions found.</p>
+          )}
         </div>
+      </div>
 
         {/* Details Modal (first step) */}
         {selectedComp && (
