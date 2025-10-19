@@ -36,6 +36,7 @@ const LandingPage = () => {
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const faqRef = useRef(null);
+  const compRef = useRef(null);
   const testimonialRef = useRef(null);
   const footerRef = useRef(null);
   const [openindex, setOpenindex] = useState([]);
@@ -65,6 +66,13 @@ const LandingPage = () => {
 
   const scrollToFooter = () => {
     footerRef.current?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center',
+    });
+  };
+
+  const scrollToComp = () => {
+    compRef.current?.scrollIntoView({
       behavior: 'smooth',
       block: 'center',
     });
@@ -226,8 +234,10 @@ const LandingPage = () => {
       </div>
 
       {/* Page Content */}
-      <HeroSection isAuthenticated={isAuthenticated} />
-      <CompModules />
+      <div className='landingbg'>
+        <HeroSection isAuthenticated={isAuthenticated} />
+        <CompModules ref={compRef}/>
+      </div>
       <Pixel />
       
         <div
@@ -236,7 +246,7 @@ const LandingPage = () => {
             <AfterMovieSection />
             <TestimonialsSection ref={testimonialRef}/>
             <FAQS ref={faqRef}/>
-            <Footer scrollToFAQ={scrollToFAQ} scrollToTestimonials={scrollToTestimonials} ref={footerRef}/>
+            <Footer scrollToFAQ={scrollToFAQ} scrollToTestimonials={scrollToTestimonials} scrollToComp={scrollToComp} ref={footerRef}/>
         </div> 
     </div>
   );

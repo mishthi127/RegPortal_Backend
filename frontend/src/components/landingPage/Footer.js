@@ -3,7 +3,7 @@ import logo from "../../assets/logo.svg";
 import phone from "../../assets/phonecall.svg";
 import "../media.css";
 
-export function Footer({ scrollToFAQ, scrollToTestimonials, ref }){
+export function Footer({ scrollToFAQ, scrollToTestimonials, scrollToComp ,ref }){
     return(
         <div className="h-[890px] bg-transparent flex flex-col" ref={ref}>
             
@@ -60,7 +60,7 @@ export function Footer({ scrollToFAQ, scrollToTestimonials, ref }){
                             <h1 className="h-[35] font-medium text-[32px] leading-[110.00000000000001%] tracking-[0.05em] mb-[24px] lg:mb-[10px]">LINKS</h1>
                             <ul className="h-[95px] font-bold text-sm leading-[140%] tracking-[0.02em]">
                                 <button className='mt-[10px] cursor-pointer'>About us</button>
-                                <button className='mt-[10px] cursor-pointer'>Modules and Competitions</button>
+                                <button className='mt-[10px] cursor-pointer' onClick={scrollToComp}>Modules and Competitions</button>
                                 <button className='mt-[10px] cursor-pointer' onClick={scrollToTestimonials}>Testimonials</button><br/>
                                 <button className='mt-[10px] cursor-pointer' onClick={scrollToFAQ}>FAQs</button>
                             </ul>

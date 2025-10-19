@@ -1,37 +1,15 @@
-import { useEffect, useState } from "react";
+import { forwardRef, useEffect, useState } from "react";
 import Modules from "./modules"; // your module card component
 import { motion } from "framer-motion";
-import addformbg from "../../assets/backflowers.svg";
+import addformbg from "../../assets/background-pattern.svg";
 import addbottom1 from "../../assets/bottomcompborder.svg";
 import pentagonborder from "../../assets/pentagonborder.svg";
 import Modulename from "../../assets/modulename.svg";
 import middle_line from "../../assets/Middle_line.svg";
 
-export function CompModules() {
+export const CompModules = forwardRef((props, ref) => {
   const [modulesFromBackend, setModulesFromBackend] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const formBgStyle = {
-    backgroundImage: `url(${addformbg})`,
-    backgroundPosition: "center",
-    backgroundSize: "cover",
-    backgroundRepeat: "no-repeat",
-    backgroundColor: "#EEECD9",
-  };
-  const formbottom = {
-    backgroundImage: `url(${addbottom1})`,
-    backgroundPosition: "center",
-    backgroundSize: "cover",
-    backgroundRepeat: "no-repeat",
-    backgroundColor: "#EEECD9",
-  };
-  const formbottompentagon = {
-    backgroundImage: `url(${pentagonborder})`,
-    backgroundPosition: "center",
-    backgroundSize: "cover",
-    backgroundRepeat: "no-repeat",
-    backgroundColor: "#000",
-  };
 
   // Fetch modules from backend
   useEffect(() => {
@@ -68,7 +46,29 @@ export function CompModules() {
   };
 
   return (
-    <div style={formBgStyle} className="no-scrollbar" >
+    <div className="no-scrollbar" ref={ref}>
+      {/* <div className="flex flex-row items-center justify-between mx-[84px] mb-[170px] mt-[140px]">
+        <div className="text-center">
+          <p className="font-sans font-extrabolt text-[48px]">140k+</p>
+          <p className="font-sans font-normal text-[24px]">Footfall</p>
+        </div>
+        <div className="text-center">
+          <p className="font-sans font-extrabolt text-[48px]">100+</p>
+          <p className="font-sans font-normal text-[24px]">Events</p>
+        </div>
+        <div className="text-center">
+          <p className="font-sans font-extrabolt text-[48px]">3000k+</p>
+          <p className="font-sans font-normal text-[24px]">Participants</p>
+        </div>
+        <div className="text-center">
+          <p className="font-sans font-extrabolt text-[48px]">500+</p>
+          <p className="font-sans font-normal text-[24px]">College</p>
+        </div>
+        <div className="text-center">
+          <p className="font-sans font-extrabolt text-[48px]">45+</p>
+          <p className="font-sans font-normal text-[24px]">Competitions</p>
+        </div>
+      </div> */}
       <div className="flex justify-center items-center no-scrollbar" >
         <img src={Modulename} alt="modulename" />
       </div>
@@ -103,6 +103,5 @@ export function CompModules() {
        </div>
     </div>
   );
-}
+})
 
-export default CompModules;

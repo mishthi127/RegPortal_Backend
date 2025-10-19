@@ -741,7 +741,7 @@ export function AddMembers(){
                                 >   
                                     <div className='lg:w-[95%] lg:h-[38px] w-[315.55px] h-[38px] flex justify-between items-center'>
                                         <div className='flex justify-between items-center gap-[17px]'>
-                                            <img src={profilepic} alt='profile' className='w-[32.11px] h-[32.11px]'/>
+                                            <img src={profile?.profilePic || profilepic} alt='profile' className='w-[32.11px] h-[32.11px]'/>
                                             <div className='h-[38px] flex flex-col justify-between'>
                                                 <p className='font-sans font-semibold text-[16px] leading-[100%] tracking-[0px]'>
                                                     {profile ? profile.fullname.toUpperCase() : "Loading..."}
@@ -764,7 +764,7 @@ export function AddMembers(){
                                 >   
                                     <div className='w-[300px] h-[38px] flex justify-between items-center'>
                                         <div className='flex justify-between items-center gap-[17px]'>
-                                            <img src={profilepic} alt='profile' className='w-[32.11px] h-[32.11px]'/>
+                                            <img src={profile?.profilePic || profilepic} alt='profile' className='w-[32.11px] h-[32.11px]'/>
                                             <div className='h-[30px] flex flex-col justify-between'>
                                                 <p className='font-sans font-semibold text-[14px] leading-[100%] tracking-[0px]'>
                                                     {profile ? profile.fullname.toUpperCase() : "Loading..."}

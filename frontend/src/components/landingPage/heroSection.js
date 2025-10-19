@@ -7,6 +7,7 @@ import DecorativeButton from '../AuthPage/DecoratedButton';
 import bottomBorder from '../../assets/bottom-border.svg';
 import backgroundPattern from '../../assets/background-pattern.svg';
 import mbbgpattern from "../../assets/mbbgpatternwh.svg"
+import middle_line from "../../assets/Middle_line.svg";
 
 const HeroSection = ({ isAuthenticated }) => {
   const mainContentStyle = {
@@ -58,8 +59,11 @@ const HeroSection = ({ isAuthenticated }) => {
           </motion.div>
         </div>
       </main>
-
-      <footer className="bg-alch-cream py-4">
+      
+      <div className='w-[100%] bg-alch-dark'>
+        <img src={middle_line} alt="Decorative Footer Border" className="w-[100%] transform scale-y-[-1]" />
+      </div>
+      <footer className="bg-alch-cream">
         <img src={bottomBorder} alt="Decorative Footer Border" className="w-full" />
         <img src={bottomBorder} alt="Decorative Footer Border" className="w-full transform scale-y-[-1]" />
       </footer>

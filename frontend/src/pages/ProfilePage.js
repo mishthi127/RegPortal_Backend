@@ -15,6 +15,7 @@ import profilewbg from "../assets/profilewbg.svg";
 import profileobg from "../assets/profileobg.svg";
 import { useLocation } from "react-router-dom";
 import LoadingScreen from "../components/LoadingScreen.js";
+import logo from '../assets/logo.svg';
 
 const BASE_URL = "http://localhost:8000";
 
@@ -240,14 +241,19 @@ if (alternate_phone && !phoneRegex.test(alternate_phone)) {
     >
       <main className="w-full max-w-5xl mx-auto">
         <div className="mb-8 flex justify-between items-center">
-          <div>
-            <h1 className="text-3xl sm:text-4xl font-bold text-white">{`Welcome, ${profileData.fullname}`}</h1>
-            <p className="text-gray-400">{`Alcher ID #${profileData.alcherid}`}</p>
+          <div className="flex flex-row items-center justify-center gap-[20px]">
+            {/* <div className="w-[50px] h-[50px] bg-slate-100 "></div> */}
+            <img src={logo} alt="logo" className="w-[45px] cursor-pointer" onClick={()=>{navigate("/")}}/>
+            <div>
+              <h1 className="text-3xl sm:text-4xl font-bold text-white">{`Welcome, ${profileData.fullname}`}</h1>
+              <p className="text-gray-400">{`Alcher ID #${profileData.alcherid}`}</p>
+            </div>
           </div>
           <DecoratedButton size="sm" onClick={handleLogout}>
             Logout
           </DecoratedButton>
         </div>
+
 
         <div className="w-full max-w-[1032px] mx-auto h-16 sm:h-20 mb-12 sm:mb-20 flex flex-col justify-center items-center">
           <div className="flex flex-row justify-between text-white w-full">
