@@ -20,6 +20,7 @@ import ProfileDropdown from '../components/ProfileDropdown';
 import logo from '../assets/logo.svg';
 import hamburgerIcon from '../assets/hamburger-icon.svg';
 import backgroundPattern from '../assets/background-pattern.svg';
+import authorPlaceholder from '../assets/author-placeholder.png';
 import mbbgpattern from "../assets/mbbgpatternwh.svg"
 import { AddMembers } from '../components/AddMembers';
 import { useNavigate } from 'react-router-dom';

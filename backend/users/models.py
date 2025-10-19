@@ -97,6 +97,7 @@ class NewUser(AbstractBaseUser, PermissionsMixin):
     is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
     verified_email = models.BooleanField(default=False)
+    profile_pic_url = models.CharField(max_length=255, blank=True, null=True)
     password_reset_token = models.CharField(max_length=64, blank=True, null=True)
     password_reset_expiry = models.DateTimeField(blank=True, null=True)
     date_joined = models.DateTimeField(default=timezone.now)

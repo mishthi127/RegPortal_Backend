@@ -1,5 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
+from django.conf import settings
+from django.conf.urls.static import static
 from .views import (
     RegisterView, VerifyOTPView, LoginView, ProfileView, homepage, ParticipantviewSet,
     google_complete_profile, complete_profile, google_login,
@@ -55,3 +57,6 @@ urlpatterns = [
     path('Participant/',  Participant_list, name=' Participant-list'),
     path('Participant/<uuid:pk>/',  Participant_detail, name=' Participant-detail'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
