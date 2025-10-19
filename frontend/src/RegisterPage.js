@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 //import users.urls from "../users/url.py";
 
 // Assets
@@ -26,6 +27,13 @@ const RegisterPage = () => {
   const [guidelinesOpen, setGuidelinesOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [openindex, setOpenindex] = useState([]);
+
+  const handleTabClickFromDropdown = (tabIndex) => {
+    setOpenindex([tabIndex]); 
+    console.log(tabIndex);
+    navigate("/profile", { state: { tabIndex } });
+  };
 
   useEffect(() => {
   const fetchCompetition = async () => {
@@ -377,13 +385,15 @@ const RegisterPage = () => {
             )}
 
             {/* Register Button */}
-            <button
+            <Link
+              to="/profile"
               type="submit"
               disabled={loading}
+              state={{ tabIndex: 2 }}
               //className="bg-[#f79b2b] hover:bg-[#f58e1f] text-black font-semibold px-6 py-2 rounded transition"
             >
               <img src={RegisterIcon} alt="register" className="h-8 w-auto inline mr-2" />
-            </button>
+            </Link>
           </form>
         </div>
       </div>

@@ -47,7 +47,7 @@ function MyRegistrations() {
 
   return (
     <div
-      className="relative min-h-screen w-full text-white flex flex-col items-center bg-white" 
+      className="relative min-h-screen w-full text-white flex flex-col items-center " 
     >
       {/* HEADER */}
       <div className="w-[calc(100%-3rem)] sm:w-[calc(100%-4rem)] md:w-[calc(100%-6rem)] mx-auto mt-8 px-4 md:px-8 flex flex-col items-center">
