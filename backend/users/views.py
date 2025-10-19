@@ -25,6 +25,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import viewsets
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.parsers import MultiPartParser, FormParser
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login as auth_login, logout
 from .models import  TeamMembers
@@ -203,6 +204,8 @@ class ProfileView(generics.RetrieveAPIView):
 class ProfileUpdateView(generics.UpdateAPIView):
     serializer_class = ProfileUpdateSerializer
     permission_classes = [permissions.IsAuthenticated]
+    
+    parser_classes = [MultiPartParser, FormParser]
 
     def get_object(self):
         return self.request.user
@@ -215,7 +218,7 @@ class ProfileUpdateView(generics.UpdateAPIView):
         
         # After updating, re-serialize the user object with the read-only ProfileSerializer
         # to get all fields, including the updated team_name.
-        updated_user_data = ProfileSerializer(instance).data
+        updated_user_data = ProfileSerializer(instance, context={'request': request}).data
         
         return Response({"user": updated_user_data})
 # +++ END: ADDED FOR EDIT PROFILE +++
@@ -300,6 +303,8 @@ def google_login(request):
         idinfo = id_token.verify_oauth2_token(token, grequests.Request(), "719905784477-e7cc0nhv3vd6v8r1cmr87asn42bc77uc.apps.googleusercontent.com")
         email = idinfo['email']
         name = idinfo.get('name', '')
+        
+        picture_url = idinfo.get('picture', None)
 
         # Get or create the user
         user, created = NewUser.objects.get_or_create(
@@ -309,9 +314,14 @@ def google_login(request):
                 'username': email.split('@')[0],
                 'provider': 'google',
                 'is_active': True,  # Google verified email
-                'verified_email': True
+                'verified_email': True,
+                'profile_pic_url': picture_url
             }
         )
+        
+        if not created and user.profile_pic_url != picture_url:
+            user.profile_pic_url = picture_url
+            user.save(update_fields=['profile_pic_url'])
 
         # Generate refresh & access tokens
         refresh = RefreshToken.for_user(user)

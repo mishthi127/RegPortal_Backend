@@ -209,8 +209,8 @@ import axiosInstance from "../../utils/axiosInstance"; // Using the custom axios
             <div 
                 className="h-auto lg:h-[780px] w-100% bg-alch-dark flex flex-col justify-between items-center pixelbg"   
             >
-                    <div className="flex justify-center items-center mt-[66px] lg:mt-[166px] w-[100%]">
-                        <div className="flex items-center">
+                    <div className="flex items-center justify-center mt-[66px] lg:mt-[166px] w-[100%]">
+                        <div className="flex flex-1 items-center">
                             {/* Left strip */}
                             <div className="lg:flex flex-col w-[5px] hidden">
                                 <div className="h-[6.68px] lg:h-[20px] bg-[rgba(238,236,217,1)]"></div>
@@ -234,16 +234,16 @@ import axiosInstance from "../../utils/axiosInstance"; // Using the custom axios
                             </div>
 
                             {/* Right big block */}
-                            <div className="flex flex-col">
-                                <div className="h-[6.68px] lg:h-[20px] lg:w-[144.06px] w-[0] bg-[rgba(238,236,217,1)]"></div>
+                            <div className="flex flex-col flex-1">
+                                <div className="h-[6.68px] lg:h-[20px] w-[40%] bg-[rgba(238,236,217,1)]"></div>
                                 <div className="h-[6.68px] lg:h-[20px] lg:w-[20.58px] bg-transparent"></div>
-                                <div className="h-[6.68px] lg:h-[20px] lg:w-[400px] w-[88px] bg-[rgba(238,236,217,1)]"></div>
+                                <div className="h-[6.68px] lg:h-[20px] w-[100%]  bg-[rgba(238,236,217,1)]"></div>
                                 <div className="h-[6.68px] lg:h-[20px] lg:w-[20.58px] bg-transparent"></div>
-                                <div className="h-[6.68px] lg:h-[20px] lg:w-[400px] bg-[rgba(238,236,217,1)]"></div>
+                                <div className="h-[6.68px] lg:h-[20px] w-[100%] bg-[rgba(238,236,217,1)]"></div>
                                 <div className="h-[6.68px] lg:h-[20px] lg:w-[20.58px] bg-transparent"></div>
-                                <div className="h-[6.68px] lg:h-[20px] lg:w-[400px] bg-[rgba(238,236,217,1)]"></div>
+                                <div className="h-[6.68px] lg:h-[20px] w-[100%] bg-[rgba(238,236,217,1)]"></div>
                                 <div className="h-[6.68px] lg:h-[20px] lg:w-[20.58px] bg-transparent"></div>
-                                <div className="h-[6.68px] lg:h-[20px] lg:w-[144.06px] w-[0] bg-[rgba(238,236,217,1)]"></div>
+                                <div className="h-[6.68px] lg:h-[20px] w-[40%]  bg-[rgba(238,236,217,1)]"></div>
                             </div>
                         </div>
 
@@ -300,18 +300,18 @@ import axiosInstance from "../../utils/axiosInstance"; // Using the custom axios
                             )}
                         </div>
 
-                        <div className="flex items-center">
+                        <div className="flex flex-1 items-center">
                             {/* right strip */}
-                            <div className="flex flex-col items-end">
-                                <div className="h-[6.68px] lg:h-[20px] lg:w-[144.06px]  bg-[rgba(238,236,217,1)]"></div>
+                            <div className="flex flex-col items-end flex-1">
+                                <div className="h-[6.68px] lg:h-[20px] w-[40%]  bg-[rgba(238,236,217,1)]"></div>
                                 <div className="h-[6.68px] lg:h-[20px] lg:w-[20.58px] bg-transparent"></div>
-                                <div className="h-[6.68px] lg:h-[20px] lg:w-[400px] w-[88px] bg-[rgba(238,236,217,1)]"></div>
+                                <div className="h-[6.68px] lg:h-[20px] w-[100%] bg-[rgba(238,236,217,1)]"></div>
                                 <div className="h-[6.68px] lg:h-[20px] lg:w-[20.58px] bg-transparent"></div>
-                                <div className="h-[6.68px] lg:h-[20px] lg:w-[400px] w-[88px] bg-[rgba(238,236,217,1)]"></div>
+                                <div className="h-[6.68px] lg:h-[20px] w-[100%] bg-[rgba(238,236,217,1)]"></div>
                                 <div className="h-[6.68px] lg:h-[20px] lg:w-[20.58px] bg-transparent"></div>
-                                <div className="h-[6.68px] lg:h-[20px] lg:w-[400px]  w-[88px] bg-[rgba(238,236,217,1)]"></div>
+                                <div className="h-[6.68px] lg:h-[20px] w-[100%] bg-[rgba(238,236,217,1)]"></div>
                                 <div className="h-[6.68px] lg:h-[20px] lg:w-[20.58px] bg-transparent"></div>
-                                <div className="h-[6.68px] lg:h-[20px] lg:w-[144.06px] bg-[rgba(238,236,217,1)]"></div>
+                                <div className="h-[6.68px] lg:h-[20px] w-[40%] bg-[rgba(238,236,217,1)]"></div>
                             </div>
 
                             {/* Middle column */}

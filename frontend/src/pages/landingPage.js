@@ -21,6 +21,7 @@ import ProfileDropdown from '../components/ProfileDropdown';
 import logo from '../assets/logo.svg';
 import hamburgerIcon from '../assets/hamburger-icon.svg';
 import backgroundPattern from '../assets/background-pattern.svg';
+import authorPlaceholder from '../assets/author-placeholder.png';
 import mbbgpattern from "../assets/mbbgpatternwh.svg"
 import { AddMembers } from '../components/AddMembers';
 import { useNavigate } from 'react-router-dom';
@@ -201,15 +202,15 @@ const LandingPage = () => {
           </button>
         </div>
         <div className="flex flex-col items-center justify-center h-3/4 space-y-8 text-2xl">
-          <Link to="/about" onClick={toggleMenu} className="text-alch-cream font-sans hover:text-white">About us</Link>
-          <Link to="/competitions" onClick={toggleMenu} className="text-alch-cream font-sans hover:text-white">Modules & Competitions</Link>
-          <Link to="/contact" onClick={toggleMenu} className="text-alch-cream font-sans hover:text-white">Contact us</Link>
+          <Link to="/about"  onClick={toggleMenu} className="text-alch-cream hover:text-white">About us</Link>
+          <Link to="/competitions" onClick={toggleMenu} className="text-alch-cream hover:text-white">Modules & Competitions</Link>
+          <Link to="/contact" onClick={toggleMenu} className="text-alch-cream hover:text-white">Contact us</Link>
 
           {/* Conditional links for mobile menu */}
           {isAuthenticated ? (
             <>
-              <Link to="/profile" onClick={toggleMenu} className="text-alch-cream font-sans hover:text-white">My Profile</Link>
-              <Link to="/profile" onClick={toggleMenu} className="text-alch-cream font-sans hover:text-white">Team Members</Link>
+              <Link to="/profile" state={{ tabIndex: 1 }} onClick={toggleMenu} className="text-alch-cream hover:text-white">My Profile</Link>
+              <Link to="/profile" state={{ tabIndex: 3 }} onClick={toggleMenu} className="text-alch-cream hover:text-white">Team Members</Link>
               <button
                 onClick={() => {
                   toggleMenu();
