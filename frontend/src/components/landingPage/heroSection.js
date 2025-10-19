@@ -88,36 +88,39 @@ const HeroSection = ({ isAuthenticated }) => {
         </div>
 
         {/* Text */}
-        <motion.h1
-          initial={{ opacity: 0, scale: 0.85 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.6, delay: 1.8, ease: "easeOut" }}
-          className="relative z-10 text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-extrabold text-alch-red font-modernoir tracking-wide"
-        >
-          ALCHERINGA
-        </motion.h1>
+<motion.h1
+  initial={{ opacity: 0, scale: 0.85 }}
+  animate={{ opacity: 1, scale: 1 }}
+  transition={{ duration: 0.6, delay: 1.8, ease: "easeOut" }}
+  className="relative z-10 font-display font-bold text-alch-red tracking-wide leading-[1.05] 
+             text-[clamp(4rem,10vw,9rem)] text-center"
+>
+  ALCHERINGA
+</motion.h1>
 
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 2.2 }}
-          className="relative z-10 mt-4 text-base sm:text-lg lg:text-xl font-modernoir"
-        >
-          STITCH YOUR JOURNEY - ALCHERINGA AWAITS
-        </motion.p>
+<motion.p
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  transition={{ duration: 0.6, delay: 2.2 }}
+  className="relative z-10  font-display font-light text-brand-beige tracking-wide 
+             text-[clamp(1rem,3vw,1.5rem)] text-center"
+>
+  STITCH YOUR JOURNEY – ALCHERINGA AWAITS
+</motion.p>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 2.4 }}
-          className="relative z-10 mt-8"
-        >
-          {!isAuthenticated && (
-            <DecorativeButton to="/register" variant="orange">
-              Register
-            </DecorativeButton>
-          )}
-        </motion.div>
+<motion.div
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  transition={{ duration: 0.6, delay: 2.4 }}
+  className="relative z-10 mt-[clamp(2rem,5vw,6rem)]"
+>
+  {!isAuthenticated && (
+    <DecorativeButton to="/register" variant="orange">
+      Register
+    </DecorativeButton>
+  )}
+</motion.div>
+
       </main>
 
       {/* Footer */}

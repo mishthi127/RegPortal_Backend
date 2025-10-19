@@ -29,7 +29,7 @@ const AfterMovieSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.8 }}
-          className="flex items-center justify-center text-center font-modernoir font-extrabold text-alch-dark mb-12"
+          className="flex items-center justify-center text-center font-display font-extrabold text-alch-dark mb-12"
         >
           <img src={headingIconRed} alt="Decorative Icon" className="h-5 sm:h-6" />
           <span className="whitespace-nowrap px-3 font-extrabold text-[25px] lg:text-[48px]">

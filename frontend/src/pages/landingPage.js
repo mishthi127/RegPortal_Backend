@@ -126,7 +126,7 @@ const LandingPage = () => {
               <div className='flex flex-row justify-center items-center gap-[10px] h-[69px]'>
                   <img className="lg:w-[37.99px] lg:h-[43.71px] w-[24px] h-[27.61px]" src={logo} alt="logo"/>
                   <div className='text-alch-cream h-[32px] lg:h-[65.83px] flex flex-col justify-center'>
-                      <p className='font-modernoir font-bold lg:text-[37.99px] text-[18px] h-[42px] leading-none'>ALCHERINGA</p>
+                      <p className='font-display font-bold lg:text-[37.99px] text-[18px] h-[42px] leading-none'>ALCHERINGA</p>
                       <p className='font-sans h-[27px]  font-normal lg:text-[18.99px] text-[10px] leading-none self-end'>IIT GUWAHATI</p>
                   </div>
               </div>    
@@ -135,8 +135,8 @@ const LandingPage = () => {
           <div className="hidden lg:flex items-center">
             <DecorativeButton to="#" variant="nav">
               <div className="flex space-x-8 px-4 text-sm">
-                <Link to="/about" className="text-alch-cream hover:text-white whitespace-nowrap">About us</Link>
-                <Link to="/competitions" className="text-alch-cream hover:text-white whitespace-nowrap">Modules & Competitions</Link>
+                <Link to="/about" className="text-alch-cream font-sans hover:text-white whitespace-nowrap">About us</Link>
+                <Link to="/competitions" className="text-alch-cream font-sans hover:text-white whitespace-nowrap">Modules & Competitions</Link>
               </div>
             </DecorativeButton>
           </div>
@@ -164,7 +164,7 @@ const LandingPage = () => {
               <div className='flex flex-row justify-center items-center gap-[10px] h-[69px]'>
                   <img className="lg:w-[37.99px] lg:h-[43.71px] w-[24px] h-[27.61px]" src={logo} alt="logo"/>
                   <div className='text-alch-cream h-[32px] lg:h-[65.83px] flex flex-col justify-center'>
-                      <p className='font-modernoir font-bold lg:text-[37.99px] text-[18px] h-[42px] leading-none'>ALCHERINGA</p>
+                      <p className='font-display font-bold lg:text-[37.99px] text-[18px] h-[42px] leading-none'>ALCHERINGA</p>
                       <p className='font-sans h-[27px]  font-normal lg:text-[18.99px] text-[10px] leading-none self-end'>IIT GUWAHATI</p>
                   </div>
               </div>    
@@ -173,13 +173,13 @@ const LandingPage = () => {
           <div className="hidden lg:flex items-center">
             <DecorativeButton to="#" variant="nav">
               <div className="flex space-x-8 px-4 text-sm">
-                <Link to="/about" className="text-alch-cream hover:text-white whitespace-nowrap">About us</Link>
-                <Link to="/competitions" className="text-alch-cream hover:text-white whitespace-nowrap">  Modules & Competitions</Link>
+                <Link to="/about" className="text-alch-cream font-sans hover:text-white whitespace-nowrap">About us</Link>
+                <Link to="/competitions" className="text-alch-cream font-sans hover:text-white whitespace-nowrap">  Modules & Competitions</Link>
               </div>
             </DecorativeButton>
           </div>
           <div className="hidden lg:flex items-center space-x-6">
-            <Link to="/contact" className="text-alch-cream hover:text-white">Contact us</Link>
+            <Link to="/contact" className="text-alch-cream font-sans hover:text-white">Contact us</Link>
             {isAuthenticated ? (
               <ProfileDropdown user={user} onLogout={handleLogout} />
             ) : (
@@ -201,15 +201,15 @@ const LandingPage = () => {
           </button>
         </div>
         <div className="flex flex-col items-center justify-center h-3/4 space-y-8 text-2xl">
-          <Link to="/about" onClick={toggleMenu} className="text-alch-cream hover:text-white">About us</Link>
-          <Link to="/competitions" onClick={toggleMenu} className="text-alch-cream hover:text-white">Modules & Competitions</Link>
-          <Link to="/contact" onClick={toggleMenu} className="text-alch-cream hover:text-white">Contact us</Link>
+          <Link to="/about" onClick={toggleMenu} className="text-alch-cream font-sans hover:text-white">About us</Link>
+          <Link to="/competitions" onClick={toggleMenu} className="text-alch-cream font-sans hover:text-white">Modules & Competitions</Link>
+          <Link to="/contact" onClick={toggleMenu} className="text-alch-cream font-sans hover:text-white">Contact us</Link>
 
           {/* Conditional links for mobile menu */}
           {isAuthenticated ? (
             <>
-              <Link to="/profile" onClick={toggleMenu} className="text-alch-cream hover:text-white">My Profile</Link>
-              <Link to="/profile" onClick={toggleMenu} className="text-alch-cream hover:text-white">Team Members</Link>
+              <Link to="/profile" onClick={toggleMenu} className="text-alch-cream font-sans hover:text-white">My Profile</Link>
+              <Link to="/profile" onClick={toggleMenu} className="text-alch-cream font-sans hover:text-white">Team Members</Link>
               <button
                 onClick={() => {
                   toggleMenu();

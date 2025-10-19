@@ -292,7 +292,7 @@ import axiosInstance from "../../utils/axiosInstance"; // Using the custom axios
                             ))}
                             
                             {( yourturn &&
-                                <div className="flex justify-center items-center gap-[10px] absolute  w-full h-full text-[#EF5243] text-center font-modernoir text-[16px]  lg:text-[60px] font-extrabold">
+                                <div className="flex justify-center items-center gap-[10px] absolute  w-full h-full text-[#EF5243] text-center font-display text-[16px]  lg:text-[60px] font-extrabold">
                                     <img className="w-[10px] lg:w-[30px]" src={flower} alt="flower"/>
                                     <p className="" >Now it’s your turn</p>
                                     <img className="w-[10px] lg:w-[30px]" src={flower} alt="flower"/>

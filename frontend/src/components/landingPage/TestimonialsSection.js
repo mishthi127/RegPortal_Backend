@@ -130,7 +130,7 @@ const TestimonialsSection = forwardRef((props, ref) => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="flex items-center justify-center text-center font-modernoir text-[30px] lg:text-[48px] font-extrabold text-alch-dark mb-16"
+          className="flex items-center justify-center text-center font-display text-[30px] lg:text-[48px] font-extrabold text-alch-dark mb-16"
         >
           <img src={headingIconRed} alt="Decorative Icon" className="h-5 sm:h-6 mx-2" />
           TESTIMONIALS
@@ -145,7 +145,7 @@ const TestimonialsSection = forwardRef((props, ref) => {
             className="text-alch-dark text-center lg:text-left"
           >
             <img src={quoteIcon} alt="Quote" className="h-[38.12px] lg:h-16 mx-auto lg:mx-0" />
-            <h3 className="text-[16px] lg:text-3xl font-bold mt-4 leading-snug w-full max-w-[272px] mx-auto lg:mx-0 text-left">What our previous<br className="block" /> Participants  are<br className="block" /> saying</h3>
+            <h3 className="text-[20px] lg:text-3xl font-bold mt-4 leading-snug w-full max-w-[272px] mx-auto lg:mx-0 text-left">What our previous<br className="block" /> Participants  are<br className="block" /> saying</h3>
             <div className="mt-10 flex items-center justify-center lg:justify-start space-x-2">
               <img src={slideBarLeftDeco} alt="Left Deco" className="w-6 h-6" />
               <div
