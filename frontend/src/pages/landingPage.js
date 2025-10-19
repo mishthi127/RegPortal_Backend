@@ -227,13 +227,8 @@ const LandingPage = () => {
       </div>
 
       {/* Page Content */}
-<<<<<<< HEAD
-      <HeroSection />
-      <CompModules/>
-=======
       <HeroSection isAuthenticated={isAuthenticated} />
       <CompModules />
->>>>>>> origin/main
       <Pixel />
       
         <div

@@ -54,10 +54,8 @@ const ProfileDropdown = ({ user, onLogout, onTabClick }) => {
             className="block w-full text-left px-4 py-2 text-sm text-alch-cream hover:bg-alch-red"
           >
             Team Members
-<<<<<<< HEAD
-          </Link>
-          <Link to="/my-competitions" className="block px-4 py-2 text-sm text-alch-cream hover:bg-alch-red">
-=======
+        
+          <Link to="/my-competitions" className="block px-4 py-2 text-sm text-alch-cream hover:bg-alch-red"> </Link>
           </button>
 
           <button
@@ -67,7 +65,6 @@ const ProfileDropdown = ({ user, onLogout, onTabClick }) => {
             }}
             className="block w-full text-left px-4 py-2 text-sm text-alch-cream hover:bg-alch-red"
           >
->>>>>>> origin/main
             My Registrations
           </button>
 

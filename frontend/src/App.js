@@ -6,11 +6,7 @@ import { RegistrationProvider } from './components/AuthPage/RegistrationContext.
 
 // Page Imports
 import LandingPage from './pages/landingPage';
-import RegistrationForm from './RegistrationForm';
-import LoginForm from './LoginForm';
-import Profile from './Profile';
-// import CompleteProfile from './CompleteProfile';
-//import CompetitionsList from './CompetitionsPage';
+import CompleteProfile from './pages/CompleteProfile';
 import RegisterPage from "./RegisterPage";
 // import { AddMember } from './AddMember/AddMember';
 import ProfilePage from './pages/ProfilePage.js'; 
@@ -20,11 +16,8 @@ import TeamInfoPage from './pages/TeamInfoPage.js';
 import ResetPasswordPage from './pages/ResetPasswordPage.js';
 import ForgotPasswordPage from './pages/ForgotPasswordPage.js';
 import NotFoundPage from './pages/NotFoundPage.js';
-
 import MyRegisteredCompetitions from "./pages/MyRegisteredCompetitions";
 import CompetitionsList from './CompetitionsPage.js';
-//import CompetitionModal from './CompetitionModal';
-//import CompetitionRegistration from './CompetitionRegistration';
 
 function App() {
   const token = localStorage.getItem("access");
@@ -32,7 +25,7 @@ function App() {
   const routeElements = [
     React.createElement(Route, { key: "landing", path: "/", element: React.createElement(LandingPage) }),
     React.createElement(Route, { key: "profile", path: "/profile", element: React.createElement(ProfilePage) }),
-    // React.createElement(Route, { key: "complete-profile", path: "/complete-profile", element: React.createElement(CompleteProfile) }),
+    React.createElement(Route, { key: "complete-profile", path: "/complete-profile", element: React.createElement(CompleteProfile) }),
     React.createElement(Route, { key: "competitions", path: "/competitions", element: React.createElement(CompetitionsList) }),
     React.createElement(Route, { key: "register-id", path: "/register/:id", element: React.createElement(RegisterPage) }),
     //React.createElement(Route, { key: "add-member", path: "/addmember", element: React.createElement(AddMember) }),
@@ -43,7 +36,7 @@ function App() {
     React.createElement(Route, { key: "forgot-password", path: "/forgot-password", element: React.createElement(ForgotPasswordPage) }),
     React.createElement(Route, { key: "reset-password", path: "/reset-password", element: React.createElement(ResetPasswordPage) }),
     React.createElement(Route, { key: "not-found", path: "*", element: React.createElement(NotFoundPage) }),
-    React.createElement(Route, { key: "my-competitions", path: "/my-competitions", element: React.createElement(MyRegisteredCompetitions)}),
+    React.createElement(Route, { key: "my-competitions", path: "/profile", element: React.createElement(MyRegisteredCompetitions)}),
 
   ];
 

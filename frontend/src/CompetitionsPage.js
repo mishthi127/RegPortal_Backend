@@ -5,15 +5,10 @@ import logo from "./assets/alcherlogo.svg";
 import "./CompetitionPage.css";
 import DecorativeButton from "./components/DecorativeButton";
 import flower from "./assets/heading-icon-red.svg";
-<<<<<<< HEAD
-import exampleimage from "./assets/addmembtn.png";
-
-=======
 import dropdown_back from "./assets/dropdown_back.svg";
 import searchbar_back from "./assets/searchbar_back.svg";
 import competitions from "./assets/competitions.svg";
 import dropbutton from "./assets/dropbutton.svg";
->>>>>>> origin/main
 function ModuleDropdown({ modules, selectedModule, setSelectedModule }) {
   const [open, setOpen] = useState(false);
 
@@ -318,13 +313,8 @@ function CompetitionsList() {
                   margin: "0.5rem",
                 }}
               >
-<<<<<<< HEAD
-                <img src="http://localhost:8000/media/image_uploads/batmobile-car-with-neon-lights.jpg" className="w-full h-full"/>
-                  <div
-=======
                
                 <div
->>>>>>> origin/main
                   className="competition-default"
                   style={{
                     position: "absolute",
@@ -346,11 +336,7 @@ function CompetitionsList() {
                   <p className="prize" style={{ margin: 0, fontSize: "0.9rem", textAlign: "center", color:"#fff"}}>{comp.event_desc}</p>
                   <p className="prize" style={{ margin: 0, fontSize: "0.9rem", textAlign: "center", color:"#fff"}}>${comp.prize_worth}</p>
 
-<<<<<<< HEAD
                   <DecorativeButton to={`/register/${comp.id}`} onClick={() => setSelectedComp(comp)} className = "dec-btn" variant="orange-sm"> Register</DecorativeButton>
-=======
-                  <DecorativeButton to={`/register/${comp.event_name}`} onClick={() => setSelectedComp(comp)} className = "dec-btn" variant="orange-sm">Register</DecorativeButton>
->>>>>>> origin/main
                  
                 </div>
               

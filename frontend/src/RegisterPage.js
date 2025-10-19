@@ -8,11 +8,6 @@ import headerImage from "./assets/group-dance.svg";
 import guidelinesFrame from "./assets/guidelines-frame.svg";
 import bgPattern from "./assets/background-pattern.svg";
 import RegisterIcon from "./assets/register-icon.svg";
-import OnGroundIcon from "./assets/on-ground-icon.svg";
-import CompNameIcon from "./assets/comp-name-icon.svg";
-import GroupSoloIcon from "./assets/group-solo-icon.svg";
-import LoginIcon from "./assets/login-icon.svg";
-//import CompFormTab from "./assets/comp-form-tab.svg";
 
 const RegisterPage = () => {
   const { id } = useParams();
@@ -44,6 +39,7 @@ const RegisterPage = () => {
       });
       if (!res.ok) throw new Error("Failed to fetch competition data");
       const data = await res.json();
+      console.log(data);
       setCompetition(data); // ✅ sets the competition state
     } catch (err) {
       console.error(err);
@@ -121,6 +117,7 @@ const RegisterPage = () => {
       const newEntry = {
         id,
         team_members: teamMembers,
+        comp_image_url: competition?.image,
         team_video: formData.teamVideo,
         description: formData.description,
         registered_at: new Date().toISOString(),
@@ -130,7 +127,7 @@ const RegisterPage = () => {
         JSON.stringify([...stored, newEntry])
       );
 
-      navigate("/my-competitions");
+      navigate("/profile");
     } catch (err) {
       setError(err.message || "Something went wrong.");
     } finally {
