@@ -19,7 +19,8 @@ Participant_detail =  ParticipantviewSet.as_view({
     'get': 'retrieve',
     'put': 'update',
     'patch': 'partial_update',
-    'delete': 'destroy'
+    'delete': 'destroy',
+    'get': 'list'
 })
 
 router = DefaultRouter()

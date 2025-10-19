@@ -17,6 +17,7 @@ import profileobg from "../assets/profileobg.svg";
 import { useLocation } from "react-router-dom";
 import LoadingScreen from "../components/LoadingScreen.js";
 import logo from '../assets/logo.svg';
+import MyRegistrations from "./MyRegisteredCompetitions.js";
 
 const BASE_URL = "http://localhost:8000";
 
@@ -414,7 +415,7 @@ if (alternate_phone && !phoneRegex.test(alternate_phone)) {
                 </div>
               </div>
             )}
-            {openindex.includes(2) && <div className="text-center p-8">My Registration Content Goes Here</div>}
+            {openindex.includes(2) && <MyRegistrations/>}
             {openindex.includes(3) && <AddMembers/>}
           </div>
         </div>
