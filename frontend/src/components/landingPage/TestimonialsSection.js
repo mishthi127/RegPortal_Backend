@@ -180,7 +180,7 @@ const TestimonialsSection = forwardRef((props, ref) => {
             </div>
           </motion.div>
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
+            initial={{ opacity: 0, x: 50 }} //because of this, overflow in mobile
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 1 }}

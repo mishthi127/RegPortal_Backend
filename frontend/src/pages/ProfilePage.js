@@ -1,6 +1,7 @@
 // src/pages/ProfilePage.js
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { formatDistanceToNow } from 'date-fns';
 import axios from "axios";
 import { FiMail, FiChevronDown } from "react-icons/fi";
 // Import all necessary components and assets
@@ -32,17 +33,16 @@ const ProfilePage = () => {
   const [activeTab, setActiveTab] = useState("Profile");
   const [isEditing, setIsEditing] = useState(false);
   const [openindex, setOpenindex] = useState([1]);
+  const [imageFile, setImageFile] = useState(null); // To hold the selected file
+  const [imagePreview, setImagePreview] = useState(null); // To show a preview of the new image
+  const fileInputRef = useRef(null); // To programmatically click the file input
 
   const invert = (index) => {
-    // If the same index is clicked, close it; otherwise, open only that one
-    if (openindex.includes(index)) {
-      setOpenindex([]); // close all
-    } else {
-      setOpenindex([index]); // keep only the new one
+    // Only open new index; if already open, do nothing
+    if (!openindex.includes(index)) {
+      setOpenindex([index]);
     }
   };
-
-  
 
   // inside ProfilePage component
   const location = useLocation();
@@ -65,19 +65,37 @@ const ProfilePage = () => {
       return;
     }
     axios
-      .get(`${BASE_URL}/profile/`, {
+    .get(`${BASE_URL}/api/profile/`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
+
+        // +++ START: THIS IS THE LOGIC TO CHANGE +++
+        let pic;
+        // Priority 1: User has a manually uploaded image that isn't the DB default.
+        if (res.data.img && !res.data.img.includes('user-default.png')) {
+          pic = res.data.img;
+        } 
+        // Priority 2: User signed up with Google and has a Google picture URL.
+        else if (res.data.provider === 'google' && res.data.profile_pic_url) {
+          pic = res.data.profile_pic_url;
+        } 
+        // Priority 3: Fallback for manual sign-ups or any other case.
+        else {
+          pic = authorPlaceholder;
+        }
+        // +++ END: LOGIC CHANGE +++
+
         const dataFromApi = {
           ...res.data,
-          profilePic: authorPlaceholder, // Keep placeholder for now
+          profilePic: pic,
           // Ensure phone numbers are empty strings if null
           phone_number: res.data.phone_number || "",
           alternate_phone: res.data.alternate_phone || "",
         };
         setProfileData(dataFromApi);
         setFormData(dataFromApi); // Initialize form data
+        setImagePreview(dataFromApi.profilePic); // Set the initial image for preview
         setIsLoading(false);
         console.log(res.data);
       })
@@ -90,6 +108,14 @@ const ProfilePage = () => {
         setIsLoading(false);
       });
   }, [navigate]);
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImageFile(file); // Store the actual file
+      setImagePreview(URL.createObjectURL(file)); // Create a temporary URL for the preview
+    }
+  };
 
   const handleLogout = () => {
     localStorage.removeItem("access");
@@ -114,6 +140,8 @@ const ProfilePage = () => {
   const handleCancelClick = () => {
     setIsEditing(false);
     setFormData(profileData); // Revert any changes
+    setImageFile(null); // Clear the selected file from state
+    setImagePreview(profileData.profilePic); // Revert the preview to the original image
     setError("");
   };
 
@@ -171,16 +199,19 @@ if (alternate_phone && !phoneRegex.test(alternate_phone)) {
     const token = localStorage.getItem("access");
 
     // Construct the data to send from the formData state
-    const dataToSend = {
-      fullname: formData.fullname,
-      gender: formData.gender,
-      collegename: formData.collegename,
-      team_name:formData.team_name,
-      city: formData.city,
-      state: formData.state,
-      phone_number: String(formData.phone_number || "").trim(),
-      alternate_phone: String(formData.alternate_phone || "").trim(),
-    };
+    const dataToSend = new FormData();
+    dataToSend.append('fullname', formData.fullname);
+    dataToSend.append('gender', formData.gender);
+    dataToSend.append('collegename', formData.collegename);
+    dataToSend.append('team_name', formData.team_name);
+    dataToSend.append('city', formData.city);
+    dataToSend.append('state', formData.state);
+    dataToSend.append('phone_number', String(formData.phone_number || "").trim());
+    dataToSend.append('alternate_phone', String(formData.alternate_phone || "").trim());
+
+    if (imageFile) {
+        dataToSend.append('img', imageFile);
+    }
 
     try {
       const response = await axios.patch(
@@ -191,11 +222,14 @@ if (alternate_phone && !phoneRegex.test(alternate_phone)) {
         }
       );
       
-      const updatedUser = { ...profileData, ...response.data.user };
+      const updatedUser = { ...profileData, ...response.data.user,profilePic: response.data.user.img || response.data.user.profile_pic_url || authorPlaceholder };
       
       // Update both states with the saved data from the backend
       setProfileData(updatedUser);
       setFormData(updatedUser);
+
+      setImageFile(null);
+      setImagePreview(updatedUser.profilePic);  
 
       setSaveSuccess(true);
       setIsEditing(false); // Switch back to VIEW mode
@@ -284,17 +318,40 @@ if (alternate_phone && !phoneRegex.test(alternate_phone)) {
           <div className="relative z-10 p-6 sm:p-10">
             {openindex.includes(1) && (
               <div>
-                <div className="flex items-center gap-x-4">
-                  <img
-                    src={profileData.profilePic}
-                    alt="Profile"
-                    className="w-16 h-16 flex"
-                  />
-                  <div className="flex-grow">
-                    <h3 className="text-xl font-bold">{profileData.fullname}</h3>
-                    <p className="text-gray-500 text-sm">{profileData.email}</p>
-                  </div>
-                </div>
+               <div className="flex items-center gap-x-4">
+    
+           {/* START: This is the new block for the image */}
+          <div className="relative">
+          <img
+           src={imagePreview}
+           alt="Profile"
+             className="w-16 h-16 rounded-full object-cover flex"
+            />
+      {isEditing && (
+        <button
+          type="button"
+          onClick={() => fileInputRef.current.click()}
+          className="absolute bottom-0 right-0 bg-gray-700 text-white rounded-full p-1 hover:bg-gray-600 transition"
+          aria-label="Change profile picture"
+        >
+          ✏️
+            </button>
+            )}
+            </div>
+          <input
+          type="file"
+         ref={fileInputRef}
+            onChange={handleImageChange}
+           accept="image/png, image/jpeg"
+           className="hidden"
+        />
+       {/* END: New image block */}
+
+        <div className="flex-grow">
+      <h3 className="text-xl font-bold">{formData.fullname}</h3>
+      <p className="text-gray-500 text-sm">{profileData.email}</p>
+         </div>
+         </div>
                 <hr className="my-6 border-gray-300" />
 
                 <form
@@ -349,9 +406,11 @@ if (alternate_phone && !phoneRegex.test(alternate_phone)) {
                 <div className="flex items-center gap-x-3 mt-8 border-t border-gray-300 pt-10">
                   <FiMail className="w-8 h-8 text-brand-red flex-shrink-0" />
                   <div>
-                    <p className="text-sm font-semibold">Email Address</p>
-                    <p className="text-sm text-gray-600">{profileData.email}</p>
-                    <p className="text-xs text-gray-400">{`Joined ${profileData.registered_on}`}</p>
+                     <p className="text-sm font-semibold">Email Address</p>
+                     <p className="text-sm text-gray-600">{profileData.email}</p>
+                     <p className="text-xs text-gray-400">
+                      {`Joined ${formatDistanceToNow(new Date(profileData.date_joined), { addSuffix: true })}`}
+                     </p>
                   </div>
                 </div>
               </div>
