@@ -19,12 +19,13 @@ import mbserach from "../assets/mbsearch.svg";
 import mbaddforminpbg from "../assets/mbaddforminpbg.svg";
 import mbmembg from "../assets/mbmembg.svg";
 import mbaddmem from "../assets/mbaddmem.svg";
+import DecoratedButton from './AuthPage/DecoratedButton';
 
-export function AddMembers(){
+export function AddMembers() {
     const scrollRef = useRef(null);
     const navigate = useNavigate();
     const [members, setMembers] = useState([
-        { id: null,tempId: null, name: "", email: "", gender: "Male", phone: "", collegename:"", city:"", state:"" }
+        { id: null, tempId: null, name: "", email: "", gender: "Male", phone: "", collegename: "", city: "", state: "" }
     ]);
     const [names, setNames] = useState([]);
     const [filteredNames, setFilteredNames] = useState([]);
@@ -52,11 +53,11 @@ export function AddMembers(){
         }
 
         axios
-        .get(`http://localhost:8000/profile/`, {
-            headers: { Authorization: `Bearer ${token}` },
-        })
-        .then((res) => setProfile(res.data))
-        .catch(() => setMessage('Failed to load profile.'));
+            .get(`http://localhost:8000/profile/`, {
+                headers: { Authorization: `Bearer ${token}` },
+            })
+            .then((res) => setProfile(res.data))
+            .catch(() => setMessage('Failed to load profile.'));
     }, []);
 
 
@@ -70,7 +71,7 @@ export function AddMembers(){
     const addDiv = () => {
         setMembers([
             ...members,
-            { id: null ,tempId:generateTempId(),  name: "", email: "", gender: "Male", phone: "", collegename:"", city:"", state:"" }
+            { id: null, tempId: generateTempId(), name: "", email: "", gender: "Male", phone: "", collegename: "", city: "", state: "" }
         ]);
 
         setTimeout(() => {
@@ -111,7 +112,7 @@ export function AddMembers(){
     };
 
 
-    const removemember = async(id, tempId) => {
+    const removemember = async (id, tempId) => {
         console.log(id);
         const token = localStorage.getItem("access");
         if (id) {
@@ -132,7 +133,7 @@ export function AddMembers(){
             }
         }
 
-        
+
         const response = await fetch("http://127.0.0.1:8000/Participantdata/Participant/", {
             headers: {
                 "Content-Type": "application/json",
@@ -168,14 +169,14 @@ export function AddMembers(){
     const makediscard = () => {
         setMembers(prevMembers =>
             prevMembers.map(member => ({
-            ...member,
-            name: "",
-            email: "",
-            gender: "Male",   // or keep previous if you prefer: member.gender
-            phone: "",
-            collegename: "",
-            city: "",
-            state: ""
+                ...member,
+                name: "",
+                email: "",
+                gender: "Male",   // or keep previous if you prefer: member.gender
+                phone: "",
+                collegename: "",
+                city: "",
+                state: ""
             }))
         );
     };
@@ -213,8 +214,8 @@ export function AddMembers(){
                 invalidMembers.push(`${member.name} (Invalid college name)`);
             }
             if (!emailRegex.test(member.email)) {
-            invalidMembers.push(`${member.name} (Invalid email)`);
-        }
+                invalidMembers.push(`${member.name} (Invalid email)`);
+            }
         }
 
         if (invalidMembers.length > 0) {
@@ -250,14 +251,14 @@ export function AddMembers(){
 
             //alert("All members saved successfully!");
             setMembers([
-                { id: null , name: "", email: "", gender: "Male", phone: "", collegename:"", city:"", state:""  }
+                { id: null, name: "", email: "", gender: "Male", phone: "", collegename: "", city: "", state: "" }
             ]);
         } catch (err) {
             console.error(err);
         }
 
         displayNames();
-        setAddpop(false);        
+        setAddpop(false);
     };
 
     // ... (inside AddMembers function)
@@ -319,9 +320,9 @@ export function AddMembers(){
 
         // filter safely using optional chaining
         const results = names.filter(
-        (n) =>
-            n?.name &&
-            n.name.toLowerCase().includes(text.toLowerCase())
+            (n) =>
+                n?.name &&
+                n.name.toLowerCase().includes(text.toLowerCase())
         );
 
         setFilteredNames(results);
@@ -330,82 +331,82 @@ export function AddMembers(){
 
     useEffect(() => {
         if (text !== "") {
-        searchNames();
+            searchNames();
         } else {
-        setFilteredNames(names); // show all if text is empty
+            setFilteredNames(names); // show all if text is empty
         }
     }, [text]);
 
     const namesToDisplay = text ? filteredNames : names; //which array to display
 
     const headerBgStyle = {
-            backgroundImage: `url(${background})`,
-            backgroundPosition: 'center', // centers the image
-            backgroundSize: 'cover',      // makes it cover the div
-            backgroundRepeat: 'no-repeat',
+        backgroundImage: `url(${background})`,
+        backgroundPosition: 'center', // centers the image
+        backgroundSize: 'cover',      // makes it cover the div
+        backgroundRepeat: 'no-repeat',
     };
 
     const searchBgStyle = {
-            backgroundImage: `url(${searchbar})`,
-            backgroundPosition: 'center', // centers the image
-            backgroundSize: 'cover',      // makes it cover the div
-            backgroundRepeat: 'no-repeat' // prevents tiling
+        backgroundImage: `url(${searchbar})`,
+        backgroundPosition: 'center', // centers the image
+        backgroundSize: 'cover',      // makes it cover the div
+        backgroundRepeat: 'no-repeat' // prevents tiling
     };
 
     const namesBgStyle = {
-            backgroundImage: `url(${namesbg})`,
-            backgroundPosition: 'center', // centers the image
-            backgroundSize: 'cover',      // makes it cover the div
-            backgroundRepeat: 'no-repeat' // prevents tiling
+        backgroundImage: `url(${namesbg})`,
+        backgroundPosition: 'center', // centers the image
+        backgroundSize: 'cover',      // makes it cover the div
+        backgroundRepeat: 'no-repeat' // prevents tiling
     };
 
     const mbnamesBgStyle = {
-            backgroundImage: `url(${mbmembg})`,
-            backgroundPosition: 'center', // centers the image
-            backgroundSize: 'cover',      // makes it cover the div
-            backgroundRepeat: 'no-repeat' // prevents tiling
+        backgroundImage: `url(${mbmembg})`,
+        backgroundPosition: 'center', // centers the image
+        backgroundSize: 'cover',      // makes it cover the div
+        backgroundRepeat: 'no-repeat' // prevents tiling
     };
 
     const addBgStyle = {
-            backgroundImage: `url(${addbg})`,
-            backgroundPosition: 'center', // centers the image
-            backgroundSize: 'cover',      // makes it cover the div
-            backgroundRepeat: 'no-repeat' // prevents tiling
+        backgroundImage: `url(${addbg})`,
+        backgroundPosition: 'center', // centers the image
+        backgroundSize: 'cover',      // makes it cover the div
+        backgroundRepeat: 'no-repeat' // prevents tiling
     };
 
     const mbaddBgStyle = {
-            backgroundImage: `url(${mbaddmem})`,
-            backgroundPosition: 'center', // centers the image
-            backgroundSize: 'cover',      // makes it cover the div
-            backgroundRepeat: 'no-repeat' // prevents tiling
+        backgroundImage: `url(${mbaddmem})`,
+        backgroundPosition: 'center', // centers the image
+        backgroundSize: 'cover',      // makes it cover the div
+        backgroundRepeat: 'no-repeat' // prevents tiling
     };
 
     const addmemBgStyle = {
-            backgroundImage: `url(${addmembtn})`,
-            backgroundPosition: 'center', // centers the image
-            backgroundSize: 'cover',      // makes it cover the div
-            backgroundRepeat: 'no-repeat' // prevents tiling
+        backgroundImage: `url(${addmembtn})`,
+        backgroundPosition: 'center', // centers the image
+        backgroundSize: 'cover',      // makes it cover the div
+        backgroundRepeat: 'no-repeat' // prevents tiling
     };
 
     const discardBgStyle = {
-            backgroundImage: `url(${discard})`,
-            backgroundPosition: 'center', // centers the image
-            backgroundSize: 'cover',      // makes it cover the div
-            backgroundRepeat: 'no-repeat' // prevents tiling
+        backgroundImage: `url(${discard})`,
+        backgroundPosition: 'center', // centers the image
+        backgroundSize: 'cover',      // makes it cover the div
+        backgroundRepeat: 'no-repeat' // prevents tiling
     };
 
     const inputbgstyle = {
-            backgroundImage: `url(${inputbg})`,
-            backgroundPosition: 'center', // centers the image
-            backgroundSize: 'cover',      // makes it cover the div
-            backgroundRepeat: 'no-repeat' // prevents tiling
+        backgroundImage: `url(${inputbg})`,
+        backgroundPosition: 'center', // centers the image
+        backgroundSize: 'cover',      // makes it cover the div
+        backgroundRepeat: 'no-repeat' // prevents tiling
     }
 
     const mbinputbgstyle = {
-            backgroundImage: `url(${mbaddforminpbg})`,
-            backgroundPosition: 'center', // centers the image
-            backgroundSize: 'cover',      // makes it cover the div
-            backgroundRepeat: 'no-repeat' // prevents tiling
+        backgroundImage: `url(${mbaddforminpbg})`,
+        backgroundPosition: 'center', // centers the image
+        backgroundSize: 'cover',      // makes it cover the div
+        backgroundRepeat: 'no-repeat' // prevents tiling
     }
 
     const noscroolbar = {
@@ -426,11 +427,11 @@ export function AddMembers(){
 
 
 
-    return(
+    return (
         <div className='w-full h-full flex flex-col items-center justify-start '>
 
             {/* laptop add mem form*/}
-            {addpop && 
+            {addpop &&
                 <div className='fixed inset-0 bg-black/60 z-50 lg:flex hidden items-center flex-col justify-center ' onClick={() => setAddpop(false)}>
                     <div className='h-[67px] lg:h-[81px] lg:w-[800px] w-[319px]' onClick={(e) => e.stopPropagation()}>
                         <div className='lg:h-[27px] h-[15px] lg:w-[800px] w-[319px] flex flex-row'>
@@ -439,128 +440,147 @@ export function AddMembers(){
                             <div className='lg:h-[27px] lg:w-[27px] h-[15px] w-[15px] bg-transparent'></div>
                         </div>
 
-                            <div className='lg:w-[800px] lg:h-[33px] h-[37px] w-[319px] flex justify-between lg:px-[50px] px-[20px] items-center bg-alch-dark'>
-                                <p className='font-sans lg:text-2xl text-[16px] font-semibold text-alch-cream'>Add Team Member</p>
-                                <button onClick={()=>{setAddpop(false)}}><img src={close} alt='close' className='lg:h-[32px] lg:w-[32px] h-[22px] w-[22px]' /></button>
-                            </div>
+                        <div className='lg:w-[800px] lg:h-[33px] h-[37px] w-[319px] flex justify-between lg:px-[50px] px-[20px] items-center bg-alch-dark'>
+                            <p className='font-sans lg:text-2xl text-[16px] font-semibold text-alch-cream'>Add Team Member</p>
+                            <button onClick={() => { setAddpop(false) }}><img src={close} alt='close' className='lg:h-[32px] lg:w-[32px] h-[22px] w-[22px]' /></button>
+                        </div>
 
                         <div className='h-[15px] lg:h-[27px] lg:w-[800px] w-[319px] flex flex-col justify-center items-center bg-alch-dark ' onClick={(e) => e.stopPropagation()}>
                         </div>
                     </div>
 
                     <div className='lg:h-[70%] h-[600px] lg:w-[800px] w-[319px] flex flex-col overflow-y-auto bg-alch-cream' ref={scrollRef} style={noscroolbar} onClick={(e) => e.stopPropagation()}>
-                            <div 
-                                className='flex flex-col'
-                            >
-                                <div>
-                                    {members.map((item, index) => (
-                                        <div className='flex flex-col items-center my-[30px]' key={item.tempId} >
-                                            <div className='flex flex-row justify-between items-center lg:w-[635px] w-[250px]'>
-                                                <div className='flex items-center justify-center'>
-                                                    <p className='font-sans text-[18px] leading-[140%] tracking-[2%]'>Member {index + 1}</p>
-                                                    <button className='lg:hidden block' onClick={addDiv} ><img src={mbaddmembtn} alt='close' className='h-[32px] w-[32px]'/></button>
-                                                </div>
-                                                <button onClick={() => removeDiv(item.id, item.tempId)}><img src={close} alt='close' className='h-[32px] w-[32px]' /></button>
+                        <div
+                            className='flex flex-col'
+                        >
+                            <div>
+                                {members.map((item, index) => (
+                                    <div className='flex flex-col items-center my-[30px]' key={item.tempId} >
+                                        <div className='flex flex-row justify-between items-center lg:w-[635px] w-[250px]'>
+                                            <div className='flex items-center justify-center'>
+                                                <p className='font-sans text-[18px] leading-[140%] tracking-[2%]'>Member {index + 1}</p>
+                                                <button className='lg:hidden block' onClick={addDiv} ><img src={mbaddmembtn} alt='close' className='h-[32px] w-[32px]' /></button>
                                             </div>
-                                            <ul className='font-sans text-[16px] leading-[140%] tracking-[2%] flex flex-col items-center'>
-                                                <li className='lg:h-[84px] h-[57px] mt-[24px]'>
-                                                    <label className='lg:h-[25px] h-[22px] font-sans lg:text-[18px] text-[16px] leading-[140%] tracking-[2%]'>Full Name</label><br/>
-                                                    <input
-                                                        type="text"
-                                                        value={item.name}
-                                                        onChange={(e) => handleChange(item.id, item.tempId, "name", e.target.value)}
-                                                        style={inputbgstyle}
-                                                        className='lg:w-[560px] w-[261px] lg:h-[45px] h-[31px] mt-[11px] outline-none px-[15px] lg:text-[14px] text-[12px] bg-transparent focus:outline-none focus:ring-0'
-                                                    />
-                                                </li>
-                                                <li className='mt-[24px]'>
-                                                    <label>Email*</label><br/>
-                                                    <input
-                                                        type="email"
-                                                        value={item.email}
-                                                        onChange={(e) => handleChange(item.id, item.tempId, "email", e.target.value)}
-                                                        style={inputbgstyle}
-                                                        className='lg:w-[560px] w-[261px] lg:h-[45px] h-[31px] mt-[11px] outline-none px-[15px] lg:text-[14px] text-[12px] bg-transparent focus:outline-none focus:ring-0'
-                                                    />
-                                                </li>
-                                                <li className='mt-[24px]'>
-                                                    <label>Gender*</label><br/>
-                                                    <select
-                                                        value={item.gender}
-                                                        onChange={(e) => handleChange(item.id, item.tempId, "gender", e.target.value)}
-                                                        style={inputbgstyle}
-                                                        className='lg:w-[560px] w-[261px] lg:h-[45px] h-[31px] mt-[11px] outline-none px-[15px] lg:text-[14px] text-[12px] bg-transparent focus:outline-none focus:ring-0 appearance-none'
-                                                    >
-                                                        <option value="Male">Male</option>
-                                                        <option value="Female">Female</option>
-                                                        <option value="Other">Other</option>
-                                                    </select>
-                                                </li>
-                                                <li className='mt-[24px]'>
-                                                    <label>Phone Number*</label><br/>
-                                                    <input
-                                                        type="text"
-                                                        value={item.phone}
-                                                        onChange={(e) => handleChange(item.id, item.tempId, "phone", e.target.value)}
-                                                        style={inputbgstyle}
-                                                        className='lg:w-[560px] w-[261px] lg:h-[45px] h-[31px] mt-[11px] outline-none px-[15px] lg:text-[14px] text-[12px] bg-transparent focus:outline-none focus:ring-0 '
-                                                    />
-                                                </li>
-                                                <li className='mt-[24px]'>
-                                                    <label>College Name*</label><br/>
-                                                    <input
-                                                        type="text"
-                                                        value={item.collegename}
-                                                        onChange={(e) => handleChange(item.id, item.tempId, "collegename", e.target.value)}
-                                                        style={inputbgstyle}
-                                                        className='lg:w-[560px] w-[261px] lg:h-[45px] h-[31px] mt-[11px] outline-none px-[15px] lg:text-[14px] text-[12px] bg-transparent focus:outline-none focus:ring-0'
-                                                    />
-                                                </li>
-                                                <li className='mt-[24px]'>
-                                                    <label>City Name*</label><br/>
-                                                    <input
-                                                        type="text"
-                                                        value={item.city}
-                                                        onChange={(e) => handleChange(item.id, item.tempId, "city", e.target.value)}
-                                                        style={inputbgstyle}
-                                                        className='lg:w-[560px] w-[261px] lg:h-[45px] h-[31px] mt-[11px] outline-none px-[15px] lg:text-[14px] text-[12px] bg-transparent focus:outline-none focus:ring-0'
-                                                    />
-                                                </li>
-                                                <li className='mt-[24px]'>
-                                                    <label>State*</label><br/>
-                                                    <select
-                                                        value={item.state}
-                                                        onChange={(e) => handleChange(item.id, item.tempId, "state", e.target.value)}
-                                                        style={inputbgstyle}
-                                                        className='lg:w-[560px] w-[261px] lg:h-[45px] h-[31px] mt-[11px] outline-none px-[15px]  lg:text-[14px] text-[12px] bg-transparent focus:outline-none focus:ring-0 appearance-none'
-                                                    >
-                                                        <option value="">Select a State</option>
-                                                        {STATES.map((st) => (
+                                            <button onClick={() => removeDiv(item.id, item.tempId)}><img src={close} alt='close' className='h-[32px] w-[32px]' /></button>
+                                        </div>
+                                        <ul className='font-sans text-[16px] leading-[140%] tracking-[2%] flex flex-col items-center'>
+                                            <li className='lg:h-[84px] h-[57px] mt-[24px]'>
+                                                <label className='lg:h-[25px] h-[22px] font-sans lg:text-[18px] text-[16px] leading-[140%] tracking-[2%]'>Full Name</label><br />
+                                                <input
+                                                    type="text"
+                                                    value={item.name}
+                                                    onChange={(e) => handleChange(item.id, item.tempId, "name", e.target.value)}
+                                                    style={inputbgstyle}
+                                                    className='lg:w-[560px] w-[261px] lg:h-[45px] h-[31px] mt-[11px] outline-none px-[15px] lg:text-[14px] text-[12px] bg-transparent focus:outline-none focus:ring-0'
+                                                />
+                                            </li>
+                                            <li className='mt-[24px]'>
+                                                <label>Email*</label><br />
+                                                <input
+                                                    type="email"
+                                                    value={item.email}
+                                                    onChange={(e) => handleChange(item.id, item.tempId, "email", e.target.value)}
+                                                    style={inputbgstyle}
+                                                    className='lg:w-[560px] w-[261px] lg:h-[45px] h-[31px] mt-[11px] outline-none px-[15px] lg:text-[14px] text-[12px] bg-transparent focus:outline-none focus:ring-0'
+                                                />
+                                            </li>
+                                            <li className='mt-[24px]'>
+                                                <label>Gender*</label><br />
+                                                <select
+                                                    value={item.gender}
+                                                    onChange={(e) => handleChange(item.id, item.tempId, "gender", e.target.value)}
+                                                    style={inputbgstyle}
+                                                    className='lg:w-[560px] w-[261px] lg:h-[45px] h-[31px] mt-[11px] outline-none px-[15px] lg:text-[14px] text-[12px] bg-transparent focus:outline-none focus:ring-0 appearance-none'
+                                                >
+                                                    <option value="Male">Male</option>
+                                                    <option value="Female">Female</option>
+                                                    <option value="Other">Other</option>
+                                                </select>
+                                            </li>
+                                            <li className='mt-[24px]'>
+                                                <label>Phone Number*</label><br />
+                                                <input
+                                                    type="text"
+                                                    value={item.phone}
+                                                    onChange={(e) => handleChange(item.id, item.tempId, "phone", e.target.value)}
+                                                    style={inputbgstyle}
+                                                    className='lg:w-[560px] w-[261px] lg:h-[45px] h-[31px] mt-[11px] outline-none px-[15px] lg:text-[14px] text-[12px] bg-transparent focus:outline-none focus:ring-0 '
+                                                />
+                                            </li>
+                                            <li className='mt-[24px]'>
+                                                <label>College Name*</label><br />
+                                                <input
+                                                    type="text"
+                                                    value={item.collegename}
+                                                    onChange={(e) => handleChange(item.id, item.tempId, "collegename", e.target.value)}
+                                                    style={inputbgstyle}
+                                                    className='lg:w-[560px] w-[261px] lg:h-[45px] h-[31px] mt-[11px] outline-none px-[15px] lg:text-[14px] text-[12px] bg-transparent focus:outline-none focus:ring-0'
+                                                />
+                                            </li>
+                                            <li className='mt-[24px]'>
+                                                <label>City Name*</label><br />
+                                                <input
+                                                    type="text"
+                                                    value={item.city}
+                                                    onChange={(e) => handleChange(item.id, item.tempId, "city", e.target.value)}
+                                                    style={inputbgstyle}
+                                                    className='lg:w-[560px] w-[261px] lg:h-[45px] h-[31px] mt-[11px] outline-none px-[15px] lg:text-[14px] text-[12px] bg-transparent focus:outline-none focus:ring-0'
+                                                />
+                                            </li>
+                                            <li className='mt-[24px]'>
+                                                <label>State*</label><br />
+                                                <select
+                                                    value={item.state}
+                                                    onChange={(e) => handleChange(item.id, item.tempId, "state", e.target.value)}
+                                                    style={inputbgstyle}
+                                                    className='lg:w-[560px] w-[261px] lg:h-[45px] h-[31px] mt-[11px] outline-none px-[15px]  lg:text-[14px] text-[12px] bg-transparent focus:outline-none focus:ring-0 appearance-none'
+                                                >
+                                                    <option value="">Select a State</option>
+                                                    {STATES.map((st) => (
                                                         <option key={st} value={st}>
                                                             {st}
                                                         </option>
-                                                        ))}
-                                                    </select>
-                                                </li>
-                                            </ul>
-                                            
-                                        </div>
-                                    ))}
-                                </div>
+                                                    ))}
+                                                </select>
+                                            </li>
+                                        </ul>
+
+                                    </div>
+                                ))}
                             </div>
+                        </div>
                     </div>
-        
+
                     <div className='h-[67px] lg:h-[81px] lg:w-[800px] w-[319px] border-t-[1px] border-alch-dark' onClick={(e) => e.stopPropagation()}>
                         <div className='lg:h-[27px] h-[15px] lg:w-[800px] w-[319px] flex flex-col justify-center items-center bg-alch-cream ' onClick={(e) => e.stopPropagation()}>
                         </div>
 
-                            <div className='flex lg:justify-between justify-center items-center lg:w-[800px] w-[319px] bg-alch-cream'>
-                                <button className='hidden lg:block h-[35px] w-[157px] ml-[31.73px]' onClick={addDiv} style={addmemBgStyle}><p className='font-sans text-[16px] font-bold text-alch-dark'>Add Form</p></button> 
-                                <div className='flex flex-row gap-[31.73px] lg:mr-[30px]'>
-                                    <button className='w-[109.27px] h-[34.62px]' onClick={makediscard} style={discardBgStyle}><p className='font-sans text-[16px] font-bold text-alch-red'>Discard</p></button> 
-                                    <button className='w-[157px] h-[35px] ' onClick={submit} style={addmemBgStyle}><p className='font-sans text-[16px] font-bold text-alch-dark'>Add Member</p></button> 
-                                </div>
+                        <div className='flex lg:justify-between justify-center items-center lg:w-[800px] w-[319px] bg-alch-cream px-6 lg:px-10'>
+                            <DecoratedButton
+                                onClick={addDiv}
+                                className='font-sans text-[16px] font-bold text-alch-dark'
+                            >
+                                Add Form
+                            </DecoratedButton>
+
+                            <div className='flex flex-row gap-[31.73px] lg:mr-[30px]'>
+                                <button
+                                    className='w-[109.27px] h-[34.62px]'
+                                    onClick={makediscard}
+                                    style={discardBgStyle}
+                                >
+                                    <p className='font-sans text-[16px] font-bold text-alch-red'>Discard</p>
+                                </button>
+
+                                <DecoratedButton
+                                    onClick={submit}
+                                    className='font-sans text-[16px] font-bold text-alch-dark'
+                                >
+                                    Add Member
+                                </DecoratedButton>
                             </div>
+                        </div>
+
 
                         <div className='lg:h-[27px] h-[15px] lg:w-[800px] w-[319px] flex flex-row'>
                             <div className='lg:h-[27px] lg:w-[27px] h-[15px] w-[15px] bg-transparent'></div>
@@ -572,7 +592,7 @@ export function AddMembers(){
             }
 
             {/* mobile add mem form*/}
-            {addpop && 
+            {addpop &&
                 <div className='fixed inset-0 bg-black/60 z-50 flex lg:hidden items-center flex-col justify-center' onClick={() => setAddpop(false)}>
                     <div className='h-[67px] lg:h-[81px] lg:w-[800px] w-[319px]' onClick={(e) => e.stopPropagation()}>
                         <div className='lg:h-[27px] h-[15px] lg:w-[800px] w-[319px] flex flex-row'>
@@ -581,128 +601,128 @@ export function AddMembers(){
                             <div className='lg:h-[27px] lg:w-[27px] h-[15px] w-[15px] bg-transparent'></div>
                         </div>
 
-                            <div className='lg:w-[800px] lg:h-[33px] h-[37px] w-[319px] flex justify-between lg:px-[50px] px-[20px] items-center bg-alch-dark'>
-                                <p className='font-sans lg:text-2xl text-[16px] font-semibold text-alch-cream'>Add Team Member</p>
-                                <button onClick={()=>{setAddpop(false)}}><img src={close} alt='close' className='lg:h-[32px] lg:w-[32px] h-[22px] w-[22px]' /></button>
-                            </div>
+                        <div className='lg:w-[800px] lg:h-[33px] h-[37px] w-[319px] flex justify-between lg:px-[50px] px-[20px] items-center bg-alch-dark'>
+                            <p className='font-sans lg:text-2xl text-[16px] font-semibold text-alch-cream'>Add Team Member</p>
+                            <button onClick={() => { setAddpop(false) }}><img src={close} alt='close' className='lg:h-[32px] lg:w-[32px] h-[22px] w-[22px]' /></button>
+                        </div>
 
                         <div className='h-[15px] lg:h-[27px] lg:w-[800px] w-[319px] flex flex-col justify-center items-center bg-alch-dark ' onClick={(e) => e.stopPropagation()}>
                         </div>
                     </div>
 
                     <div className='h-[75%] w-[319px] flex flex-col overflow-y-auto bg-alch-cream' style={noscroolbar} onClick={(e) => e.stopPropagation()}>
-                            <div 
-                                className='flex flex-col'
-                            >
-                                <div>
-                                    {members.map((item, index) => (
-                                        <div className='flex flex-col items-center my-[30px]' key={item.tempId} >
-                                            <div className='flex flex-row justify-between items-center lg:w-[635px] w-[250px]'>
-                                                <div className='flex items-center justify-center gap-[10px]'>
-                                                    <p className='font-sans text-[18px] leading-[140%] tracking-[2%]'>Member {index + 1}</p>
-                                                    <button className='lg:hidden block' onClick={addDiv} ><img src={mbaddmembtn} alt='close' className='h-[37px] w-[37px]'/></button>
-                                                </div>
-                                                <button onClick={() => removeDiv(item.id, item.tempId)}><img src={close} alt='close' className='h-[32px] w-[32px]' /></button>
+                        <div
+                            className='flex flex-col'
+                        >
+                            <div>
+                                {members.map((item, index) => (
+                                    <div className='flex flex-col items-center my-[30px]' key={item.tempId} >
+                                        <div className='flex flex-row justify-between items-center lg:w-[635px] w-[250px]'>
+                                            <div className='flex items-center justify-center gap-[10px]'>
+                                                <p className='font-sans text-[18px] leading-[140%] tracking-[2%]'>Member {index + 1}</p>
+                                                <button className='lg:hidden block' onClick={addDiv} ><img src={mbaddmembtn} alt='close' className='h-[37px] w-[37px]' /></button>
                                             </div>
-                                            <ul className='font-sans text-[16px] leading-[140%] tracking-[2%] flex flex-col items-center'>
-                                                <li className='lg:h-[84px] h-[57px] mt-[24px]'>
-                                                    <label className='lg:h-[25px] h-[22px] font-sans lg:text-[18px] text-[16px] leading-[140%] tracking-[2%]'>Full Name</label><br/>
-                                                    <input
-                                                        type="text"
-                                                        value={item.name}
-                                                        onChange={(e) => handleChange(item.id, item.tempId, "name", e.target.value)}
-                                                        style={mbinputbgstyle}
-                                                        className='w-[261px] h-[31px] mt-[11px] outline-none px-[15px] text-[12px] bg-transparent focus:outline-none focus:ring-0'
-                                                    />
-                                                </li>
-                                                <li className='mt-[24px]'>
-                                                    <label>Email*</label><br/>
-                                                    <input
-                                                        type="email"
-                                                        value={item.email}
-                                                        onChange={(e) => handleChange(item.id, item.tempId, "email", e.target.value)}
-                                                        style={mbinputbgstyle}
-                                                        className='lg:w-[560px] w-[261px] lg:h-[45px] h-[31px] mt-[11px] outline-none px-[15px] lg:text-[14px] text-[12px] bg-transparent focus:outline-none focus:ring-0'
-                                                    />
-                                                </li>
-                                                <li className='mt-[24px]'>
-                                                    <label>Gender*</label><br/>
-                                                    <select
-                                                        value={item.gender}
-                                                        onChange={(e) => handleChange(item.id, item.tempId, "gender", e.target.value)}
-                                                        style={mbinputbgstyle}
-                                                        className='lg:w-[560px] w-[261px] lg:h-[45px] h-[31px] mt-[11px] outline-none px-[15px] lg:text-[14px] text-[12px] bg-transparent focus:outline-none focus:ring-0 appearance-none'
-                                                    >
-                                                        <option value="Male">Male</option>
-                                                        <option value="Female">Female</option>
-                                                        <option value="Other">Other</option>
-                                                    </select>
-                                                </li>
-                                                <li className='mt-[24px]'>
-                                                    <label>Phone Number*</label><br/>
-                                                    <input
-                                                        type="text"
-                                                        value={item.phone}
-                                                        onChange={(e) => handleChange(item.id, item.tempId, "phone", e.target.value)}
-                                                        style={mbinputbgstyle}
-                                                        className='lg:w-[560px] w-[261px] lg:h-[45px] h-[31px] mt-[11px] outline-none px-[15px] lg:text-[14px] text-[12px] bg-transparent focus:outline-none focus:ring-0 '
-                                                    />
-                                                </li>
-                                                <li className='mt-[24px]'>
-                                                    <label>College Name*</label><br/>
-                                                    <input
-                                                        type="text"
-                                                        value={item.collegename}
-                                                        onChange={(e) => handleChange(item.id, item.tempId, "collegename", e.target.value)}
-                                                        style={mbinputbgstyle}
-                                                        className='lg:w-[560px] w-[261px] lg:h-[45px] h-[31px] mt-[11px] outline-none px-[15px] lg:text-[14px] text-[12px] bg-transparent focus:outline-none focus:ring-0'
-                                                    />
-                                                </li>
-                                                <li className='mt-[24px]'>
-                                                    <label>City Name*</label><br/>
-                                                    <input
-                                                        type="text"
-                                                        value={item.city}
-                                                        onChange={(e) => handleChange(item.id, item.tempId, "city", e.target.value)}
-                                                        style={mbinputbgstyle}
-                                                        className='lg:w-[560px] w-[261px] lg:h-[45px] h-[31px] mt-[11px] outline-none px-[15px] lg:text-[14px] text-[12px] bg-transparent focus:outline-none focus:ring-0'
-                                                    />
-                                                </li>
-                                                <li className='mt-[24px]'>
-                                                    <label>State*</label><br/>
-                                                    <select
-                                                        value={item.state}
-                                                        onChange={(e) => handleChange(item.id, item.tempId, "state", e.target.value)}
-                                                        style={mbinputbgstyle}
-                                                        className='lg:w-[560px] w-[261px] lg:h-[45px] h-[31px] mt-[11px] outline-none px-[15px]  lg:text-[14px] text-[12px] bg-transparent focus:outline-none focus:ring-0 appearance-none'
-                                                    >
-                                                        <option value="">Select a State</option>
-                                                        {STATES.map((st) => (
+                                            <button onClick={() => removeDiv(item.id, item.tempId)}><img src={close} alt='close' className='h-[32px] w-[32px]' /></button>
+                                        </div>
+                                        <ul className='font-sans text-[16px] leading-[140%] tracking-[2%] flex flex-col items-center'>
+                                            <li className='lg:h-[84px] h-[57px] mt-[24px]'>
+                                                <label className='lg:h-[25px] h-[22px] font-sans lg:text-[18px] text-[16px] leading-[140%] tracking-[2%]'>Full Name</label><br />
+                                                <input
+                                                    type="text"
+                                                    value={item.name}
+                                                    onChange={(e) => handleChange(item.id, item.tempId, "name", e.target.value)}
+                                                    style={mbinputbgstyle}
+                                                    className='w-[261px] h-[31px] mt-[11px] outline-none px-[15px] text-[12px] bg-transparent focus:outline-none focus:ring-0'
+                                                />
+                                            </li>
+                                            <li className='mt-[24px]'>
+                                                <label>Email*</label><br />
+                                                <input
+                                                    type="email"
+                                                    value={item.email}
+                                                    onChange={(e) => handleChange(item.id, item.tempId, "email", e.target.value)}
+                                                    style={mbinputbgstyle}
+                                                    className='lg:w-[560px] w-[261px] lg:h-[45px] h-[31px] mt-[11px] outline-none px-[15px] lg:text-[14px] text-[12px] bg-transparent focus:outline-none focus:ring-0'
+                                                />
+                                            </li>
+                                            <li className='mt-[24px]'>
+                                                <label>Gender*</label><br />
+                                                <select
+                                                    value={item.gender}
+                                                    onChange={(e) => handleChange(item.id, item.tempId, "gender", e.target.value)}
+                                                    style={mbinputbgstyle}
+                                                    className='lg:w-[560px] w-[261px] lg:h-[45px] h-[31px] mt-[11px] outline-none px-[15px] lg:text-[14px] text-[12px] bg-transparent focus:outline-none focus:ring-0 appearance-none'
+                                                >
+                                                    <option value="Male">Male</option>
+                                                    <option value="Female">Female</option>
+                                                    <option value="Other">Other</option>
+                                                </select>
+                                            </li>
+                                            <li className='mt-[24px]'>
+                                                <label>Phone Number*</label><br />
+                                                <input
+                                                    type="text"
+                                                    value={item.phone}
+                                                    onChange={(e) => handleChange(item.id, item.tempId, "phone", e.target.value)}
+                                                    style={mbinputbgstyle}
+                                                    className='lg:w-[560px] w-[261px] lg:h-[45px] h-[31px] mt-[11px] outline-none px-[15px] lg:text-[14px] text-[12px] bg-transparent focus:outline-none focus:ring-0 '
+                                                />
+                                            </li>
+                                            <li className='mt-[24px]'>
+                                                <label>College Name*</label><br />
+                                                <input
+                                                    type="text"
+                                                    value={item.collegename}
+                                                    onChange={(e) => handleChange(item.id, item.tempId, "collegename", e.target.value)}
+                                                    style={mbinputbgstyle}
+                                                    className='lg:w-[560px] w-[261px] lg:h-[45px] h-[31px] mt-[11px] outline-none px-[15px] lg:text-[14px] text-[12px] bg-transparent focus:outline-none focus:ring-0'
+                                                />
+                                            </li>
+                                            <li className='mt-[24px]'>
+                                                <label>City Name*</label><br />
+                                                <input
+                                                    type="text"
+                                                    value={item.city}
+                                                    onChange={(e) => handleChange(item.id, item.tempId, "city", e.target.value)}
+                                                    style={mbinputbgstyle}
+                                                    className='lg:w-[560px] w-[261px] lg:h-[45px] h-[31px] mt-[11px] outline-none px-[15px] lg:text-[14px] text-[12px] bg-transparent focus:outline-none focus:ring-0'
+                                                />
+                                            </li>
+                                            <li className='mt-[24px]'>
+                                                <label>State*</label><br />
+                                                <select
+                                                    value={item.state}
+                                                    onChange={(e) => handleChange(item.id, item.tempId, "state", e.target.value)}
+                                                    style={mbinputbgstyle}
+                                                    className='lg:w-[560px] w-[261px] lg:h-[45px] h-[31px] mt-[11px] outline-none px-[15px]  lg:text-[14px] text-[12px] bg-transparent focus:outline-none focus:ring-0 appearance-none'
+                                                >
+                                                    <option value="">Select a State</option>
+                                                    {STATES.map((st) => (
                                                         <option key={st} value={st}>
                                                             {st}
                                                         </option>
-                                                        ))}
-                                                    </select>
-                                                </li>
-                                            </ul>
-                                            
-                                        </div>
-                                    ))}
-                                </div>
+                                                    ))}
+                                                </select>
+                                            </li>
+                                        </ul>
+
+                                    </div>
+                                ))}
                             </div>
+                        </div>
                     </div>
-        
+
                     <div className='h-[67px] lg:h-[81px] lg:w-[800px] w-[319px] border-t-[1px] border-alch-dark' onClick={(e) => e.stopPropagation()}>
                         <div className='lg:h-[27px] h-[15px] lg:w-[800px] w-[319px] flex flex-col justify-center items-center bg-alch-cream ' onClick={(e) => e.stopPropagation()}>
                         </div>
 
-                            <div className='flex lg:justify-between justify-center items-center lg:w-[800px] w-[319px] bg-alch-cream'>
-                                <button className='hidden lg:block h-[35px] w-[157px] ml-[31.73px]' onClick={addDiv} style={addmemBgStyle}><p className='font-sans text-[16px] font-bold text-alch-dark'>Add Form</p></button> 
-                                <div className='flex flex-row gap-[31.73px] lg:mr-[30px]'>
-                                    <button className='w-[109.27px] h-[34.62px]' onClick={makediscard} style={discardBgStyle}><p className='font-sans text-[16px] font-bold text-alch-red'>Discard</p></button> 
-                                    <button className='w-[157px] h-[35px] ' onClick={submit} style={addmemBgStyle}><p className='font-sans text-[16px] font-bold text-alch-dark'>Add Member</p></button> 
-                                </div>
+                        <div className='flex lg:justify-between justify-center items-center lg:w-[800px] w-[319px] bg-alch-cream'>
+                            <button className='hidden lg:block h-[35px] w-[157px] ml-[31.73px]' onClick={addDiv} style={addmemBgStyle}><p className='font-sans text-[16px] font-bold text-alch-dark'>Add Form</p></button>
+                            <div className='flex flex-row gap-[31.73px] lg:mr-[30px]'>
+                                <button className='w-[109.27px] h-[34.62px]' onClick={makediscard} style={discardBgStyle}><p className='font-sans text-[16px] font-bold text-alch-red'>Discard</p></button>
+                                <button className='w-[157px] h-[35px] ' onClick={submit} style={addmemBgStyle}><p className='font-sans text-[16px] font-bold text-alch-dark'>Add Member</p></button>
                             </div>
+                        </div>
 
                         <div className='lg:h-[27px] h-[15px] lg:w-[800px] w-[319px] flex flex-row'>
                             <div className='lg:h-[27px] lg:w-[27px] h-[15px] w-[15px] bg-transparent'></div>
@@ -713,9 +733,9 @@ export function AddMembers(){
                 </div>
             }
 
-            <div 
+            <div
                 className='lg:h-full lg:w-full h-[952px] w-[371px] flex items-center lg:justify-center flex-col'
-                // style={headerBgStyle}
+            // style={headerBgStyle}
             >
                     <div className=' w-[100%] flex items-center justify-center'>
                         {/* laptop search */}
@@ -799,10 +819,10 @@ export function AddMembers(){
                                 </div>
                             )}
 
-                            {/* names of even index in laptop */}
+                        {/* names of even index in laptop */}
 
-                            { namesToDisplay && 
-                                namesToDisplay
+                        {namesToDisplay &&
+                            namesToDisplay
                                 .filter((_, index) => index % 2 === 0)
                                 .map((item) => (
                                     <div className='lg:w-[450px] lg:h-[49.5px] w-[336px] h-[56px] hidden lg:flex justify-center items-center' style={namesBgStyle} key={item.id}>
@@ -814,15 +834,15 @@ export function AddMembers(){
                                                     <p className='font-sans font-normal text-[12px] leading-[100%] tracking-[0px]' >{item.email}</p>
                                                 </div>
                                             </div>
-                                            <button onClick={() => removemember(item.id, item.tempId)} ><img src={removeoutline} alt='remove'/></button>
-                                        </div>     
+                                            <button onClick={() => removemember(item.id, item.tempId)} ><img src={removeoutline} alt='remove' /></button>
+                                        </div>
                                     </div>
                                 ))
-                            }
+                        }
 
-                            {/* names of all mem in mobile */}
-                            { namesToDisplay && 
-                                namesToDisplay
+                        {/* names of all mem in mobile */}
+                        {namesToDisplay &&
+                            namesToDisplay
                                 .map((item) => (
                                     <div className='w-[325px] h-[55px] flex lg:hidden justify-center items-center' style={mbnamesBgStyle} key={item.id}>
                                         <div className='w-[300px] h-[38px] flex justify-between items-center mx-[15px]'>
@@ -833,34 +853,34 @@ export function AddMembers(){
                                                     <p className='font-sans font-normal text-[10px] leading-[100%] tracking-[0px]' >{item.email}</p>
                                                 </div>
                                             </div>
-                                            <button onClick={() => removemember(item.id, item.tempId)} ><img src={removeoutline} alt='remove'/></button>
-                                        </div>     
+                                            <button onClick={() => removemember(item.id, item.tempId)} ><img src={removeoutline} alt='remove' /></button>
+                                        </div>
                                     </div>
                                 ))
-                            }
+                        }
 
-                            {/* add mem form btn laptop */}
-                            <div onClick={()=>{setAddpop(true)}} className='lg:w-[450px] lg:h-[49.5px] w-[336px] h-[56px] hidden lg:flex  justify-center items-center cursor-pointer' style={addBgStyle}>
-                                <div className='flex justify-between items-center lg:w-[95%] lg:h-[38px] w-[315.55px] h-[38px]'>
-                                    <p className='font-sans font-bold text-base' >Add more Members</p>
-                                    <button><img src={addbutton} alt='add' className='w-[24px] h-[24px]'/></button>
-                                </div>
-                            </div>
-                            {/* add mem form btn mobile */}
-                            <div onClick={()=>{setAddpop(true)}} className='w-[325px] h-[55px] flex lg:hidden justify-center items-center cursor-pointer' style={mbaddBgStyle}>
-                                <div className='flex justify-between items-center w-[300px] h-[38px]'>
-                                    <p className='font-sans font-bold text-[14px]' >Add more Members</p>
-                                    <button><img src={addbutton} alt='add' className='w-[24px] h-[24px]'/></button>
-                                </div>
+                        {/* add mem form btn laptop */}
+                        <div onClick={() => { setAddpop(true) }} className='lg:w-[450px] lg:h-[49.5px] w-[336px] h-[56px] hidden lg:flex  justify-center items-center cursor-pointer' style={addBgStyle}>
+                            <div className='flex justify-between items-center lg:w-[95%] lg:h-[38px] w-[315.55px] h-[38px]'>
+                                <p className='font-sans font-bold text-base' >Add more Members</p>
+                                <button><img src={addbutton} alt='add' className='w-[24px] h-[24px]' /></button>
                             </div>
                         </div>
+                        {/* add mem form btn mobile */}
+                        <div onClick={() => { setAddpop(true) }} className='w-[325px] h-[55px] flex lg:hidden justify-center items-center cursor-pointer' style={mbaddBgStyle}>
+                            <div className='flex justify-between items-center w-[300px] h-[38px]'>
+                                <p className='font-sans font-bold text-[14px]' >Add more Members</p>
+                                <button><img src={addbutton} alt='add' className='w-[24px] h-[24px]' /></button>
+                            </div>
+                        </div>
+                    </div>
 
-                        {/* names of mem of odd index in laptop */}
+                    {/* names of mem of odd index in laptop */}
 
-                        <div className=' h-100% w-100% hidden lg:flex flex-col lg:gap-[16px]'>
-                            {/* <div className='w-[526px] h-[58.08px]'></div> */}
-                            { namesToDisplay && 
-                                namesToDisplay
+                    <div className=' h-100% w-100% hidden lg:flex flex-col lg:gap-[16px]'>
+                        {/* <div className='w-[526px] h-[58.08px]'></div> */}
+                        {namesToDisplay &&
+                            namesToDisplay
                                 .filter((_, index) => index % 2 === 1)
                                 .map((item) => (
                                     <div className='lg:w-[450px] lg:h-[49.5px] w-[336px] h-[56px] flex justify-center items-center' style={namesBgStyle} key={item.id}>
@@ -872,13 +892,13 @@ export function AddMembers(){
                                                     <p className='font-sans font-normal text-[12px] leading-[100%] tracking-[0px]' >{item.email}</p>
                                                 </div>
                                             </div>
-                                            <button onClick={() => removemember(item.id, item.tempId)} ><img src={removeoutline} alt='remove'/></button>
-                                        </div>     
+                                            <button onClick={() => removemember(item.id, item.tempId)} ><img src={removeoutline} alt='remove' /></button>
+                                        </div>
                                     </div>
                                 ))
-                            }
-                        </div>
+                        }
                     </div>
+                </div>
             </div>
 
         </div>
