@@ -32,13 +32,6 @@ export function AddMembers(){
     const [message, setMessage] = useState('');
     const [text, setText] = useState("");
     const [addpop, setAddpop] = useState(false);
-    
-    //coustom alert 
-    const [customAlert, setCustomAlert] = useState({ show: false, message: "" });
-    const showAlert = (msg) => {
-        setCustomAlert({ show: true, message: msg });
-    };
-
 
     const STATES = [
         "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh",
@@ -54,8 +47,8 @@ export function AddMembers(){
     useEffect(() => {
         const token = localStorage.getItem('access');
         if (!token) {
-        setMessage('You are not logged in.');
-        return;
+            alert('You are not logged in.');
+            return;
         }
 
         axios
@@ -267,30 +260,57 @@ export function AddMembers(){
         setAddpop(false);        
     };
 
+    // ... (inside AddMembers function)
+
     const displayNames = async() => {
-        // const response = await fetch("http://127.0.0.1:8000/Participantdata/Participant/");
-
         const token = localStorage.getItem("access");
-        const response = await fetch("http://127.0.0.1:8000/Participantdata/Participant/", {
-            headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json"
+        const url = "http://127.0.0.1:8000/Participantdata/Participant/";
+
+        try {
+            const response = await fetch(url, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                }
+            });
+
+            // 1. Check if the HTTP response was successful (200-299)
+            if (!response.ok) {
+                // If the response is not ok (e.g., 401 Unauthorized), the JSON will be an object.
+                const errorData = await response.json().catch(() => ({ detail: `Error: ${response.status}` }));
+                console.error("Failed to fetch participant data. Status:", response.status, "Error:", errorData);
+                // Optionally show an alert to the user
+                // showAlert(`Error fetching members: ${response.status}`); 
+                setNames([]); // Ensure state is an empty array on failure
+                return;
             }
-        });
 
+            const data = await response.json();
+            console.log("Fetched Data:", data);
 
-        const data = await response.json();
-        console.log(data);
-
-        const names = data.map((item) => ({
-            id: item.id,
-            tempId: item.tempId,
-            name: item.name,
-            email: item.email,
-        }));
-        console.log(names);
-        setNames(names);
+            // 2. Safely check if 'data' is an array before calling .map()
+            if (Array.isArray(data)) {
+                const names = data.map((item) => ({
+                    id: item.id,
+                    tempId: item.tempId,
+                    name: item.name,
+                    email: item.email,
+                }));
+                console.log("Mapped Names:", names);
+                setNames(names);
+                // Also update filteredNames so the list immediately reflects the fetched data
+                setFilteredNames(names); 
+            } else {
+                console.error("API returned non-array data:", data);
+                setNames([]); // Reset to empty array
+            }
+        } catch (error) {
+            console.error("Fetch operation failed:", error);
+            setNames([]); // Reset state on network/parsing error
+        }
     }
+
+    // ... (rest of your component logic)
 
     useEffect(()=>{displayNames()},[]);
 
@@ -741,7 +761,7 @@ export function AddMembers(){
                                 >   
                                     <div className='lg:w-[95%] lg:h-[38px] w-[315.55px] h-[38px] flex justify-between items-center'>
                                         <div className='flex justify-between items-center gap-[17px]'>
-                                            <img src={profilepic} alt='profile' className='w-[32.11px] h-[32.11px]'/>
+                                            <img src={profile?.profilePic || profilepic} alt='profile' className='w-[32.11px] h-[32.11px]'/>
                                             <div className='h-[38px] flex flex-col justify-between'>
                                                 <p className='font-sans font-semibold text-[16px] leading-[100%] tracking-[0px]'>
                                                     {profile ? profile.fullname.toUpperCase() : "Loading..."}
@@ -786,9 +806,9 @@ export function AddMembers(){
                                 .filter((_, index) => index % 2 === 0)
                                 .map((item) => (
                                     <div className='lg:w-[450px] lg:h-[49.5px] w-[336px] h-[56px] hidden lg:flex justify-center items-center' style={namesBgStyle} key={item.id}>
-                                        <div className='lg:w-[95%] lg:h-[38px] w-[315.55px] h-[38px] flex justify-between items-center'>
-                                            <div className='h-[38px] flex justify-center items-center gap-[17px] '>
-                                                <img src={profilepic} alt='profile' className='w-[32.11px] h-[32.11px]'/>
+                                        <div className='lg:w-[95%] lg:h-[38px] w-[315.55px] h-[38px] flex justify-between items-center mx-[20px]'>
+                                            <div className='h-[38px] flex justify-center items-center '>
+                                                {/* <img src={profilepic} alt='profile' className='w-[32.11px] h-[32.11px]'/> */}
                                                 <div className='flex flex-col justify-between h-[38px]'>
                                                     <p className='font-sans font-semibold text-[16px] leading-[100%] tracking-[0px]'>{item.name.charAt(0).toUpperCase() + item.name.slice(1)}</p>
                                                     <p className='font-sans font-normal text-[12px] leading-[100%] tracking-[0px]' >{item.email}</p>
@@ -805,9 +825,9 @@ export function AddMembers(){
                                 namesToDisplay
                                 .map((item) => (
                                     <div className='w-[325px] h-[55px] flex lg:hidden justify-center items-center' style={mbnamesBgStyle} key={item.id}>
-                                        <div className='w-[300px] h-[38px] flex justify-between items-center'>
-                                            <div className='h-[38px] flex justify-center items-center gap-[17px] '>
-                                                <img src={profilepic} alt='profile' className='w-[32.11px] h-[32.11px]'/>
+                                        <div className='w-[300px] h-[38px] flex justify-between items-center mx-[15px]'>
+                                            <div className='h-[38px] flex justify-center items-center '>
+                                                {/* <img src={profilepic} alt='profile' className='w-[32.11px] h-[32.11px]'/> */}
                                                 <div className='flex flex-col justify-between h-[30px]'>
                                                     <p className='font-sans font-semibold text-[14px] leading-[100%] tracking-[0px]'>{item.name.charAt(0).toUpperCase() + item.name.slice(1)}</p>
                                                     <p className='font-sans font-normal text-[10px] leading-[100%] tracking-[0px]' >{item.email}</p>
@@ -844,9 +864,9 @@ export function AddMembers(){
                                 .filter((_, index) => index % 2 === 1)
                                 .map((item) => (
                                     <div className='lg:w-[450px] lg:h-[49.5px] w-[336px] h-[56px] flex justify-center items-center' style={namesBgStyle} key={item.id}>
-                                        <div className='lg:w-[95%] lg:h-[38px] w-[315.55px] h-[38px] flex justify-between items-center'>
-                                            <div className='h-[38px] flex justify-center items-center gap-[17px] '>
-                                                <img src={profilepic} alt='profile' className='w-[32.11px] h-[32.11px]'/>
+                                        <div className='lg:w-[95%] lg:h-[38px] w-[315.55px] h-[38px] flex justify-between items-center mx-[20px]'>
+                                            <div className='h-[38px] flex justify-center items-center '>
+                                                {/* <img src={profilepic} alt='profile' className='w-[32.11px] h-[32.11px]'/> */}
                                                 <div className='flex flex-col justify-between h-[38px]'>
                                                     <p className='font-sans font-semibold text-[16px] leading-[100%] tracking-[0px]'>{item.name.charAt(0).toUpperCase() + item.name.slice(1)}</p>
                                                     <p className='font-sans font-normal text-[12px] leading-[100%] tracking-[0px]' >{item.email}</p>
