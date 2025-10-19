@@ -4,10 +4,9 @@ import addformbg from "./assets/backflowers.svg";
 import { Footer } from "./components/landingPage/Footer";
 import logo from "./assets/alcherlogo.svg";
 import "./CompetitionPage.css";
-import { Link } from "react-router-dom";
-import bgimage from './assets/background-pattern.svg';
 import DecorativeButton from "./components/DecorativeButton";
 import flower from "./assets/heading-icon-red.svg";
+import exampleimage from "./assets/addmembtn.png";
 
 function ModuleDropdown({ modules, selectedModule, setSelectedModule }) {
   const [open, setOpen] = useState(false);
@@ -177,13 +176,6 @@ function CompetitionsList() {
     const searchMatch = allFields.includes(searchTerm.toLowerCase());
     return moduleMatch && searchMatch && modeMatch;
   });
-  
-  const bgstyle = {
-            backgroundImage: `url(${bgimage})`,
-            backgroundPosition: 'center', // centers the image
-            backgroundSize: 'contain',      // makes it cover the div
-            backgroundRepeat: 'no-repeat' // prevents tiling
-    }
 
   const formBgStyle = {
     backgroundImage: `url(${addformbg})`,
@@ -299,6 +291,7 @@ function CompetitionsList() {
                   margin: "0.5rem",
                 }}
               >
+                <img src="http://localhost:8000/media/image_uploads/batmobile-car-with-neon-lights.jpg" className="w-full h-full"/>
                   <div
                   className="competition-default"
                   style={{
@@ -321,7 +314,7 @@ function CompetitionsList() {
                   <p className="prize" style={{ margin: 0, fontSize: "0.9rem", textAlign: "center", color:"#000"}}>{comp.event_desc}</p>
                   <p className="prize" style={{ margin: 0, fontSize: "0.9rem", textAlign: "center", color:"#000"}}>${comp.prize_worth}</p>
 
-                  <DecorativeButton to={`/register/${comp.event_name}`} onClick={() => setSelectedComp(comp)} className = "dec-btn" variant="orange-sm"> Register</DecorativeButton>
+                  <DecorativeButton to={`/register/${comp.id}`} onClick={() => setSelectedComp(comp)} className = "dec-btn" variant="orange-sm"> Register</DecorativeButton>
                  
                 </div>
               

@@ -9,4 +9,4 @@ class CompetitionAdmin(admin.ModelAdmin):
 
 @admin.register(Module)
 class ModuleAdmin(admin.ModelAdmin):
-    list_display = ('id', 'modulename')
+    list_display = ('id', 'module')

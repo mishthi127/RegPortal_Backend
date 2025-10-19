@@ -72,6 +72,8 @@ const RegisterPage = () => {
     setLoading(true);
     setError("");
 
+
+
     const finalData = {
       competition_id: id,
       team_members: teamMembers,
@@ -89,15 +91,15 @@ const RegisterPage = () => {
 
       const response = await fetch(
       "http://127.0.0.1:8000/api/register-competition/",
-        {
+      {
         method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(finalData),
-        }
-      );
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(finalData),
+      }
+    );
 
       let data;
       try {
@@ -140,6 +142,7 @@ const RegisterPage = () => {
   const fetchMembers = async () => {
     try {
       const token = localStorage.getItem("access");
+      
       if (!token) return;
 
       const res = await fetch("http://127.0.0.1:8000/Participantdata/Participant/", {

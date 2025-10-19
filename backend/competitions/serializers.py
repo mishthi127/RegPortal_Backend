@@ -10,8 +10,7 @@ class CompetitionSerializer(serializers.ModelSerializer):
     module = ModuleSerializer()  # nested
     class Meta:
         model = Competition
-        fields = [
-            "__all__"]
+        fields = "__all__"
 
 class TeamMembersSerializer(serializers.ModelSerializer):
     class Meta:

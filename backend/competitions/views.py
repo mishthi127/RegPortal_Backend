@@ -14,7 +14,6 @@ from .serializers import (
 # ------------------------------
 # FIXED Competition Detail View (GET only)
 # ------------------------------
-
 class CompetitionDetailView(generics.RetrieveAPIView):
     """
     Used to fetch a single competition by ID (GET request).
@@ -86,11 +85,11 @@ class ShowAllCompetitionsView(APIView):
 
 
 # ------------------------------
-# New: ViewSet for API fetching
+# ViewSet for fetching all competitions
 # ------------------------------
 class CompetitionViewSet(viewsets.ReadOnlyModelViewSet):
     """
-    This ViewSet is what your React frontend will call to get all competitions.
+    This ViewSet is used by your React frontend to get competitions.
     Example:
         GET /api/competitions/
         GET /api/competitions/<id>/
@@ -101,9 +100,12 @@ class CompetitionViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 # ------------------------------
-# Existing Registration View (kept, cleaned)
+# FIXED: Registration View
 # ------------------------------
 class RegisterCompetitionView(APIView):
+    """
+    Handles team registration for a competition.
+    """
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
