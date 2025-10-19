@@ -62,7 +62,7 @@ const HeroSection = ({ isAuthenticated }) => {
     <div className="text-alch-cream overflow-hidden">
       <main className="relative flex flex-col justify-center items-center text-center min-h-screen py-16 sm:py-24 md:py-32">
         {/* Dark background with pattern */}
-        <div className="absolute inset-0 bg-alch-dark" style={mainContentStyle}></div>
+        <div className="absolute inset-0 bg-alch-dark pixelbg"></div>
 
         {/* Flowers */}
         <div className="absolute inset-0 w-full h-full pointer-events-none">
@@ -131,14 +131,13 @@ const HeroSection = ({ isAuthenticated }) => {
 </motion.div>
 
       </main>
-      
-      <div className='w-[100%] bg-alch-dark'>
-        <img src={middle_line} alt="Decorative Footer Border" className="w-[100%] transform scale-y-[-1]" />
-      </div>
-      <footer className="bg-alch-cream">
 
+
+      <div className="bg-black">
+        <img src={middle_line} alt="Decorative Footer Border" className="w-full transform scale-y-[-1]"/>
+      </div>
       {/* Footer */}
-      <footer className="bg-alch-cream py-4">
+      <footer className="bg-alch-cream">
         <img src={bottomBorder} alt="Decorative Footer Border" className="w-full" />
         <img src={bottomBorder} alt="Decorative Footer Border" className="w-full transform scale-y-[-1]" />
       </footer>

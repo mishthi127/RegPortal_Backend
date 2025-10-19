@@ -14,7 +14,6 @@ import { Pixel } from '../components/landingPage/Pixel';
 import { Footer } from '../components/landingPage/Footer';
 import { FAQS } from '../components/landingPage/FAQS';
 import DecorativeButton from '../components/DecorativeButton';
-import DecoratedButton from '../components/AuthPage/DecoratedButton';
 import ProfileDropdown from '../components/ProfileDropdown';
 
 // Asset Imports
@@ -158,7 +157,7 @@ const LandingPage = () => {
               <div className='flex flex-row justify-center items-center gap-[10px] h-[69px]'>
                   <img className="lg:w-[37.99px] lg:h-[43.71px] w-[24px] h-[27.61px]" src={logo} alt="logo"/>
                   <div className='text-alch-cream h-[32px] lg:h-[65.83px] flex flex-col justify-center'>
-                      <p className='font-display font-bold lg:text-[37.99px] text-[18px] h-[42px] leading-none'>ALCHERINGA</p>
+                      <p className='font-modernoir font-bold lg:text-[37.99px] text-[18px] h-[42px] leading-none'>ALCHERINGA</p>
                       <p className='font-sans h-[27px]  font-normal lg:text-[18.99px] text-[10px] leading-none self-end'>IIT GUWAHATI</p>
                   </div>
               </div>    
@@ -167,8 +166,8 @@ const LandingPage = () => {
           <div className="hidden lg:flex items-center">
             <DecorativeButton to="#" variant="nav">
               <div className="flex space-x-8 px-4 text-sm">
-                <Link to="/about" className="text-alch-cream font-sans hover:text-white whitespace-nowrap">About us</Link>
-                <Link to="/competitions" className="text-alch-cream font-sans hover:text-white whitespace-nowrap">Modules & Competitions</Link>
+                <Link to="/about" className="text-alch-cream hover:text-white whitespace-nowrap">About us</Link>
+                <Link to="/competitions" className="text-alch-cream hover:text-white whitespace-nowrap">Modules & Competitions</Link>
               </div>
             </DecorativeButton>
           </div>
@@ -177,7 +176,7 @@ const LandingPage = () => {
             {isAuthenticated ? (
               <ProfileDropdown user={user} onLogout={handleLogout} onTabClick={handleTabClickFromDropdown}/>
             ) : (
-              <DecoratedButton to="/login" variant="orange-sm">Login</DecoratedButton>
+              <DecorativeButton to="/login" variant="orange-sm">Login</DecorativeButton>
             )}
           </div>
           {/* mobile */}
@@ -196,7 +195,7 @@ const LandingPage = () => {
               <div className='flex flex-row justify-center items-center gap-[10px] h-[69px]'>
                   <img className="lg:w-[37.99px] lg:h-[43.71px] w-[24px] h-[27.61px]" src={logo} alt="logo"/>
                   <div className='text-alch-cream h-[32px] lg:h-[65.83px] flex flex-col justify-center'>
-                      <p className='font-display font-bold lg:text-[37.99px] text-[18px] h-[42px] leading-none'>ALCHERINGA</p>
+                      <p className='font-modernoir font-bold lg:text-[37.99px] text-[18px] h-[42px] leading-none'>ALCHERINGA</p>
                       <p className='font-sans h-[27px]  font-normal lg:text-[18.99px] text-[10px] leading-none self-end'>IIT GUWAHATI</p>
                   </div>
               </div>    
@@ -205,17 +204,17 @@ const LandingPage = () => {
           <div className="hidden lg:flex items-center">
             <DecorativeButton to="#" variant="nav">
               <div className="flex space-x-8 px-4 text-sm">
-                <Link to="/about" className="text-alch-cream font-sans hover:text-white whitespace-nowrap">About us</Link>
-                <Link to="/competitions" className="text-alch-cream font-sans hover:text-white whitespace-nowrap">  Modules & Competitions</Link>
+                <Link to="/about" className="text-alch-cream hover:text-white whitespace-nowrap">About us</Link>
+                <Link to="/competitions" className="text-alch-cream hover:text-white whitespace-nowrap">  Modules & Competitions</Link>
               </div>
             </DecorativeButton>
           </div>
           <div className="hidden lg:flex items-center space-x-6">
-            <Link to="/contact" className="text-alch-cream font-sans hover:text-white">Contact us</Link>
+            <Link to="/contact" className="text-alch-cream hover:text-white">Contact us</Link>
             {isAuthenticated ? (
               <ProfileDropdown user={user} onLogout={handleLogout} />
             ) : (
-              <DecoratedButton to="/login" variant="orange-sm">Login</DecoratedButton>
+              <DecorativeButton to="/login" variant="orange-sm">Login</DecorativeButton>
             )}
           </div>
           {/* mobile */}
