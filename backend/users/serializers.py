@@ -102,6 +102,7 @@ class LoginSerializer(serializers.Serializer):
 
 class ProfileSerializer(serializers.ModelSerializer):
     team_name = serializers.CharField(source='team.name', read_only=True)
+    img = serializers.ImageField(max_length=None, use_url=True)
 
     class Meta:
         model = NewUser
@@ -117,7 +118,7 @@ class ProfileUpdateSerializer(serializers.ModelSerializer):
         model = NewUser
         fields = [
             'fullname', 'gender', 'phone_number', 
-            'alternate_phone', 'collegename', 'city', 'state', 'team_name'
+            'alternate_phone', 'collegename', 'city', 'state', 'team_name','img'
         ]
 
     def update(self, instance, validated_data):
