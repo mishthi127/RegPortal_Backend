@@ -123,10 +123,10 @@ export const CompModules = forwardRef((props, ref) => {
       <img src={addbottom1} alt="Decorative Footer Border" className="w-full" />
       <div className="bg-alch-dark">
         <img src={middle_line} alt="Decorative Footer Border" className="w-full bg-alch-dark" />
-        <div  className="w-full mx-auto flex items-center justify-center bg-black">
-          <img src={pentagonborder} className="w-[97.8%]  h-full" alt="pentagon" />
+        <div className="w-full mx-auto flex items-center justify-center bg-black">
+          <img src={pentagonborder} className="w-[97.8%] h-full" alt="pentagon" />
         </div>
-       </div>
+      </div>
     </div>
   );
 })

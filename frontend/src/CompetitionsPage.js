@@ -249,7 +249,7 @@ function CompetitionsList() {
               filteredData.map((comp) => (
                 <div
                   key={comp.id}
-                  className="competition-card card double-notch-all lg:w-[390px] !w-[99%] lg:h-[281px] relative overflow-hidden m-[0.5rem]"
+                  className="competition-card card double-notch-all lg:w-[390px] lg:h-[281px] relative overflow-hidden m-[0.5rem]"
                   style={{background: comp.image ? `url(${competitions}) center/cover no-repeat ` : "#000"}}
                 >
                   <div
@@ -274,19 +274,16 @@ function CompetitionsList() {
                     <p className="prize" style={{ margin: 0, fontSize: "0.9rem", textAlign: "center", color:"#fff"}}>{comp.event_desc}</p>
                     <p className="prize" style={{ margin: 0, fontSize: "0.9rem", textAlign: "center", color:"#fff"}}>${comp.prize_worth}</p>
 
-                  <DecorativeButton to={`/register/${comp.id}`} onClick={() => setSelectedComp(comp)} className = "dec-btn" variant="orange-sm"> Register</DecorativeButton>
-                 
+                    <DecorativeButton to={`/register/${comp.event_name}`} onClick={() => setSelectedComp(comp)} className = "dec-btn" variant="orange-sm">Register</DecorativeButton>
+                  
+                  </div>   
                 </div>
-              
-                    
-          
-              </div>
-            ))
-          ) : (
-            <p>No competitions found.</p>
-          )}
+              ))
+            ) : (
+              <p>No competitions found.</p>
+            )}
+          </div>
         </div>
-      </div>
 
         {/* Details Modal (first step) */}
         {selectedComp && (

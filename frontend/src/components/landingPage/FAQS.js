@@ -65,10 +65,10 @@ export const FAQS = forwardRef((props, ref) => {
                 </div>
                 <div className="lg:hidden flex flex-col items-center">
                     <div 
-                        className="w-[89%] h-[85px] flex justify-between items-center"
+                        className="w-[89%] h-[85px] md:w-[65%] md:h-[85px] flex justify-between items-center"
                         style={{
                             backgroundImage: "url('/mbfaqbg.svg')",
-                            backgroundSize: "contain",
+                            backgroundSize: "cover",
                             backgroundPosition: "center",
                             backgroundRepeat: "no-repeat",
                         }}  
@@ -85,13 +85,13 @@ export const FAQS = forwardRef((props, ref) => {
                         />
                     </div>
                     {   <div
-                            className={`transition-all w-[89%] duration-500 ease-in-out overflow-hidden flex justify-center items-center ${
+                            className={`transition-all w-[89%] h-[148px] md:w-[65%] md:h-[165px] duration-500 ease-in-out overflow-hidden flex justify-center items-center ${
                                 openindex.includes(1) ? "h-[145px] opacity-100 mt-[-25px] " : "max-h-0 opacity-0"
                             }`}
                             style={{
                                 backgroundImage: "url('/mbfaqansbg.svg')",
                                 //backgroundSize: "contain",
-                                backgroundSize: "100% 100%",
+                                backgroundSize: "cover",
                                 backgroundPosition: "center",
                                 backgroundRepeat: "no-repeat",
                             }}
@@ -104,8 +104,8 @@ export const FAQS = forwardRef((props, ref) => {
                         </div>
                     }
                 </div>
-
-                <div className=" w-[970px] hidden lg:block  ">
+                {/* 2 */}
+                <div className="w-[970px] hidden lg:block">
                     <div 
                         className="w-full lg:h-[60px] h-[81px] flex justify-between items-center"
                         style={{
@@ -145,12 +145,12 @@ export const FAQS = forwardRef((props, ref) => {
                         </div>
                     }
                 </div>
-                <div className="  lg:hidden flex flex-col items-center">
+                <div className="lg:hidden flex flex-col items-center">
                     <div 
-                        className="w-[89%] h-[85px] flex justify-between items-center"
+                        className="w-[89%] h-[85px] md:w-[65%] md:h-[85px] flex justify-between items-center"
                         style={{
                             backgroundImage: "url('/mbfaqbg.svg')",
-                            backgroundSize: "contain",
+                            backgroundSize: "cover",
                             backgroundPosition: "center",
                             backgroundRepeat: "no-repeat",
                         }}  
@@ -167,13 +167,13 @@ export const FAQS = forwardRef((props, ref) => {
                         />
                     </div>
                     {   <div
-                            className={`transition-all w-[89%] duration-500 ease-in-out overflow-hidden flex justify-center items-center ${
-                                openindex.includes(2) ? "h-[145px] opacity-100  mt-[-25px] " : "max-h-0 opacity-0"
+                            className={`transition-all w-[89%] h-[148px] md:w-[65%] md:h-[165px] duration-500 ease-in-out overflow-hidden flex justify-center items-center ${
+                                openindex.includes(2) ? "h-[145px] opacity-100 mt-[-25px] " : "max-h-0 opacity-0"
                             }`}
                             style={{
                                 backgroundImage: "url('/mbfaqansbg.svg')",
                                 //backgroundSize: "contain",
-                                backgroundSize: "100% 100%",
+                                backgroundSize: "cover",
                                 backgroundPosition: "center",
                                 backgroundRepeat: "no-repeat",
                             }}
@@ -186,8 +186,8 @@ export const FAQS = forwardRef((props, ref) => {
                         </div>
                     }
                 </div>
-
-                <div className=" w-[970px] hidden lg:block  ">
+                {/* 3 */}
+                <div className="w-[970px] hidden lg:block">
                     <div 
                         className="w-full lg:h-[60px] h-[81px] flex justify-between items-center"
                         style={{
@@ -227,12 +227,12 @@ export const FAQS = forwardRef((props, ref) => {
                         </div>
                     }
                 </div>
-                <div className="  lg:hidden flex flex-col items-center">
+                <div className="lg:hidden flex flex-col items-center">
                     <div 
-                        className="w-[89%] h-[85px] flex justify-between items-center"
+                        className="w-[89%] h-[85px] md:w-[65%] md:h-[85px] flex justify-between items-center"
                         style={{
                             backgroundImage: "url('/mbfaqbg.svg')",
-                            backgroundSize: "contain",
+                            backgroundSize: "cover",
                             backgroundPosition: "center",
                             backgroundRepeat: "no-repeat",
                         }}  
@@ -249,13 +249,13 @@ export const FAQS = forwardRef((props, ref) => {
                         />
                     </div>
                     {   <div
-                            className={`transition-all w-[89%] duration-500 ease-in-out overflow-hidden flex justify-center items-center ${
-                                openindex.includes(3) ? "h-[145px] opacity-100  mt-[-25px] " : "max-h-0 opacity-0"
+                            className={`transition-all w-[89%] h-[148px] md:w-[65%] md:h-[165px] duration-500 ease-in-out overflow-hidden flex justify-center items-center ${
+                                openindex.includes(3) ? "h-[145px] opacity-100 mt-[-25px] " : "max-h-0 opacity-0"
                             }`}
                             style={{
                                 backgroundImage: "url('/mbfaqansbg.svg')",
                                 //backgroundSize: "contain",
-                                backgroundSize: "100% 100%",
+                                backgroundSize: "cover",
                                 backgroundPosition: "center",
                                 backgroundRepeat: "no-repeat",
                             }}
@@ -268,8 +268,8 @@ export const FAQS = forwardRef((props, ref) => {
                         </div>
                     }
                 </div>
-
-                <div className=" w-[970px] hidden lg:block  ">
+                {/* 4 */}
+                <div className="w-[970px] hidden lg:block">
                     <div 
                         className="w-full lg:h-[60px] h-[81px] flex justify-between items-center"
                         style={{
@@ -309,12 +309,12 @@ export const FAQS = forwardRef((props, ref) => {
                         </div>
                     }
                 </div>
-                <div className="  lg:hidden flex flex-col items-center">
+                <div className="lg:hidden flex flex-col items-center">
                     <div 
-                        className="w-[89%] h-[85px] flex justify-between items-center"
+                        className="w-[89%] h-[85px] md:w-[65%] md:h-[85px] flex justify-between items-center"
                         style={{
                             backgroundImage: "url('/mbfaqbg.svg')",
-                            backgroundSize: "contain",
+                            backgroundSize: "cover",
                             backgroundPosition: "center",
                             backgroundRepeat: "no-repeat",
                         }}  
@@ -331,13 +331,13 @@ export const FAQS = forwardRef((props, ref) => {
                         />
                     </div>
                     {   <div
-                            className={`transition-all w-[89%] duration-500 ease-in-out overflow-hidden flex justify-center items-center ${
-                                openindex.includes(4) ? "h-[145px] opacity-100  mt-[-25px] " : "max-h-0 opacity-0"
+                            className={`transition-all w-[89%] h-[148px] md:w-[65%] md:h-[165px] duration-500 ease-in-out overflow-hidden flex justify-center items-center ${
+                                openindex.includes(4) ? "h-[145px] opacity-100 mt-[-25px] " : "max-h-0 opacity-0"
                             }`}
                             style={{
                                 backgroundImage: "url('/mbfaqansbg.svg')",
                                 //backgroundSize: "contain",
-                                backgroundSize: "100% 100%",
+                                backgroundSize: "cover",
                                 backgroundPosition: "center",
                                 backgroundRepeat: "no-repeat",
                             }}
@@ -350,8 +350,8 @@ export const FAQS = forwardRef((props, ref) => {
                         </div>
                     }
                 </div>
-
-                <div className=" w-[970px] hidden lg:block  ">
+                {/* 5 */}
+                <div className="w-[970px] hidden lg:block">
                     <div 
                         className="w-full lg:h-[60px] h-[81px] flex justify-between items-center"
                         style={{
@@ -391,12 +391,12 @@ export const FAQS = forwardRef((props, ref) => {
                         </div>
                     }
                 </div>
-                <div className="  lg:hidden flex flex-col items-center">
+                <div className="lg:hidden flex flex-col items-center">
                     <div 
-                        className="w-[89%] h-[85px] flex justify-between items-center"
+                        className="w-[89%] h-[85px] md:w-[65%] md:h-[85px] flex justify-between items-center"
                         style={{
                             backgroundImage: "url('/mbfaqbg.svg')",
-                            backgroundSize: "contain",
+                            backgroundSize: "cover",
                             backgroundPosition: "center",
                             backgroundRepeat: "no-repeat",
                         }}  
@@ -413,13 +413,13 @@ export const FAQS = forwardRef((props, ref) => {
                         />
                     </div>
                     {   <div
-                            className={`transition-all w-[89%] duration-500 ease-in-out overflow-hidden flex justify-center items-center ${
-                                openindex.includes(5) ? "h-[145px] opacity-100  mt-[-25px] " : "max-h-0 opacity-0"
+                            className={`transition-all w-[89%] h-[148px] md:w-[65%] md:h-[165px] duration-500 ease-in-out overflow-hidden flex justify-center items-center ${
+                                openindex.includes(5) ? "h-[145px] opacity-100 mt-[-25px] " : "max-h-0 opacity-0"
                             }`}
                             style={{
                                 backgroundImage: "url('/mbfaqansbg.svg')",
                                 //backgroundSize: "contain",
-                                backgroundSize: "100% 100%",
+                                backgroundSize: "cover",
                                 backgroundPosition: "center",
                                 backgroundRepeat: "no-repeat",
                             }}
@@ -432,7 +432,6 @@ export const FAQS = forwardRef((props, ref) => {
                         </div>
                     }
                 </div>
-                
             </div>
         </div>
     )
