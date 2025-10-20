@@ -1,6 +1,6 @@
 // src/components/AuthPage/AuthLayout.js
 import React from "react";
-
+import { Link } from 'react-router-dom';
 const backgroundPattern = require("../../assets/background-pattern.svg").default;
 const authFrame = require("../../assets/auth-frame.svg").default;
 const authImg = require("../../assets/auth-img.svg").default;
@@ -55,17 +55,20 @@ const AuthLayout = ({ children, promoTitle, promoSubtitle, sizeMode = "fixed" })
               p-8 overflow-hidden
             "
           >
-            {/* ✅ Use a real <img> so it scales *inside* the frame */}
-            <img
-              src={authImg}
-              alt="Decorative Auth Background"
-              className="
-                absolute inset-0 w-full h-full object-cover
-                sm:object-[center_45%] 
-                md:object-center 
+            <Link to="/register" className="absolute inset-0">
+              <img
+                src={authImg}
+                alt="Decorative Auth Background"
+                className="
+                w-full h-full object-cover
+                object-[center_90%]
+                md:object-center
                 transition-all duration-300
-              "
-            />
+                cursor-pointer
+                "
+              />
+            </Link>
+
           </div>
 
           {/* Right panel */}
