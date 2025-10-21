@@ -50,6 +50,9 @@ module.exports = {
     fadeInUp: 'fadeInUp 0.5s ease-out forwards',
     'flower-spin': 'spinFlower 6s linear infinite',
   },
+  screens: {
+        'max-sm': {'max': '340px'}, // ✅ Added max-sm
+      },
 
     },
   },

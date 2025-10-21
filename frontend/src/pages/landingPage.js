@@ -14,7 +14,6 @@ import { Pixel } from '../components/landingPage/Pixel';
 import { Footer } from '../components/landingPage/Footer';
 import { FAQS } from '../components/landingPage/FAQS';
 import DecorativeButton from '../components/DecorativeButton';
-import DecoratedButton from '../components/AuthPage/DecoratedButton';
 import ProfileDropdown from '../components/ProfileDropdown';
 
 // Asset Imports
@@ -38,6 +37,7 @@ const LandingPage = () => {
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const faqRef = useRef(null);
+  const compRef = useRef(null);
   const testimonialRef = useRef(null);
   const footerRef = useRef(null);
   const [openindex, setOpenindex] = useState([]);
@@ -72,6 +72,13 @@ const LandingPage = () => {
     });
   };
 
+  const scrollToComp = () => {
+    compRef.current?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center',
+    });
+  };
+
   useEffect(() => {
     const timer = setTimeout(() => { setLoading(false); }, 2000);
 
@@ -80,7 +87,30 @@ const LandingPage = () => {
     if (token) {
       axiosInstance.get('/profile/')
         .then(res => {
-          setUser(res.data);
+        // +++ START: THIS IS THE LOGIC TO CHANGE +++
+                let pic;
+                // Priority 1: User has a manually uploaded image that isn't the DB default.
+                if (res.data.img && !res.data.img.includes('user-default.png')) {
+                  pic = res.data.img;
+                } 
+                // Priority 2: User signed up with Google and has a Google picture URL.
+                else if (res.data.provider === 'google' && res.data.profile_pic_url) {
+                  pic = res.data.profile_pic_url;
+                } 
+                // Priority 3: Fallback for manual sign-ups or any other case.
+                else {
+                  pic = authorPlaceholder;
+                }
+                // +++ END: LOGIC CHANGE +++
+
+          const dataFromApi = {
+            ...res.data,
+            profilePic: pic,
+            // Ensure phone numbers are empty strings if null
+            phone_number: res.data.phone_number || "",
+            alternate_phone: res.data.alternate_phone || "",
+          };
+          setUser(dataFromApi);
           setIsAuthenticated(true);
         })
         .catch(err => {
@@ -127,7 +157,7 @@ const LandingPage = () => {
               <div className='flex flex-row justify-center items-center gap-[10px] h-[69px]'>
                   <img className="lg:w-[37.99px] lg:h-[43.71px] w-[24px] h-[27.61px]" src={logo} alt="logo"/>
                   <div className='text-alch-cream h-[32px] lg:h-[65.83px] flex flex-col justify-center'>
-                      <p className='font-display font-bold lg:text-[37.99px] text-[18px] h-[42px] leading-none'>ALCHERINGA</p>
+                      <p className='font-modernoir font-bold lg:text-[37.99px] text-[18px] h-[42px] leading-none'>ALCHERINGA</p>
                       <p className='font-sans h-[27px]  font-normal lg:text-[18.99px] text-[10px] leading-none self-end'>IIT GUWAHATI</p>
                   </div>
               </div>    
@@ -136,8 +166,8 @@ const LandingPage = () => {
           <div className="hidden lg:flex items-center">
             <DecorativeButton to="#" variant="nav">
               <div className="flex space-x-8 px-4 text-sm">
-                <Link to="/about" className="text-alch-cream font-sans hover:text-white whitespace-nowrap">About us</Link>
-                <Link to="/competitions" className="text-alch-cream font-sans hover:text-white whitespace-nowrap">Modules & Competitions</Link>
+                <Link to="/about" className="text-alch-cream hover:text-white whitespace-nowrap">About us</Link>
+                <Link to="/competitions" className="text-alch-cream hover:text-white whitespace-nowrap">Modules & Competitions</Link>
               </div>
             </DecorativeButton>
           </div>
@@ -146,7 +176,7 @@ const LandingPage = () => {
             {isAuthenticated ? (
               <ProfileDropdown user={user} onLogout={handleLogout} onTabClick={handleTabClickFromDropdown}/>
             ) : (
-              <DecoratedButton to="/login" variant="orange-sm">Login</DecoratedButton>
+              <DecorativeButton to="/login" variant="orange-sm">Login</DecorativeButton>
             )}
           </div>
           {/* mobile */}
@@ -165,7 +195,7 @@ const LandingPage = () => {
               <div className='flex flex-row justify-center items-center gap-[10px] h-[69px]'>
                   <img className="lg:w-[37.99px] lg:h-[43.71px] w-[24px] h-[27.61px]" src={logo} alt="logo"/>
                   <div className='text-alch-cream h-[32px] lg:h-[65.83px] flex flex-col justify-center'>
-                      <p className='font-display font-bold lg:text-[37.99px] text-[18px] h-[42px] leading-none'>ALCHERINGA</p>
+                      <p className='font-modernoir font-bold lg:text-[37.99px] text-[18px] h-[42px] leading-none'>ALCHERINGA</p>
                       <p className='font-sans h-[27px]  font-normal lg:text-[18.99px] text-[10px] leading-none self-end'>IIT GUWAHATI</p>
                   </div>
               </div>    
@@ -174,17 +204,17 @@ const LandingPage = () => {
           <div className="hidden lg:flex items-center">
             <DecorativeButton to="#" variant="nav">
               <div className="flex space-x-8 px-4 text-sm">
-                <Link to="/about" className="text-alch-cream font-sans hover:text-white whitespace-nowrap">About us</Link>
-                <Link to="/competitions" className="text-alch-cream font-sans hover:text-white whitespace-nowrap">  Modules & Competitions</Link>
+                <Link to="/about" className="text-alch-cream hover:text-white whitespace-nowrap">About us</Link>
+                <Link to="/competitions" className="text-alch-cream hover:text-white whitespace-nowrap">  Modules & Competitions</Link>
               </div>
             </DecorativeButton>
           </div>
           <div className="hidden lg:flex items-center space-x-6">
-            <Link to="/contact" className="text-alch-cream font-sans hover:text-white">Contact us</Link>
+            <Link to="/contact" className="text-alch-cream hover:text-white">Contact us</Link>
             {isAuthenticated ? (
               <ProfileDropdown user={user} onLogout={handleLogout} />
             ) : (
-              <DecoratedButton to="/login" variant="orange-sm">Login</DecoratedButton>
+              <DecorativeButton to="/login" variant="orange-sm">Login</DecorativeButton>
             )}
           </div>
           {/* mobile */}
@@ -228,8 +258,10 @@ const LandingPage = () => {
       </div>
 
       {/* Page Content */}
-      <HeroSection isAuthenticated={isAuthenticated} />
-      <CompModules />
+      <div className='landingbg'>
+        <HeroSection isAuthenticated={isAuthenticated} />
+        <CompModules ref={compRef}/>
+      </div>
       <Pixel />
       
         <div
@@ -238,8 +270,9 @@ const LandingPage = () => {
             <AfterMovieSection />
             <TestimonialsSection ref={testimonialRef}/>
             <FAQS ref={faqRef}/>
-            <Footer scrollToFAQ={scrollToFAQ} scrollToTestimonials={scrollToTestimonials} ref={footerRef}/>
+            <Footer scrollToFAQ={scrollToFAQ} scrollToTestimonials={scrollToTestimonials} scrollToComp={scrollToComp} ref={footerRef}/>
         </div> 
+        {/* <AddMembers/> */}
     </div>
   );
 };

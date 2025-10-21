@@ -32,8 +32,8 @@ const RegisterPage = () => {
   const handleTabClickFromDropdown = (tabIndex) => {
     setOpenindex([tabIndex]); 
     console.log(tabIndex);
-    navigate("/profile", { state: { tabIndex } });
-  };
+    navigate("/profile", { state: { tabIndex}});
+};
 
   useEffect(() => {
   const fetchCompetition = async () => {
@@ -135,7 +135,7 @@ const RegisterPage = () => {
         JSON.stringify([...stored, newEntry])
       );
 
-      navigate("/profile");
+      navigate("/profile", { state: { tabIndex: 2 } })
     } catch (err) {
       setError(err.message || "Something went wrong.");
     } finally {
@@ -385,15 +385,18 @@ const RegisterPage = () => {
             )}
 
             {/* Register Button */}
-            <Link
-              to="/profile"
-              type="submit"
-              disabled={loading}
-              state={{ tabIndex: 2 }}
-              //className="bg-[#f79b2b] hover:bg-[#f58e1f] text-black font-semibold px-6 py-2 rounded transition"
-            >
-              <img src={RegisterIcon} alt="register" className="h-8 w-auto inline mr-2" />
-            </Link>
+<button
+  type="submit"
+  disabled={loading}
+  className="mt-4 flex items-center justify-center"
+>
+  <img
+    src={RegisterIcon}
+    alt="register"
+    className={`h-8 w-auto inline mr-2 ${loading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+  />
+</button>
+
           </form>
         </div>
       </div>

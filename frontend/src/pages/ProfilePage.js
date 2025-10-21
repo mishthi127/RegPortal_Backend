@@ -289,6 +289,7 @@ if (alternate_phone && !phoneRegex.test(alternate_phone)) {
           </DecoratedButton>
         </div>
 
+
         <div className="w-full max-w-[1032px] mx-auto h-16 sm:h-20 mb-12 sm:mb-20 flex flex-col justify-center items-center">
           <div className="flex flex-row justify-between text-white w-full">
             <div className="flex flex-row items-center">
@@ -348,8 +349,8 @@ if (alternate_phone && !phoneRegex.test(alternate_phone)) {
        {/* END: New image block */}
 
         <div className="flex-grow">
-      <h3 className="text-xl font-bold">{formData.fullname}</h3>
-      <p className="text-gray-500 text-sm">{profileData.email}</p>
+          <h3 className="text-xl font-bold">{formData.fullname}</h3>
+          <p className="text-gray-500 text-sm">{profileData.email}</p>
          </div>
          </div>
                 <hr className="my-6 border-gray-300" />
