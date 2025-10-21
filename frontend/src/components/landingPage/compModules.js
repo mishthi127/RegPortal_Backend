@@ -7,6 +7,8 @@ import pentagonborder from "../../assets/pentagonborder.svg";
 import Modulename from "../../assets/modulename.svg";
 import middle_line from "../../assets/Middle_line.svg";
 import CountUp from "../../animation/CountUp";
+import headingIconRed from "../../assets/heading-icon-red.svg";
+
 
 export const CompModules = forwardRef((props, ref) => {
   const [modulesFromBackend, setModulesFromBackend] = useState([]);
@@ -48,7 +50,7 @@ export const CompModules = forwardRef((props, ref) => {
 
   return (
     <div className="no-scrollbar" ref={ref}>
-      <div className="lg:flex hidden flex-row items-center justify-around w-[100%]  mb-[140px] mt-[120px]">
+      <div className="lg:flex hidden flex-row items-center justify-around w-[100%]  mb-[120px] mt-[120px]">
         <div className="text-center">
           {/* <p className="font-sans font-extrabolt text-[48px]">140k+</p> */}
           <CountUp from={0} to={140} separator="," direction="up" duration={0.8} className="count-up-text font-sans font-extrabolt text-[48px]"/><p className="font-sans font-extrabolt text-[48px] inline-block">k+</p>
@@ -107,7 +109,17 @@ export const CompModules = forwardRef((props, ref) => {
         </div>
       </div>
       <div className="flex justify-center items-center no-scrollbar mb-[30px]" >
-        <img src={Modulename} alt="modulename" />
+         <motion.h2
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8 }}
+                  className="flex items-center justify-center text-center font-display text-[30px] lg:text-[48px] font-extrabold text-dark-orange mb-5"
+                >
+                  <img src={headingIconRed} alt="Decorative Icon" className="h-5 sm:h-6 mx-2" />
+                  MODULES
+                  <img src={headingIconRed} alt="Decorative Icon" className="h-5 sm:h-6 mx-2" />
+                </motion.h2>
       </div>
 
       {/* Horizontal container without GSAP animation */}

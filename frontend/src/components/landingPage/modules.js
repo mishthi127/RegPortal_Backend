@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import compimage from "../../assets/competitions.svg";
-import DecorativeButton from "../DecorativeButton.js";
+import DecorativeButton from "../AuthPage/DecoratedButton";
 export default function Modules({ module }) {
   const navigate = useNavigate();
   const [competitions, setCompetitions] = useState([]);
