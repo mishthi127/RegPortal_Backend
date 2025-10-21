@@ -6,6 +6,7 @@ import addbottom1 from "../../assets/bottomcompborder.svg";
 import pentagonborder from "../../assets/pentagonborder.svg";
 import Modulename from "../../assets/modulename.svg";
 import middle_line from "../../assets/Middle_line.svg";
+import CountUp from "../../animation/CountUp";
 
 export const CompModules = forwardRef((props, ref) => {
   const [modulesFromBackend, setModulesFromBackend] = useState([]);
@@ -47,55 +48,65 @@ export const CompModules = forwardRef((props, ref) => {
 
   return (
     <div className="no-scrollbar" ref={ref}>
-      <div className="lg:flex hidden flex-row items-center justify-around w-[100%]  mb-[170px] mt-[140px]">
+      <div className="lg:flex hidden flex-row items-center justify-around w-[100%]  mb-[140px] mt-[120px]">
         <div className="text-center">
-          <p className="font-sans font-extrabolt text-[48px]">140k+</p>
+          {/* <p className="font-sans font-extrabolt text-[48px]">140k+</p> */}
+          <CountUp from={0} to={140} separator="," direction="up" duration={0.8} className="count-up-text font-sans font-extrabolt text-[48px]"/><p className="font-sans font-extrabolt text-[48px] inline-block">k+</p>
           <p className="font-sans font-normal text-[24px]">Footfall</p>
         </div>
         <div className="text-center">
-          <p className="font-sans font-extrabolt text-[48px]">100+</p>
+          {/* <p className="font-sans font-extrabolt text-[48px]">100+</p> */}
+          <CountUp from={0} to={100} separator="," direction="up" duration={0.8} className="count-up-text font-sans font-extrabolt text-[48px]"/><p className="font-sans font-extrabolt text-[48px] inline-block">+</p>
           <p className="font-sans font-normal text-[24px]">Events</p>
         </div>
         <div className="text-center">
-          <p className="font-sans font-extrabolt text-[48px]">3000k+</p>
+          {/* <p className="font-sans font-extrabolt text-[48px]">3000k+</p> */}
+          <CountUp from={0} to={3000} separator="," direction="up" duration={0.8} className="count-up-text font-sans font-extrabolt text-[48px]"/><p className="font-sans font-extrabolt text-[48px] inline-block">+</p>
           <p className="font-sans font-normal text-[24px]">Participants</p>
         </div>
         <div className="text-center">
-          <p className="font-sans font-extrabolt text-[48px]">500+</p>
+          {/* <p className="font-sans font-extrabolt text-[48px]">500+</p> */}
+          <CountUp from={0} to={500} separator="," direction="up" duration={0.8} className="count-up-text font-sans font-extrabolt text-[48px]"/><p className="font-sans font-extrabolt text-[48px] inline-block">+</p>
           <p className="font-sans font-normal text-[24px]">College</p>
         </div>
         <div className="text-center">
-          <p className="font-sans font-extrabolt text-[48px]">45+</p>
+          {/* <p className="font-sans font-extrabolt text-[48px]">45+</p> */}
+          <CountUp from={0} to={45} separator="," direction="up" duration={0.8} className="count-up-text font-sans font-extrabolt text-[48px]"/><p className="font-sans font-extrabolt text-[48px] inline-block">+</p>
           <p className="font-sans font-normal text-[24px]">Competitions</p>
         </div>
       </div>
-      <div className="flex lg:hidden lg:flex-row flex-col items-center justify-around w-[100%]  mb-[170px] mt-[140px]">
+      <div className="flex lg:hidden lg:flex-row flex-col items-center justify-around w-[100%]  mb-[140px] mt-[120px]">
         <div className="flex flex-row gap-[50px] mb-[50px]">
           <div className="text-center">
-            <p className="font-sans font-extrabolt text-[24px] lg:text-[48px]">140k+</p>
+            {/* <p className="font-sans font-extrabolt text-[24px] lg:text-[48px]">140k+</p> */}
+            <CountUp from={0} to={140} separator="," direction="up" duration={0.8} className="count-up-text font-sans font-extrabolt text-[24px] lg:text-[48px]"/><p className="font-sans font-extrabolt text-[24px] lg:text-[48px] inline-block">k+</p>
             <p className="font-sans font-normal text-[12px] lg:text-[24px]">Footfall</p>
           </div>
           <div className="text-center">
-            <p className="font-sans font-extrabolt text-[24px] lg:text-[48px]">100+</p>
+            <CountUp from={0} to={100} separator="," direction="up" duration={0.8} className="count-up-text font-sans font-extrabolt text-[24px] lg:text-[48px]"/><p className="font-sans font-extrabolt text-[24px] lg:text-[48px] inline-block">+</p>
+            {/* <p className="font-sans font-extrabolt text-[24px] lg:text-[48px]">100+</p> */}
             <p className="font-sans font-normal text-[12px] lg:text-[24px]">Events</p>
           </div>
         </div>
         <div className="flex flex-row gap-[50px] mb-[50px]">
           <div className="text-center">
-            <p className="font-sans font-extrabolt text-[24px] lg:text-[48px]">3000k+</p>
+            {/* <p className="font-sans font-extrabolt text-[24px] lg:text-[48px]">3000k+</p> */}
+            <CountUp from={0} to={3000} separator="," direction="up" duration={0.8} className="count-up-text font-sans font-extrabolt text-[24px] lg:text-[48px]"/><p className="font-sans font-extrabolt text-[24px] lg:text-[48px] inline-block">+</p>
             <p className="font-sans font-normal text-[12px] lg:text-[24px]">Participants</p>
           </div>
           <div className="text-center">
-            <p className="font-sans font-extrabolt text-[24px] lg:text-[48px]">500+</p>
+            {/* <p className="font-sans font-extrabolt text-[24px] lg:text-[48px]">500+</p> */}
+            <CountUp from={0} to={500} separator="," direction="up" duration={0.8} className="count-up-text font-sans font-extrabolt text-[24px] lg:text-[48px]"/><p className="font-sans font-extrabolt text-[24px] lg:text-[48px] inline-block">+</p>
             <p className="font-sans font-normal text-[12px] lg:text-[24px]">College</p>
           </div>
         </div>
         <div className="text-center">
-          <p className="font-sans font-extrabolt text-[24px] lg:text-[48px]">45+</p>
+          {/* <p className="font-sans font-extrabolt text-[24px] lg:text-[48px]">45+</p> */}
+          <CountUp from={0} to={45} separator="," direction="up" duration={0.8} className="count-up-text font-sans font-extrabolt text-[24px] lg:text-[48px]"/><p className="font-sans font-extrabolt text-[24px] lg:text-[48px] inline-block">+</p>
           <p className="font-sans font-normal text-[12px] lg:text-[24px]">Competitions</p>
         </div>
       </div>
-      <div className="flex justify-center items-center no-scrollbar" >
+      <div className="flex justify-center items-center no-scrollbar mb-[30px]" >
         <img src={Modulename} alt="modulename" />
       </div>
 

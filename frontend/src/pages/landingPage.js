@@ -272,6 +272,7 @@ const LandingPage = () => {
             <FAQS ref={faqRef}/>
             <Footer scrollToFAQ={scrollToFAQ} scrollToTestimonials={scrollToTestimonials} scrollToComp={scrollToComp} ref={footerRef}/>
         </div> 
+        {/* <AddMembers/> */}
     </div>
   );
 };

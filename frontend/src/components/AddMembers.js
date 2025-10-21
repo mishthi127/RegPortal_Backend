@@ -786,7 +786,7 @@ export function AddMembers() {
                                 backgroundSize: 'cover',      // makes it cover the div
                                 backgroundRepeat: 'no-repeat'
                             }}
-                            className='w-[95%] h-[35px] lg:hidden flex items-center mb-[32px] mt-[30px] lg:mt-[0]'
+                            className='w-[95%] h-[35px] max-sm:w-[270px] max-sm:h-[40px] lg:hidden flex items-center mb-[32px] mt-[30px] lg:mt-[0]'
                         >
                             <button><img src={searchbutton} alt='search' className='ml-[16px]'/></button>
                             <input 
@@ -825,7 +825,7 @@ export function AddMembers() {
                             {/* mobile leader */}
                             {!text && (
                                 <div
-                                    className='w-[325px] h-[55px] flex lg:hidden justify-center items-center cursor-pointer'
+                                    className='w-[325px] h-[55px] max-sm:w-[260px] max-sm:h-[44px] flex lg:hidden justify-center items-center cursor-pointer'
                                     style={mbnamesBgStyle}
                                     onClick={() => navigate('/profile')}
                                 >   
@@ -871,7 +871,7 @@ export function AddMembers() {
                         {namesToDisplay &&
                             namesToDisplay
                                 .map((item) => (
-                                    <div className='w-[325px] h-[55px] flex lg:hidden justify-center items-center' style={mbnamesBgStyle} key={item.id}>
+                                    <div className='w-[325px] h-[55px] max-sm:w-[260px] max-sm:h-[44px] flex lg:hidden justify-center items-center' style={mbnamesBgStyle} key={item.id}>
                                         <div className='w-[300px] h-[38px] flex justify-between items-center mx-[15px]'>
                                             <div className='h-[38px] flex justify-center items-center '>
                                                 {/* <img src={profilepic} alt='profile' className='w-[32.11px] h-[32.11px]'/> */}
@@ -894,8 +894,8 @@ export function AddMembers() {
                             </div>
                         </div>
                         {/* add mem form btn mobile */}
-                        <div onClick={() => { setAddpop(true) }} className='w-[325px] h-[55px] flex lg:hidden justify-center items-center cursor-pointer' style={mbaddBgStyle}>
-                            <div className='flex justify-between items-center w-[300px] h-[38px]'>
+                        <div onClick={() => { setAddpop(true) }} className='w-[325px] h-[55px] max-sm:w-[260px] max-sm:h-[44px] flex lg:hidden justify-center items-center cursor-pointer' style={mbaddBgStyle}>
+                            <div className='flex justify-between items-center w-[90%] h-[38px]'>
                                 <p className='font-sans font-bold text-[14px]' >Add more Members</p>
                                 <button><img src={addbutton} alt='add' className='w-[24px] h-[24px]' /></button>
                             </div>
