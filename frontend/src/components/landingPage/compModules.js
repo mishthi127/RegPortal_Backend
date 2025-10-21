@@ -1,37 +1,16 @@
-import { useEffect, useState } from "react";
+import { forwardRef, useEffect, useState } from "react";
 import Modules from "./modules"; // your module card component
 import { motion } from "framer-motion";
-import addformbg from "../../assets/backflowers.svg";
+import addformbg from "../../assets/background-pattern.svg";
 import addbottom1 from "../../assets/bottomcompborder.svg";
 import pentagonborder from "../../assets/pentagonborder.svg";
 import Modulename from "../../assets/modulename.svg";
 import middle_line from "../../assets/Middle_line.svg";
+import CountUp from "../../animation/CountUp";
 
-export function CompModules() {
+export const CompModules = forwardRef((props, ref) => {
   const [modulesFromBackend, setModulesFromBackend] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const formBgStyle = {
-    backgroundImage: `url(${addformbg})`,
-    backgroundPosition: "center",
-    backgroundSize: "cover",
-    backgroundRepeat: "no-repeat",
-    backgroundColor: "#EEECD9",
-  };
-  const formbottom = {
-    backgroundImage: `url(${addbottom1})`,
-    backgroundPosition: "center",
-    backgroundSize: "cover",
-    backgroundRepeat: "no-repeat",
-    backgroundColor: "#EEECD9",
-  };
-  const formbottompentagon = {
-    backgroundImage: `url(${pentagonborder})`,
-    backgroundPosition: "center",
-    backgroundSize: "cover",
-    backgroundRepeat: "no-repeat",
-    backgroundColor: "#000",
-  };
 
   // Fetch modules from backend
   useEffect(() => {
@@ -68,8 +47,66 @@ export function CompModules() {
   };
 
   return (
-    <div style={formBgStyle} className="no-scrollbar" >
-      <div className="flex justify-center items-center no-scrollbar" >
+    <div className="no-scrollbar" ref={ref}>
+      <div className="lg:flex hidden flex-row items-center justify-around w-[100%]  mb-[140px] mt-[120px]">
+        <div className="text-center">
+          {/* <p className="font-sans font-extrabolt text-[48px]">140k+</p> */}
+          <CountUp from={0} to={140} separator="," direction="up" duration={0.8} className="count-up-text font-sans font-extrabolt text-[48px]"/><p className="font-sans font-extrabolt text-[48px] inline-block">k+</p>
+          <p className="font-sans font-normal text-[24px]">Footfall</p>
+        </div>
+        <div className="text-center">
+          {/* <p className="font-sans font-extrabolt text-[48px]">100+</p> */}
+          <CountUp from={0} to={100} separator="," direction="up" duration={0.8} className="count-up-text font-sans font-extrabolt text-[48px]"/><p className="font-sans font-extrabolt text-[48px] inline-block">+</p>
+          <p className="font-sans font-normal text-[24px]">Events</p>
+        </div>
+        <div className="text-center">
+          {/* <p className="font-sans font-extrabolt text-[48px]">3000k+</p> */}
+          <CountUp from={0} to={3000} separator="," direction="up" duration={0.8} className="count-up-text font-sans font-extrabolt text-[48px]"/><p className="font-sans font-extrabolt text-[48px] inline-block">+</p>
+          <p className="font-sans font-normal text-[24px]">Participants</p>
+        </div>
+        <div className="text-center">
+          {/* <p className="font-sans font-extrabolt text-[48px]">500+</p> */}
+          <CountUp from={0} to={500} separator="," direction="up" duration={0.8} className="count-up-text font-sans font-extrabolt text-[48px]"/><p className="font-sans font-extrabolt text-[48px] inline-block">+</p>
+          <p className="font-sans font-normal text-[24px]">College</p>
+        </div>
+        <div className="text-center">
+          {/* <p className="font-sans font-extrabolt text-[48px]">45+</p> */}
+          <CountUp from={0} to={45} separator="," direction="up" duration={0.8} className="count-up-text font-sans font-extrabolt text-[48px]"/><p className="font-sans font-extrabolt text-[48px] inline-block">+</p>
+          <p className="font-sans font-normal text-[24px]">Competitions</p>
+        </div>
+      </div>
+      <div className="flex lg:hidden lg:flex-row flex-col items-center justify-around w-[100%]  mb-[140px] mt-[120px]">
+        <div className="flex flex-row gap-[50px] mb-[50px]">
+          <div className="text-center">
+            {/* <p className="font-sans font-extrabolt text-[24px] lg:text-[48px]">140k+</p> */}
+            <CountUp from={0} to={140} separator="," direction="up" duration={0.8} className="count-up-text font-sans font-extrabolt text-[24px] lg:text-[48px]"/><p className="font-sans font-extrabolt text-[24px] lg:text-[48px] inline-block">k+</p>
+            <p className="font-sans font-normal text-[12px] lg:text-[24px]">Footfall</p>
+          </div>
+          <div className="text-center">
+            <CountUp from={0} to={100} separator="," direction="up" duration={0.8} className="count-up-text font-sans font-extrabolt text-[24px] lg:text-[48px]"/><p className="font-sans font-extrabolt text-[24px] lg:text-[48px] inline-block">+</p>
+            {/* <p className="font-sans font-extrabolt text-[24px] lg:text-[48px]">100+</p> */}
+            <p className="font-sans font-normal text-[12px] lg:text-[24px]">Events</p>
+          </div>
+        </div>
+        <div className="flex flex-row gap-[50px] mb-[50px]">
+          <div className="text-center">
+            {/* <p className="font-sans font-extrabolt text-[24px] lg:text-[48px]">3000k+</p> */}
+            <CountUp from={0} to={3000} separator="," direction="up" duration={0.8} className="count-up-text font-sans font-extrabolt text-[24px] lg:text-[48px]"/><p className="font-sans font-extrabolt text-[24px] lg:text-[48px] inline-block">+</p>
+            <p className="font-sans font-normal text-[12px] lg:text-[24px]">Participants</p>
+          </div>
+          <div className="text-center">
+            {/* <p className="font-sans font-extrabolt text-[24px] lg:text-[48px]">500+</p> */}
+            <CountUp from={0} to={500} separator="," direction="up" duration={0.8} className="count-up-text font-sans font-extrabolt text-[24px] lg:text-[48px]"/><p className="font-sans font-extrabolt text-[24px] lg:text-[48px] inline-block">+</p>
+            <p className="font-sans font-normal text-[12px] lg:text-[24px]">College</p>
+          </div>
+        </div>
+        <div className="text-center">
+          {/* <p className="font-sans font-extrabolt text-[24px] lg:text-[48px]">45+</p> */}
+          <CountUp from={0} to={45} separator="," direction="up" duration={0.8} className="count-up-text font-sans font-extrabolt text-[24px] lg:text-[48px]"/><p className="font-sans font-extrabolt text-[24px] lg:text-[48px] inline-block">+</p>
+          <p className="font-sans font-normal text-[12px] lg:text-[24px]">Competitions</p>
+        </div>
+      </div>
+      <div className="flex justify-center items-center no-scrollbar mb-[30px]" >
         <img src={Modulename} alt="modulename" />
       </div>
 
@@ -96,13 +133,12 @@ export function CompModules() {
 
       <img src={addbottom1} alt="Decorative Footer Border" className="w-full" />
       <div className="bg-alch-dark">
-        <img src={middle_line} alt="Decorative Footer Border" className="w-full" />
-        <div  className="h-10 w-full mx-auto flex items-center bg-black mt-[5px]">
-          <img src={pentagonborder} className="w-full h-full " alt="pentagon" />
+        <img src={middle_line} alt="Decorative Footer Border" className="w-full bg-alch-dark" />
+        <div className="w-full mx-auto flex items-center justify-center bg-black">
+          <img src={pentagonborder} className="w-[97.8%] h-full" alt="pentagon" />
         </div>
-       </div>
+      </div>
     </div>
   );
-}
+})
 
-export default CompModules;

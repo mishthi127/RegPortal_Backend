@@ -32,8 +32,8 @@ const RegisterPage = () => {
   const handleTabClickFromDropdown = (tabIndex) => {
     setOpenindex([tabIndex]); 
     console.log(tabIndex);
-    navigate("/profile", { state: { tabIndex } });
-  };
+    navigate("/profile", { state: { tabIndex}});
+};
 
   useEffect(() => {
   const fetchCompetition = async () => {
