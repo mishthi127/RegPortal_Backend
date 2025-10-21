@@ -70,9 +70,7 @@ body {
 
 .competition-card {
   position: relative;
-  margin: 10px;
-           /* fixed width */
-  height: 281px;             /* fixed height */
+  margin: 10px;           /* fixed height */
   border-radius: 1rem;
   overflow: hidden;
   cursor: pointer;

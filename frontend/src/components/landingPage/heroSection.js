@@ -4,6 +4,8 @@ import DecorativeButton from "../AuthPage/DecoratedButton";
 import bottomBorder from "../../assets/bottom-border.svg";
 import backgroundPattern from "../../assets/background-pattern.svg";
 import flower from "../../assets/star-filled.svg";
+import mbbgpattern from "../../assets/mbbgpatternwh.svg"
+import middle_line from "../../assets/Middle_line.svg";
 
 const HeroSection = ({ isAuthenticated }) => {
   const mainContentStyle = {
@@ -11,6 +13,13 @@ const HeroSection = ({ isAuthenticated }) => {
     backgroundRepeat: "repeat-y",
     backgroundPosition: "center",
     backgroundSize: "cover",
+  };
+
+  const bgmainContentStyle = {
+    backgroundImage: `url(${mbbgpattern})`,
+    backgroundRepeat: 'repeat-y',
+    backgroundPosition: 'center',
+    backgroundSize: "100% auto",
   };
 
   // Dynamic, responsive flower positions
@@ -55,7 +64,7 @@ useEffect(() => {
     <div className="text-alch-cream overflow-hidden">
       <main className="relative flex flex-col justify-center items-center text-center min-h-screen py-16 sm:py-24 md:py-32">
         {/* Dark background with pattern */}
-        <div className="absolute inset-0 bg-alch-dark" style={mainContentStyle}></div>
+        <div className="absolute inset-0 bg-alch-dark pixelbg"></div>
 
         {/* Flowers */}
         <div className="absolute inset-0 w-full h-full pointer-events-none">
@@ -125,8 +134,12 @@ useEffect(() => {
 
       </main>
 
+
+      <div className="bg-black">
+        <img src={middle_line} alt="Decorative Footer Border" className="w-full transform scale-y-[-1]"/>
+      </div>
       {/* Footer */}
-      <footer className="bg-alch-cream py-4">
+      <footer className="bg-alch-cream">
         <img src={bottomBorder} alt="Decorative Footer Border" className="w-full" />
         <img src={bottomBorder} alt="Decorative Footer Border" className="w-full transform scale-y-[-1]" />
       </footer>

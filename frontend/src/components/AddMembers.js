@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { data, useNavigate } from 'react-router-dom';
 import { Alert } from './Alert';
 import axios from 'axios';
 import background from '../assets/bg_add.svg';
@@ -19,6 +19,7 @@ import mbserach from "../assets/mbsearch.svg";
 import mbaddforminpbg from "../assets/mbaddforminpbg.svg";
 import mbmembg from "../assets/mbmembg.svg";
 import mbaddmem from "../assets/mbaddmem.svg";
+import authorPlaceholder from "../assets/author-placeholder.png";
 import DecoratedButton from './AuthPage/DecoratedButton';
 
 export function AddMembers() {
@@ -53,11 +54,37 @@ export function AddMembers() {
         }
 
         axios
-            .get(`http://localhost:8000/profile/`, {
-                headers: { Authorization: `Bearer ${token}` },
-            })
-            .then((res) => setProfile(res.data))
-            .catch(() => setMessage('Failed to load profile.'));
+        .get(`http://localhost:8000/profile/`, {
+            headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((res) => {
+
+            let pic;
+            // Priority 1: User has a manually uploaded image that isn't the DB default.
+            if (res.data.img && !res.data.img.includes('user-default.png')) {
+                pic = res.data.img;
+            } 
+            // Priority 2: User signed up with Google and has a Google picture URL.
+            else if (res.data.provider === 'google' && res.data.profile_pic_url) {
+                pic = res.data.profile_pic_url;
+            } 
+            // Priority 3: Fallback for manual sign-ups or any other case.
+            else {
+                pic = authorPlaceholder;
+            }
+
+            const dataFromApi = {
+                ...res.data,
+                profilePic: pic,
+                // Ensure phone numbers are empty strings if null
+                phone_number: res.data.phone_number || "",
+                alternate_phone: res.data.alternate_phone || "",
+            };
+
+            setProfile(dataFromApi);
+        
+        })
+        .catch(() => setMessage('Failed to load profile.'));
     }, []);
 
 
@@ -733,9 +760,9 @@ export function AddMembers() {
                 </div>
             }
 
-            <div
-                className='lg:h-full lg:w-full h-[952px] w-[371px] flex items-center lg:justify-center flex-col'
-            // style={headerBgStyle}
+            <div 
+                className='lg:h-full lg:w-full h-auto w-[371px] flex items-center lg:justify-center flex-col'
+                // style={headerBgStyle}
             >
                     <div className=' w-[100%] flex items-center justify-center'>
                         {/* laptop search */}
@@ -759,7 +786,7 @@ export function AddMembers() {
                                 backgroundSize: 'cover',      // makes it cover the div
                                 backgroundRepeat: 'no-repeat'
                             }}
-                            className='w-[95%] h-[35px] lg:hidden flex items-center mb-[32px] mt-[30px] lg:mt-[0]'
+                            className='w-[95%] h-[35px] max-sm:w-[270px] max-sm:h-[40px] lg:hidden flex items-center mb-[32px] mt-[30px] lg:mt-[0]'
                         >
                             <button><img src={searchbutton} alt='search' className='ml-[16px]'/></button>
                             <input 
@@ -798,13 +825,13 @@ export function AddMembers() {
                             {/* mobile leader */}
                             {!text && (
                                 <div
-                                    className='w-[325px] h-[55px] flex lg:hidden justify-center items-center cursor-pointer'
+                                    className='w-[325px] h-[55px] max-sm:w-[260px] max-sm:h-[44px] flex lg:hidden justify-center items-center cursor-pointer'
                                     style={mbnamesBgStyle}
                                     onClick={() => navigate('/profile')}
                                 >   
                                     <div className='w-[300px] h-[38px] flex justify-between items-center'>
                                         <div className='flex justify-between items-center gap-[17px]'>
-                                            <img src={profilepic} alt='profile' className='w-[32.11px] h-[32.11px]'/>
+                                            <img src={profile?.profilePic || profilepic} alt='profile' className='w-[32.11px] h-[32.11px]'/>
                                             <div className='h-[30px] flex flex-col justify-between'>
                                                 <p className='font-sans font-semibold text-[14px] leading-[100%] tracking-[0px]'>
                                                     {profile ? profile.fullname.toUpperCase() : "Loading..."}
@@ -844,7 +871,7 @@ export function AddMembers() {
                         {namesToDisplay &&
                             namesToDisplay
                                 .map((item) => (
-                                    <div className='w-[325px] h-[55px] flex lg:hidden justify-center items-center' style={mbnamesBgStyle} key={item.id}>
+                                    <div className='w-[325px] h-[55px] max-sm:w-[260px] max-sm:h-[44px] flex lg:hidden justify-center items-center' style={mbnamesBgStyle} key={item.id}>
                                         <div className='w-[300px] h-[38px] flex justify-between items-center mx-[15px]'>
                                             <div className='h-[38px] flex justify-center items-center '>
                                                 {/* <img src={profilepic} alt='profile' className='w-[32.11px] h-[32.11px]'/> */}
@@ -867,8 +894,8 @@ export function AddMembers() {
                             </div>
                         </div>
                         {/* add mem form btn mobile */}
-                        <div onClick={() => { setAddpop(true) }} className='w-[325px] h-[55px] flex lg:hidden justify-center items-center cursor-pointer' style={mbaddBgStyle}>
-                            <div className='flex justify-between items-center w-[300px] h-[38px]'>
+                        <div onClick={() => { setAddpop(true) }} className='w-[325px] h-[55px] max-sm:w-[260px] max-sm:h-[44px] flex lg:hidden justify-center items-center cursor-pointer' style={mbaddBgStyle}>
+                            <div className='flex justify-between items-center w-[90%] h-[38px]'>
                                 <p className='font-sans font-bold text-[14px]' >Add more Members</p>
                                 <button><img src={addbutton} alt='add' className='w-[24px] h-[24px]' /></button>
                             </div>

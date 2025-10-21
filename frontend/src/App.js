@@ -7,8 +7,7 @@ import { LoadingProvider } from './components/LoadingContext.js'; // <-- import 
 
 // Page Imports
 import LandingPage from './pages/landingPage';
-import CompleteProfile from './pages/CompleteProfile.js';
-import CompetitionsList from './CompetitionsPage';
+import CompleteProfile from './pages/CompleteProfile';
 import RegisterPage from "./RegisterPage";
 // import { AddMember } from './AddMember/AddMember';
 import ProfilePage from './pages/ProfilePage.js'; 
@@ -18,6 +17,8 @@ import TeamInfoPage from './pages/TeamInfoPage.js';
 import ResetPasswordPage from './pages/ResetPasswordPage.js';
 import ForgotPasswordPage from './pages/ForgotPasswordPage.js';
 import NotFoundPage from './pages/NotFoundPage.js';
+import MyRegisteredCompetitions from "./pages/MyRegisteredCompetitions";
+import CompetitionsList from './CompetitionsPage.js';
 
 function App() {
   const token = localStorage.getItem("access");
@@ -35,7 +36,9 @@ function App() {
     React.createElement(Route, { key: "register-team", path: "/register/team-info", element: React.createElement(TeamInfoPage) }),
     React.createElement(Route, { key: "forgot-password", path: "/forgot-password", element: React.createElement(ForgotPasswordPage) }),
     React.createElement(Route, { key: "reset-password", path: "/reset-password", element: React.createElement(ResetPasswordPage) }),
-    React.createElement(Route, { key: "not-found", path: "*", element: React.createElement(NotFoundPage) })
+    React.createElement(Route, { key: "not-found", path: "*", element: React.createElement(NotFoundPage) }),
+    React.createElement(Route, { key: "my-competitions", path: "/profile", element: React.createElement(MyRegisteredCompetitions)}),
+
   ];
 
   return (
