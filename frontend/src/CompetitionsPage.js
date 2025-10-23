@@ -122,7 +122,7 @@ function CompetitionsList() {
       })
       .catch((err) => console.error(err));
   }, []);
-
+  console.log(data);
   const filteredData = data.filter((comp) => {
     const moduleMatch =
       selectedModule === "all" ||
@@ -250,7 +250,7 @@ function CompetitionsList() {
                 <div
                   key={comp.id}
                   className="competition-card card double-notch-all lg:w-[390px] lg:h-[281px] relative overflow-hidden m-[0.5rem]"
-                  style={{background: comp.image ? `url(${competitions}) center/cover no-repeat ` : "#000"}}
+                  style={{background:`url(http://localhost:8000${comp.image}) center/cover no-repeat `}}
                 >
                   <div
                     className="competition-default"
@@ -274,7 +274,7 @@ function CompetitionsList() {
                     <p className="prize" style={{ margin: 0, fontSize: "0.9rem", textAlign: "center", color:"#fff"}}>{comp.event_desc}</p>
                     <p className="prize" style={{ margin: 0, fontSize: "0.9rem", textAlign: "center", color:"#fff"}}>${comp.prize_worth}</p>
 
-                    <DecorativeButton to={`/register/${comp.event_name}`} onClick={() => setSelectedComp(comp)} className = "dec-btn" variant="orange-sm">Register</DecorativeButton>
+                    <DecorativeButton to={`/register/${comp.id}`} onClick={() => setSelectedComp(comp)} className = "dec-btn" variant="orange-sm">Register</DecorativeButton>
                   
                   </div>   
                 </div>
