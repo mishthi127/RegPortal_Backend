@@ -16,139 +16,83 @@ function ModuleDropdown({ modules, selectedModule, setSelectedModule }) {
     setSelectedModule(module);
     setOpen(false);
   };
+
+  const dropdownbg = {
+    backgroundImage: `url(${searchbar_back})`,
+    backgroundPosition: "center",
+    backgroundSize: "cover",
+    backgroundRepeat: "no-repeat",
+  }
   
 
-
   return (
-    <div
-      className=" relative   relative flex justify-center items-center p-4 w-full max-w-[560px] box-border  w-[90%] sm:w-[80%] md:w-[560px]
-    h-[60px] sm:h-[65px] md:h-[71px]"
-      style={{
-        backgroundImage: `url(${dropdown_back})`,
-        backgroundPosition: "center",
-        backgroundSize: "cover",
-        backgroundRepeat: "no-repeat",
-        // backgroundColor:"black",
-        position: "relative",
-        display: "flex",
-        justifyContent: "center",  
-        alignItems: "center",
-        width: 560,
-        height: 71,
-        cursor: "pointer",
-        fontFamily: "'TT Modernoir', sans-serif",
-      }}
-    >
+    <div className="lg:w-[560.5px] lg:h-[71px] w-[100%] h-[40px] flex flex-col items-center">
       {/* Header / Button */}
       <div
-        className="w-full p-2 sm:p-3 md:p-4 text-sm sm:text-base md:text-lg rounded-lg flex items-center justify-center relative"
-        onClick={() => setOpen(!open)}
+        className=" relative flex justify-center items-center p-4 font-sans cursor-pointer box-border lg:w-[560.5px] lg:h-[71px] w-[100%] h-[40px]"
         style={{
-          backgroundImage: `url(${searchbar_back})`,
+          backgroundImage: `url(${dropdown_back})`,
           backgroundPosition: "center",
+          backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
-          position: "relative",
-          width: "419px",
-          height: "49px",
-          backgroundColor: "transparent",
-          cursor: "pointer",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          boxShadow: "0 3px 6px rgba(0,0,0,0.2)",
-          fontWeight: "bold",
-          color: "#EF5243",
-          
         }}
       >
-        <span style={{marginRight:"10px"}}>{selectedModule === "all" ? "All Module" : selectedModule}
-
-        {/* Dropdown Arrow Button */}
-        <button
-          aria-label={open ? "Close modules list" : "Open modules list"}
+        <div
+          className="lg:w-[80%] w-[90%] lg:h-[49px] h-[30px] lg:p-2 p-3 lg:text-[32px] text-base shadow-md text-[#EF5243] relative flex items-center justify-center cursor-pointer font-bold font-display bg-transparent"
+          onClick={() => setOpen(!open)}
           style={{
-            position: "absolute",
-            top: "50%",
-            transform: open ? "translateY(-50%) rotate(180deg)" : "translateY(-50%)",
-            background: "none",
-            border: "none",
-            fontSize: "18px",
-            cursor: "pointer",
-            color: "#EF5243",
-            transition: "transform 0.2s ease",
-            padding: 0,
-            lineHeight: 1,
-            left:" calc(100% - 50px)",
-          }}
-          onClick={(e) => {
-            e.stopPropagation(); // don't trigger header click twice
-            setOpen((s) => !s);
+            backgroundImage: `url(${searchbar_back})`,
+            backgroundPosition: "center",
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
           }}
         >
-          <img src={dropbutton} alt="dropdown arrow" style={{ width: "20px", height: "20px",marginLeft:"10px" }} />
-        </button>
-        </span>
+          <span style={{marginRight:"10px"}}>{selectedModule === "all" ? "All Module" : selectedModule}
+            {/* Dropdown Arrow Button */}
+            <button
+              aria-label={open ? "Close modules list" : "Open modules list"}
+              className={`absolute top-1/2 [left:calc(100%_-_50px)] text-[18px] text-[#EF5243] cursor-pointer p-0 leading-[1] transition-transform duration-200 ease-linear ${open ? 'transform -translate-y-1/2 rotate-180' : 'transform -translate-y-1/2 '}`}
+              onClick={(e) => {
+                e.stopPropagation(); // don't trigger header click twice
+                setOpen((s) => !s);
+              }}
+            >
+              <img src={dropbutton} alt="dropdown arrow" style={{ width: "20px", height: "20px",marginLeft:"10px" }} />
+            </button>
+          </span>
+        </div>
       </div>
 
       {/* List */}
-      {open && (
-        <div
-        className="no-scrollbar "
-          style={{
-            position: "absolute",
-            top: 71,
-            left: 0,
-            backgroundColor: "transparent",
-            width: "100%",
-            overflow: "hidden",
-            textAlign: "center",
-            zIndex: 10,
-            maxHeight: "180px",
-            overflowY: "auto",
-            fontFamily: "'TT Modernoir', sans-serif",
-          }}
-        >
-          <div
-            className="searchh-input  double-notch-all"
-            style={{
-              border:"1px solid rgba(0,0,0,0.2)",
-              width: "100%",
-              height: "90%",
-              backgroundColor: "#FFB261",
-              cursor: "pointer",
-              borderBottom: "1px solid rgba(0,0,0,0.2)",
-              transition: "background-color 0.2s",
-            }}
-            onClick={() => handleSelect("all")}
-           
-            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#EF5243")}
-            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#FFB261")}
-          >
-            All Modules
-          </div>
-
-          {modules.map((mod) => (
+      <div className="lg:w-[80%] w-[90%] ">
+        {open && (
+          <div className="no-scrollbar flex flex-col items-center w-[100%] font-display text-center overflow-hidden h-auto overflow-y-auto">
             <div
-              className="   searchh-input double-notch-all"
-              key={mod.id}
-              onClick={() => handleSelect(mod.module)}
-              style={{
-                width: "100%",
-                height: "90%",
-                cursor: "pointer",
-               
-                backgroundColor: "#FFB261",
-                borderBottom: "1px solid rgba(0,0,0,0.2)",
-                transition: "background-color 0.2s",
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#EF5243")}
-            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#FFB261")}
-            > 
-              {mod.module}
+              className="font-bold font-display text-[18px] lg:text-[32px] z-10 text-base text-[#EF5243] cursor-pointer lg:w-[419px] w-[90%] lg:h-[49px] h-[31px] flex justify-center items-center my-[1px]"
+              style={dropdownbg}
+              onClick={() => handleSelect("all")}
+              // transition: "background-color 0.2s",
+              // onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#EF5243")}
+              // onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#FFB261")}
+            >
+              All Modules
             </div>
-          ))}
-        </div>
-      )}
+
+            {modules.map((mod) => (
+              <div
+                className="font-bold font-display text-[18px] lg:text-[32px] z-10 text-base text-[#EF5243] cursor-pointer lg:w-[419px] w-[90%] lg:h-[49px] h-[31px] flex justify-center items-center mb-[1px]"
+                key={mod.id}
+                onClick={() => handleSelect(mod.module)}
+                style={dropdownbg}
+                // onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#EF5243")}
+                // onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#FFB261")}
+              > 
+                {mod.module}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
@@ -178,7 +122,7 @@ function CompetitionsList() {
       })
       .catch((err) => console.error(err));
   }, []);
-
+  console.log(data);
   const filteredData = data.filter((comp) => {
     const moduleMatch =
       selectedModule === "all" ||
@@ -211,209 +155,200 @@ function CompetitionsList() {
 
   return (
     <div style={formBgStyle} className=" min-h-screen bg-cover bg-center bg-no-repeat overflow-x-hidden box-border">
-      <div className="w-full max-w-[1200px] mx-auto  box-border">
-      {/* Header */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          gap: "1rem",
-          flexWrap: "wrap",
-          marginBottom: "1rem",
-        }}
-        className="flex flex-col lg:flex-row items-center gap-4 justify-between w-full"
-      >
-        <Link to="/" >
-          <img src={logo} alt="Alcheringa Logo" style={{ height: "50px", cursor: "pointer" }} className="flex-shrink"/>
-        </Link>
-         <div  className="w-full lg:w-1/2 flex-shrink">
-        <ModuleDropdown
-          modules={data2}
-          selectedModule={selectedModule}
-          setSelectedModule={setSelectedModule}
-         
-        /></div>
-        <div className="w-full lg:w-1/6 max-w-[360px]">
-        <input
-          type="text"
-          placeholder="Search..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className=" searchh-input double-notch-all2 "
-          style={{
-            backgroundPosition: "center",
-            backgroundSize: "cover",
-            backgroundRepeat: "no-repeat",
-            width: 230,
-            height: 28,
-            padding: "0 8px",
-            backgroundColor: "#FFD09F",
-            border: "none",
-            fontSize: "0.9rem",
-            color: "#000",
-            boxShadow: "0 3px 6px rgba(0,0,0,0.2)",
-          }}
-        /></div>
-      </div>
+      <div className="w-full max-w-[1400px] mx-auto  box-border flex flex-col items-center">
+        {/* Header */}
+        <div className="flex flex-col lg:flex-row items-start gap-4  justify-between w-full flex-wrap mb-4">
+          <Link to="/" >
+            <img src={logo} alt="Alcheringa Logo" className="hidden lg:block h-[50px] cursor-pointer"/>
+          </Link>
 
-      {/* Mode Filters */}
-      <div style={{ display: "flex", gap: "0.5rem", marginBottom: "1rem", flexWrap: "wrap" }}>
-        {["all", "online", "offline"].map((mode) => (
-          <div
-            key={mode}
-            onClick={() => setModeFilter(mode)}
-            style={{
-              padding: "6px 12px",
-              borderRadius: "12px",
-              cursor: "pointer",
-              fontSize: "0.9rem",
-              fontWeight: modeFilter === mode ? "bold" : "normal",
-              backgroundColor: modeFilter === mode ? "#EF5243" : "#FDF6E3",
-              border: "1px solid #000",
-              transition: "background-color 0.2s",
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#D3D3D3")}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor =
-                modeFilter === mode ? "#EF5243" : "#FDF6E3";
-            }}
-          >
-            {mode.charAt(0).toUpperCase() + mode.slice(1)}
+          <div className="w-full lg:w-1/2 flex-shrink order-3 lg:order-1">
+              <ModuleDropdown modules={data2} selectedModule={selectedModule} setSelectedModule={setSelectedModule} />
           </div>
-        ))}
-      </div>
 
-      {/* Competitions Grid */}
-      <div style={{ display: "flex", justifyContent: "center", flexDirection: "column",width:"100vw" }}>
-        <div 
-          className="competitions-grid w-full flex transform scale-100 sm:scale-95 md:scale-90  flex-wrap justify-center lg:justify-center overflow-y-auto overscroll-auto no-scrollbar"
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: "1rem",
-            justifyContent: "flex-start",
-            maxWidth: "100%",
-            overflowY: "auto",
-            overscrollBehavior: "auto",
-          }}
-        >
-          {filteredData.length > 0 ? (
-            filteredData.map((comp) => (
-              <div
-                key={comp.id}
-                className="competition-card card double-notch-all"
-                style={{
-                  
-                  width: "390px",
-                  height: "281px",
-                  background: comp.image ? `url(${competitions}) center/cover no-repeat ` : "#000",
-                  position: "relative",
-                  overflow: "hidden",
-                  margin: "0.5rem",
-                }}
-              >
-               
-                <div
-                  className="competition-default"
-                  style={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    width: "100%",
-                    height: "100%",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-around",
-                    alignItems: "center",
-                   
-                    color: "#fff",
-                    backgroundColor: "rgba(0, 0, 0, 0.4)", // adjust opacity for darkness
-                    transition: "opacity 0.3s ease",
-                  }}
-                >
-                  <h3 style={{ margin: 0, fontSize: "1.2rem", fontWeight: "bold",display:"flex",color:"#fff" }}><img src={flower} alt="Alcheringa Logo" style={{ height: "20px", cursor: "pointer" ,margin:"7px"}} /> {comp.event_name} <img src={flower} alt="Alcheringa Logo" style={{ height: "20px", cursor: "pointer" ,margin:"7px"}} /></h3>
-                  <p className="prize" style={{ margin: 0, fontSize: "0.9rem", textAlign: "center", color:"#fff"}}>{comp.event_desc}</p>
-                  <p className="prize" style={{ margin: 0, fontSize: "0.9rem", textAlign: "center", color:"#fff"}}>${comp.prize_worth}</p>
-
-                  <DecorativeButton to={`/register/${comp.id}`} onClick={() => setSelectedComp(comp)} className = "dec-btn" variant="orange-sm"> Register</DecorativeButton>
-                 
-                </div>
-              
-                    
-          
-              </div>
-            ))
-          ) : (
-            <p>No competitions found.</p>
-          )}
-        </div>
-      </div>
-
-      {/* Details Modal (first step) */}
-      {selectedComp && (
-        <div
-          className="modal-overlay"
-          style={{
-            position: "fixed",
-            inset: 0,
-            background: "rgba(0,0,0,0.5)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            zIndex: 2000,
-            padding: "1rem",
-          }}
-        >
-          <div
-            className="modal-content"
+          <div className="w-full lg:w-1/6 max-w-[360px] order-1 lg:order-2 flex justify-center items-center self-center">
+          <input
+            type="text"
+            placeholder="Search..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className=" searchh-input double-notch-all2 "
             style={{
-              width: "100%",
-              maxWidth: "720px",
-              background: "#fff",
-              borderRadius: 12,
-              padding: "1.5rem",
-              boxSizing: "border-box",
+              backgroundPosition: "center",
+              backgroundSize: "cover",
+              backgroundRepeat: "no-repeat",
+              width: 230,
+              height: 28,
+              padding: "0 8px",
+              backgroundColor: "#FFD09F",
+              border: "none",
+              fontSize: "0.9rem",
+              color: "#000",
+              boxShadow: "0 3px 6px rgba(0,0,0,0.2)",
+            }}
+          /></div>
+
+          <div className="flex lg:hidden order-2 gap-2 self-center flex-wrap">
+          {["all", "online", "offline"].map((mode) => (
+            <div
+              key={mode}
+              onClick={() => setModeFilter(mode)}
+              style={{
+                padding: "6px 12px",
+                borderRadius: "12px",
+                cursor: "pointer",
+                fontSize: "0.9rem",
+                fontWeight: modeFilter === mode ? "bold" : "normal",
+                backgroundColor: modeFilter === mode ? "#EF5243" : "#FDF6E3",
+                border: "1px solid #000",
+                transition: "background-color 0.2s",
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#D3D3D3")}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor =
+                  modeFilter === mode ? "#EF5243" : "#FDF6E3";
+              }}
+            >
+              {mode.charAt(0).toUpperCase() + mode.slice(1)}
+            </div>
+          ))}
+          </div>
+        </div>
+
+        {/* Mode Filters for laptop*/}
+        <div className="hidden lg:flex  gap-2 mb-4 flex-wrap self-start">
+          {["all", "online", "offline"].map((mode) => (
+            <div
+              key={mode}
+              onClick={() => setModeFilter(mode)}
+              style={{
+                padding: "6px 12px",
+                borderRadius: "12px",
+                cursor: "pointer",
+                fontSize: "0.9rem",
+                fontWeight: modeFilter === mode ? "bold" : "normal",
+                backgroundColor: modeFilter === mode ? "#EF5243" : "#FDF6E3",
+                border: "1px solid #000",
+                transition: "background-color 0.2s",
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#D3D3D3")}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor =
+                  modeFilter === mode ? "#EF5243" : "#FDF6E3";
+              }}
+            >
+              {mode.charAt(0).toUpperCase() + mode.slice(1)}
+            </div>
+          ))}
+        </div>
+  
+        {/* Competitions Grid */}
+        <div className="flex flex-col items-center justify-center w-[100%]">
+          <div className="flex flex-row flex-wrap gap-2 py-4 overflow-y-auto overscroll-contain h-[calc(100vh-200px)] no-scrollbar w-[100%]" >
+            {filteredData.length > 0 ? (
+              filteredData.map((comp) => (
+                <div
+                  key={comp.id}
+                  className="competition-card card double-notch-all lg:w-[390px] lg:h-[281px] relative overflow-hidden m-[0.5rem]"
+                  style={{background:`url(http://localhost:8000${comp.image}) center/cover no-repeat `}}
+                >
+                  <div
+                    className="competition-default"
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      width: "100%",
+                      height: "100%",
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "space-around",
+                      alignItems: "center",
+                    
+                      color: "#fff",
+                      backgroundColor: "rgba(0, 0, 0, 0.4)", // adjust opacity for darkness
+                      transition: "opacity 0.3s ease",
+                    }}
+                  >
+                    <h3 style={{ margin: 0, fontSize: "1.2rem", fontWeight: "bold",display:"flex",color:"#fff" }}><img src={flower} alt="Alcheringa Logo" style={{ height: "20px", cursor: "pointer" ,margin:"7px"}} /> {comp.event_name} <img src={flower} alt="Alcheringa Logo" style={{ height: "20px", cursor: "pointer" ,margin:"7px"}} /></h3>
+                    <p className="prize" style={{ margin: 0, fontSize: "0.9rem", textAlign: "center", color:"#fff"}}>{comp.event_desc}</p>
+                    <p className="prize" style={{ margin: 0, fontSize: "0.9rem", textAlign: "center", color:"#fff"}}>${comp.prize_worth}</p>
+
+                    <DecorativeButton to={`/register/${comp.id}`} onClick={() => setSelectedComp(comp)} className = "dec-btn" variant="orange-sm">Register</DecorativeButton>
+                  
+                  </div>   
+                </div>
+              ))
+            ) : (
+              <p>No competitions found.</p>
+            )}
+          </div>
+        </div>
+
+        {/* Details Modal (first step) */}
+        {selectedComp && (
+          <div
+            className="modal-overlay"
+            style={{
+              position: "fixed",
+              inset: 0,
+              background: "rgba(0,0,0,0.5)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              zIndex: 2000,
+              padding: "1rem",
             }}
           >
-            
+            <div
+              className="modal-content"
+              style={{
+                width: "100%",
+                maxWidth: "720px",
+                background: "#fff",
+                borderRadius: 12,
+                padding: "1.5rem",
+                boxSizing: "border-box",
+              }}
+            >
+              
 
-            {/* Actions: Close or go to registration form */}
-            <div style={{ display: "flex", justifyContent: "center", gap: "0.75rem", marginTop: "1rem" }}>
-              <button
-                onClick={() => setSelectedComp(null)}
-                style={{
-                  padding: "8px 12px",
-                  borderRadius: 8,
-                  border: "1px solid #ccc",
-                  background: "#fff",
-                  cursor: "pointer",
-                }}
-              >
-                Close
-              </button>
-
-              <Link to={`/register/${selectedComp.id}`}>
+              {/* Actions: Close or go to registration form */}
+              <div style={{ display: "flex", justifyContent: "center", gap: "0.75rem", marginTop: "1rem" }}>
                 <button
+                  onClick={() => setSelectedComp(null)}
                   style={{
                     padding: "8px 12px",
                     borderRadius: 8,
-                    border: "none",
-                    background: "#EF5243",
-                    color: "#fff",
+                    border: "1px solid #ccc",
+                    background: "#fff",
                     cursor: "pointer",
-                    fontWeight: "bold",
                   }}
                 >
-                  Register
+                  Close
                 </button>
-              </Link>
+
+                <Link to={`/register/${selectedComp.id}`}>
+                  <button
+                    style={{
+                      padding: "8px 12px",
+                      borderRadius: 8,
+                      border: "none",
+                      background: "#EF5243",
+                      color: "#fff",
+                      cursor: "pointer",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Register
+                  </button>
+                </Link>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
 
-    </div>
+      </div>
     </div>
   );
 }

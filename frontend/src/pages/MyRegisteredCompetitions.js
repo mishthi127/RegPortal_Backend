@@ -61,7 +61,7 @@ function MyRegistrations() {
 
         <div className="relative z-10 w-full">
           {loading ? (
-            <div className="text-black py-10 font-semibold text-center">
+            <div className="text-black py-10 font-sans text-center">
               Loading competitions...
             </div>
           ) : (

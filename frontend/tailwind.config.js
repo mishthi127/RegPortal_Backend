@@ -18,40 +18,34 @@ module.exports = {
         'brand-gray': '#6b7280',
         'dark-orange': '#EF5243',
       },
-      // --- CORRECTED FONT FAMILY SECTION ---
+
+      // --- FONT FAMILY ---
       fontFamily: {
-        // Manrope is now your default body font via 'font-sans'
         sans: ['Manrope', ...defaultTheme.fontFamily.sans],
-        // TT Modernoir is your special heading font via 'font-display'
         display: ['TT Modernoir', 'sans-serif'],
       },
-      // --- END OF FONT SECTION ---
+
+      // --- ANIMATIONS ---
       keyframes: {
         fadeInUp: {
           '0%': { opacity: '0', transform: 'translateY(20px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
+        spinFlower: {
+          '0%': { transform: 'rotate(0deg)' },
+          '100%': { transform: 'rotate(360deg)' },
+        },
+        scroll: {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' },
+        },
       },
       animation: {
         fadeInUp: 'fadeInUp 0.5s ease-out forwards',
+        'flower-spin': 'spinFlower 6s linear infinite',
+        scroll: 'scroll 35s linear infinite',
       },
-
-      keyframes: {
-    fadeInUp: {
-      '0%': { opacity: '0', transform: 'translateY(20px)' },
-      '100%': { opacity: '1', transform: 'translateY(0)' },
-    },
-    spinFlower: {
-      '0%': { transform: 'rotate(0deg)' },
-      '100%': { transform: 'rotate(360deg)' },
-    },
-  },
-  animation: {
-    fadeInUp: 'fadeInUp 0.5s ease-out forwards',
-    'flower-spin': 'spinFlower 6s linear infinite',
-  },
-
     },
   },
   plugins: [],
-}
+};

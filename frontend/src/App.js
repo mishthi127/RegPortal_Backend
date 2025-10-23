@@ -3,6 +3,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { RegistrationProvider } from './components/AuthPage/RegistrationContext.js';
+import { LoadingProvider } from './components/LoadingContext.js'; // <-- import LoadingProvider
 
 // Page Imports
 import LandingPage from './pages/landingPage';
@@ -41,16 +42,18 @@ function App() {
   ];
 
   return (
-    React.createElement(RegistrationProvider, null,
-      // This new div sets the default font for the entire application.
-      React.createElement('div', { className: 'font-sans' }, 
-        React.createElement(BrowserRouter, null,
-          React.createElement(Routes, null,
-            routeElements
-          )
-        )
-      )
-    )
+    <RegistrationProvider>
+      <LoadingProvider>
+        {/* This div sets the default font for the entire application */}
+        <div className="font-sans">
+          <BrowserRouter>
+            <Routes>
+              {routeElements}
+            </Routes>
+          </BrowserRouter>
+        </div>
+      </LoadingProvider>
+    </RegistrationProvider>
   );
 }
 

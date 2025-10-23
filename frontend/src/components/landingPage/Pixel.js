@@ -209,7 +209,7 @@ import axiosInstance from "../../utils/axiosInstance"; // Using the custom axios
             <div 
                 className="h-auto lg:h-[780px] w-100% bg-alch-dark flex flex-col justify-between items-center pixelbg"   
             >
-                    <div className="flex items-center justify-center mt-[66px] lg:mt-[166px] w-[100%]">
+                    <div className="flex justify-center items-center mt-[66px] lg:mt-[166px] w-[100%]">
                         <div className="flex flex-1 items-center">
                             {/* Left strip */}
                             <div className="lg:flex flex-col w-[5px] hidden">

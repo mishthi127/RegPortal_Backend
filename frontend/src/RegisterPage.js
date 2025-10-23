@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-//import users.urls from "../users/url.py";
 
 // Assets
 import logo from "./assets/alcher-logo2.svg";
@@ -14,7 +13,6 @@ const RegisterPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [competition, setCompetition] = useState(null);
-
 
   const [formData, setFormData] = useState({
     teamVideo: "",
@@ -30,33 +28,32 @@ const RegisterPage = () => {
   const [openindex, setOpenindex] = useState([]);
 
   const handleTabClickFromDropdown = (tabIndex) => {
-    setOpenindex([tabIndex]); 
+    setOpenindex([tabIndex]);
     console.log(tabIndex);
-    navigate("/profile", { state: { tabIndex } });
-  };
-
-  useEffect(() => {
-  const fetchCompetition = async () => {
-    try {
-      const token = localStorage.getItem("access");
-      const res = await fetch(`http://127.0.0.1:8000/api/competitions/${id}/`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-      if (!res.ok) throw new Error("Failed to fetch competition data");
-      const data = await res.json();
-      console.log(data);
-      setCompetition(data); // ✅ sets the competition state
-    } catch (err) {
-      console.error(err);
-    }
+    navigate("/profile", { state: { tabIndex } });
   };
 
-  fetchCompetition();
-}, [id]);
+  useEffect(() => {
+    const fetchCompetition = async () => {
+      try {
+        const token = localStorage.getItem("access");
+        const res = await fetch(`http://127.0.0.1:8000/api/competitions/${id}/`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+        if (!res.ok) throw new Error("Failed to fetch competition data");
+        const data = await res.json();
+        console.log(data);
+        setCompetition(data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
 
+    fetchCompetition();
+  }, [id]);
 
   const handleChange = (e) =>
     setFormData((p) => ({ ...p, [e.target.name]: e.target.value }));
@@ -76,8 +73,6 @@ const RegisterPage = () => {
     setLoading(true);
     setError("");
 
-
-
     const finalData = {
       competition_id: id,
       team_members: teamMembers,
@@ -93,17 +88,14 @@ const RegisterPage = () => {
         return;
       }
 
-      const response = await fetch(
-      "http://127.0.0.1:8000/api/register-competition/",
-      {
+      const response = await fetch("http://127.0.0.1:8000/api/register-competition/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(finalData),
-      }
-    );
+      });
 
       let data;
       try {
@@ -135,7 +127,7 @@ const RegisterPage = () => {
         JSON.stringify([...stored, newEntry])
       );
 
-      navigate("/profile", { state: { tabIndex: 2 } })
+      navigate("/profile", { state: { tabIndex: 2 } });
     } catch (err) {
       setError(err.message || "Something went wrong.");
     } finally {
@@ -144,44 +136,34 @@ const RegisterPage = () => {
   };
 
   useEffect(() => {
-  const fetchMembers = async () => {
-    try {
-      const token = localStorage.getItem("access");
-      
-      if (!token) return;
+    const fetchMembers = async () => {
+      try {
+        const token = localStorage.getItem("access");
+        if (!token) return;
 
-      const res = await fetch("http://127.0.0.1:8000/Participantdata/Participant/", {
-  headers: {
-    Authorization: `Bearer ${token}`,
-    "Content-Type": "application/json",
-  }
-  },
-      );
+        const res = await fetch("http://127.0.0.1:8000/Participantdata/Participant/", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
 
-      if (!res.ok) {
-        console.error("Failed to fetch members");
-        return;
+        if (!res.ok) {
+          console.error("Failed to fetch members");
+          return;
+        }
+
+        const data = await res.json();
+        setAvailableMembers(data.map((member) => member.name));
+      } catch (err) {
+        console.error("Error fetching members:", err);
       }
+    };
 
-      const data = await res.json();
-      
-      setAvailableMembers(data.map((member) => 
-        member.name
-      
-      ));
-    } catch (err) {
-      console.error("Error fetching members:", err);
-    }
-  };
-
-  fetchMembers();
-  //fetchCompetitionsData();
-}, []);
-
-
+    fetchMembers();
+  }, []);
 
   return (
-    // Overall Background pattern
     <div
       className="min-h-screen text-white"
       style={{
@@ -194,51 +176,35 @@ const RegisterPage = () => {
       {/* Top Bar */}
       <div className="flex items-center justify-between px-6 py-4 max-w-screen-xl mx-auto">
         <img src={logo} alt="logo" className="h-10 w-auto" />
-        <div className="flex items-center gap-6">
-          
+        <div className="flex items-center gap-6"></div>
+      </div>
+
+      {/* Header Image */}
+      <div className="flex justify-center">
+        <div className="relative w-[calc(100%-3rem)] sm:w-[calc(100%-4rem)] md:w-[calc(100%-6rem)] max-w-screen-xl">
+          <img
+            src={headerImage}
+            alt="header"
+            className="w-full h-56 sm:h-64 md:h-72 object-cover object-top"
+          />
         </div>
       </div>
 
-     {/* Header Image */}
-<div className="flex justify-center">
-  <div className="relative w-[calc(100%-3rem)] sm:w-[calc(100%-4rem)] md:w-[calc(100%-6rem)] max-w-screen-xl">
-    <img
-      src={headerImage}
-      alt="header"
-      className="w-full h-56 sm:h-64 md:h-72 object-cover object-top"
-    />
-  </div>
-</div>
-
       {/* Cream Section */}
-<div className="bg-[#FFF8E7] text-black flex justify-center pb-10 sm:pb-12 md:pb-20 -mt-[1px] mx-auto w-[calc(100%-3rem)] sm:w-[calc(100%-4rem)] md:w-[calc(100%-6rem)] max-w-screen-xl">
-  <div className="w-full px-6 py-8 md:px-10 lg:px-14 relative">
-    {/* Comp Form Tab */}
-    <div className="absolute right-6 -top-8">
-      {/* <img src={CompFormTab} alt="" className="h-12 w-auto" /> */}
-    </div>
-    
-          {/* Comp Header */}
+      <div className="bg-[#FFF8E7] text-black flex justify-center pb-10 sm:pb-12 md:pb-20 -mt-[1px] mx-auto w-[calc(100%-3rem)] sm:w-[calc(100%-4rem)] md:w-[calc(100%-6rem)] max-w-screen-xl">
+        <div className="w-full px-6 py-8 md:px-10 lg:px-14 relative">
           <div className="flex items-start justify-between flex-wrap gap-4 mb-3">
             <div>
-              {/* //<h2 className="text-2xl font-bold flex items-center gap-2"> */}
-                <h2 className="text-2xl font-bold flex items-center gap-2">
+              <h2 className="text-4xl font-bold flex items-center gap-2">
                 {competition?.event_name || "Loading..."}
               </h2>
-                
-              {/*</h2>*/}
-              <p className="text-sm text-gray-600 mt-1"></p>
-              <div className="flex items-center gap-3 mt-1">
-                <div className="flex items-center gap-3 mt-1">
-                  <span className="text-sm text-gray-700">
-                    {competition?.solo_or_group || "N/A"}
-                  </span>
-
-                  <span className="text-sm text-gray-700">
-                    {competition?.event_mode === "true" ? "Online" : "Offline"}
-                  </span>
-                </div>
-
+              <div className="flex items-center gap-5 mt-1">
+                <span className="text-sm font-semibold text-[#1c1c1c]">
+                  {competition?.solo_or_group || "N/A"}
+                </span>
+                <span className="text-sm font-semibold text-[#1c1c1c]">
+                  {competition?.event_mode === "true" ? "Online" : "Offline"}
+                </span>
               </div>
             </div>
 
@@ -257,16 +223,16 @@ const RegisterPage = () => {
               </button>
 
               {guidelinesOpen && (
-                <div className="absolute right-0 top-full mt-2 bg-[#111] text-white w-72 rounded-lg p-4 text-sm z-40 shadow-xl border border-[#333]">
-                  <h3 className="text-base font-semibold mb-2">
-                    {competition?.event_rules}
+                <div
+                  className="absolute right-0 top-full mt-2 bg-[#111] text-white w-72 p-4 text-sm z-40 shadow-xl border border-[#333]"
+                  style={{
+                    clipPath:
+                      "polygon(12px 0, calc(100% - 12px) 0, 100% 12px, 100% calc(100% - 12px), calc(100% - 12px) 100%, 12px 100%, 0 calc(100% - 12px), 0 12px)",
+                  }}
+                >
+                  <h3 className="text-base font-semibold mb-2 leading-snug">
+                    {competition?.event_rules || "No rules provided."}
                   </h3>
-                  {/* <ol className="list-decimal list-inside space-y-1">
-                    <li>Complete your profile before registration.</li>
-                    <li>Add all members to your team.</li>
-                    <li>Provide a valid performance link.</li>
-                    <li>Follow all time limits strictly.</li>
-                  </ol> */}
                   <div className="mt-4 flex justify-end">
                     <button
                       className="bg-[#f79b2b] hover:bg-[#f58e1f] text-black px-4 py-1.5 rounded"
@@ -281,13 +247,12 @@ const RegisterPage = () => {
           </div>
 
           {/* Short Description */}
-          <p className="text-sm text-gray-700 mb-6 max-w-3xl">
+          <p className="text-sm font-sans text-black-700 mb-6 max-w-3xl">
             {competition?.event_desc}
           </p>
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5 max-w-3xl">
-            {/* Add Members */}
             <div>
               <label className="block text-sm font-semibold text-gray-800 mb-2">
                 Add Members (Min 1 - Max 10)
@@ -295,7 +260,9 @@ const RegisterPage = () => {
 
               <div className="flex flex-wrap gap-2 mb-2">
                 {teamMembers.length === 0 && (
-                  <span className="text-sm text-gray-500">No members added yet</span>
+                  <span className="text-sm text-gray-500">
+                    No members added yet
+                  </span>
                 )}
                 {teamMembers.map((member) => (
                   <div
@@ -344,7 +311,6 @@ const RegisterPage = () => {
               </div>
             </div>
 
-            {/* Previous Performance */}
             <div>
               <label className="block text-sm font-semibold text-gray-800 mb-1">
                 Previous Performance
@@ -359,7 +325,6 @@ const RegisterPage = () => {
               />
             </div>
 
-            {/* Description */}
             <div>
               <label className="block text-sm font-semibold text-gray-800 mb-1">
                 Description
@@ -374,7 +339,6 @@ const RegisterPage = () => {
               />
             </div>
 
-            {/* Note */}
             <p className="text-xs text-gray-500">
               Note: Our team will review your entry. Once approved, you will be
               notified via email and SMS.
@@ -384,19 +348,19 @@ const RegisterPage = () => {
               <p className="text-red-500 text-sm font-medium">{error}</p>
             )}
 
-            {/* Register Button */}
-<button
-  type="submit"
-  disabled={loading}
-  className="mt-4 flex items-center justify-center"
->
-  <img
-    src={RegisterIcon}
-    alt="register"
-    className={`h-8 w-auto inline mr-2 ${loading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
-  />
-</button>
-
+            <button
+              type="submit"
+              disabled={loading}
+              className="mt-4 flex items-center justify-center"
+            >
+              <img
+                src={RegisterIcon}
+                alt="register"
+                className={`h-8 w-auto inline mr-2 ${
+                  loading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+                }`}
+              />
+            </button>
           </form>
         </div>
       </div>
