@@ -25,37 +25,39 @@ const HeroSection = ({ isAuthenticated }) => {
   // Dynamic, responsive flower positions
   const [flowers, setFlowers] = useState([]);
 
-  useEffect(() => {
-  const createFlowers = () => {
+useEffect(() => {
+  const updateFlowers = () => {
     const width = window.innerWidth;
-
-    // Adjust responsiveness
     const isMobile = width < 640;
     const isTablet = width >= 640 && width < 1024;
 
-    return Array.from({ length: 8 }).map((_, i) => {
-      // Scale position closer and size smaller on smaller screens
-      const positionScale = isMobile ? 0.6 : isTablet ? 0.85 : 1;
-      const sizeScale = isMobile ? 0.5 : isTablet ? 0.8 : 1;
+    // Base positions (desktop reference)
+    const manualFlowers = [
+      { top: 15, left: 35, baseSize: 120, rotateDir: 1, delay: 0.2, duration: 3 },
+      { top: 25, left: 50, baseSize: 100, rotateDir: -1, delay: 0.4, duration: 2.5 },
+      { top: 35, left: 25, baseSize: 140, rotateDir: 1, delay: 0.6, duration: 3.2 },
+      { top: 30, left: 65, baseSize: 130, rotateDir: -1, delay: 0.8, duration: 2.8 },
+    ];
 
-      return {
-        rotateDir: Math.random() > 0.5 ? 1 : -1,
-        delay: i * 0.15,
-        duration: 2 + Math.random(),
-        // Same pattern as your original but scaled responsively
-        top: `${35 + Math.cos(i * 36) * 8 * positionScale + Math.random() * 3}vh`,
-        left: `${45 + Math.sin(i * 36) * 15 * positionScale + Math.random() * 3}vw`,
-        size: `${(80 + Math.random() * 80) * sizeScale}px`,
-      };
-    });
+    // Scale for mobile/tablet
+    const sizeScale = isMobile ? 0.6 : isTablet ? 0.85 : 1;
+
+    // Vertical adjustment — push them slightly lower on small screens
+    const topShift = isMobile ? 15 : isTablet ? 8 : 0;
+
+    setFlowers(
+      manualFlowers.map(f => ({
+        ...f,
+        size: `${f.baseSize * sizeScale}px`,
+        top: `${f.top + topShift}vh`,  // shift downward
+        left: `${f.left}vw`,
+      }))
+    );
   };
 
-  setFlowers(createFlowers());
-
-  // Update flowers on window resize
-  const handleResize = () => setFlowers(createFlowers());
-  window.addEventListener("resize", handleResize);
-  return () => window.removeEventListener("resize", handleResize);
+  updateFlowers(); // initial render
+  window.addEventListener("resize", updateFlowers);
+  return () => window.removeEventListener("resize", updateFlowers);
 }, []);
 
   return (
