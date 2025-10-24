@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
-import { data, useNavigate } from 'react-router-dom';
+import {useNavigate } from 'react-router-dom';
 import { Alert } from './Alert';
-import axios from 'axios';
+import axiosInstance from '../utils/axiosInstance';
 import background from '../assets/bg_add.svg';
 import namesbg from '../assets/names_team.svg';
 import profilepic from "../assets/profilepic.svg";
@@ -53,10 +53,8 @@ export function AddMembers() {
             return;
         }
 
-        axios
-        .get(`http://localhost:8000/profile/`, {
-            headers: { Authorization: `Bearer ${token}` },
-        })
+        axiosInstance
+        .get(`/profile/`)
         .then((res) => {
 
             let pic;
@@ -144,16 +142,8 @@ export function AddMembers() {
         const token = localStorage.getItem("access");
         if (id) {
             try {
-                const response = await fetch(`http://127.0.0.1:8000/Participantdata/Participant/${id}/`, {
-                    method: "DELETE",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}` // Include token here
-                    },
-                });
-                if (!response.ok) {
-                    throw new Error("Failed to delete from backend");
-                }
+               await axiosInstance.delete(`/Participantdata/Participant/${id}/`);
+                
             } catch (err) {
                 console.error(err);
                 return; // Stop if backend delete failed
@@ -161,27 +151,7 @@ export function AddMembers() {
         }
 
 
-        const response = await fetch("http://127.0.0.1:8000/Participantdata/Participant/", {
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}` // Include token here too
-            },
-        });
-        const data = await response.json();
-
-        const names = data.map((item) => ({
-            id: item.id,
-            tempId: item.tempId,
-            name: item.name,
-            email: item.email
-        }));
-        setNames(names);
-
-        // Update filteredNames as well based on current search text
-        const updatedFilteredNames = text
-            ? names.filter(n => n?.name?.toLowerCase().includes(text.toLowerCase()))
-            : names;
-        setFilteredNames(updatedFilteredNames);
+        await displayNames(); // <-- ADD THIS LINE
     }
 
     // Handle field change (works for new and saved members)
@@ -255,24 +225,18 @@ export function AddMembers() {
             await Promise.all(
                 members.map(async (member) => {
                     const token = localStorage.getItem('access');
-                    const response = await fetch("http://127.0.0.1:8000/Participantdata/Participant/", {
-                        method: "POST",
-                        headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
-                        //headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                            name: member.name,
-                            email: member.email,
-                            gender: member.gender === "Male" ? "M" : member.gender === "Female" ? "F" : "O",
-                            phone: `+91${member.phone}`,
-                            collegename: member.collegename,
-                            city: member.city,
-                            state: member.state,
-                        })
-                    });
-
-                    if (!response.ok) {
-                        throw new Error(`Failed to save member: ${member.name}`);
-                    }
+                    const payload = {
+    name: member.name,
+    email: member.email,
+    gender: member.gender === "Male" ? "M" : member.gender === "Female" ? "F" : "O",
+    phone: `+91${member.phone}`,
+    collegename: member.collegename,
+    city: member.city,
+    state: member.state,
+};
+// Return the promise for Promise.all
+return axiosInstance.post("/Participantdata/Participant/", payload);
+                    
                 })
             );
 
@@ -281,7 +245,9 @@ export function AddMembers() {
                 { id: null, name: "", email: "", gender: "Male", phone: "", collegename: "", city: "", state: "" }
             ]);
         } catch (err) {
-            console.error(err);
+            console.error("Failed to save members:", err);
+const errorMsg = err.response?.data ? JSON.stringify(err.response.data) : err.message;
+alert(`Failed to save members: ${errorMsg}`);
         }
 
         displayNames();
@@ -291,53 +257,36 @@ export function AddMembers() {
     // ... (inside AddMembers function)
 
     const displayNames = async() => {
-        const token = localStorage.getItem("access");
-        const url = "http://127.0.0.1:8000/Participantdata/Participant/";
+    try {
+        // Replaced fetch GET with axiosInstance.get
+        const response = await axiosInstance.get("/Participantdata/Participant/");
+        const data = response.data; // Data is directly on response.data
+        console.log("Fetched Data:", data);
 
-        try {
-            const response = await fetch(url, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "application/json"
-                }
-            });
-
-            // 1. Check if the HTTP response was successful (200-299)
-            if (!response.ok) {
-                // If the response is not ok (e.g., 401 Unauthorized), the JSON will be an object.
-                const errorData = await response.json().catch(() => ({ detail: `Error: ${response.status}` }));
-                console.error("Failed to fetch participant data. Status:", response.status, "Error:", errorData);
-                // Optionally show an alert to the user
-                // showAlert(`Error fetching members: ${response.status}`); 
-                setNames([]); // Ensure state is an empty array on failure
-                return;
-            }
-
-            const data = await response.json();
-            console.log("Fetched Data:", data);
-
-            // 2. Safely check if 'data' is an array before calling .map()
-            if (Array.isArray(data)) {
-                const names = data.map((item) => ({
-                    id: item.id,
-                    tempId: item.tempId,
-                    name: item.name,
-                    email: item.email,
-                }));
-                console.log("Mapped Names:", names);
-                setNames(names);
-                // Also update filteredNames so the list immediately reflects the fetched data
-                setFilteredNames(names); 
-            } else {
-                console.error("API returned non-array data:", data);
-                setNames([]); // Reset to empty array
-            }
-        } catch (error) {
-            console.error("Fetch operation failed:", error);
-            setNames([]); // Reset state on network/parsing error
+        // Removed the !response.ok check, axios handles non-2xx statuses in 'catch'
+        if (Array.isArray(data)) {
+            const names = data.map((item) => ({
+                id: item.id,
+                tempId: item.tempId, // Keep tempId if your backend sends it
+                name: item.name,
+                email: item.email,
+            }));
+            console.log("Mapped Names:", names);
+            setNames(names);
+            setFilteredNames(names); // Update filtered names too
+        } else {
+            console.error("API returned non-array data:", data);
+            setNames([]); // Reset to empty array
+            setFilteredNames([]);
         }
+    } catch (error) {
+        // Axios error handling
+        console.error("Fetch operation failed:", error);
+        setMessage("Failed to load team members."); // Inform user
+        setNames([]); // Reset state on network/parsing error
+        setFilteredNames([]);
     }
-
+}
     // ... (rest of your component logic)
 
     useEffect(()=>{displayNames()},[]);
