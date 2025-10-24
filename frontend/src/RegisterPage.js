@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import axiosInstance from "./utils/axiosInstance";
 
 // Assets
 import logo from "./assets/alcher-logo2.svg";
@@ -36,15 +37,11 @@ const RegisterPage = () => {
   useEffect(() => {
     const fetchCompetition = async () => {
       try {
-        const token = localStorage.getItem("access");
-        const res = await fetch(`http://127.0.0.1:8000/api/competitions/${id}/`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        });
-        if (!res.ok) throw new Error("Failed to fetch competition data");
-        const data = await res.json();
+        // --- 2. USE AXIOSINSTANCE ---
+        const res = await axiosInstance.get(`/api/competitions/${id}/`);
+        const data = res.data; // data is directly on res.data
+        // --- END OF CHANGES ---
+
         console.log(data);
         setCompetition(data);
       } catch (err) {
@@ -80,37 +77,15 @@ const RegisterPage = () => {
       description: formData.description,
     };
 
-    try {
-      const token = localStorage.getItem("access");
-      if (!token) {
-        setError("You must be logged in to register.");
-        setLoading(false);
-        return;
-      }
-
-      const response = await fetch("http://127.0.0.1:8000/api/register-competition/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(finalData),
-      });
-
-      let data;
-      try {
-        data = await response.json();
-      } catch {
-        setError("Something went wrong. Check console for details.");
-        setLoading(false);
-        return;
-      }
-
-      if (!response.ok) {
-        setError(data.detail || data.error || "Registration failed.");
-        setLoading(false);
-        return;
-      }
+    try{
+      const response = await axiosInstance.post(
+        "/api/register-competition/",
+        finalData
+      );
+      
+      // data is on response.data
+      const data = response.data; 
+      // --- END OF CHANGES --
 
       const stored =
         JSON.parse(localStorage.getItem("registeredCompetitions") || "[]") || [];
@@ -138,22 +113,10 @@ const RegisterPage = () => {
   useEffect(() => {
     const fetchMembers = async () => {
       try {
-        const token = localStorage.getItem("access");
-        if (!token) return;
-
-        const res = await fetch("http://127.0.0.1:8000/Participantdata/Participant/", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        });
-
-        if (!res.ok) {
-          console.error("Failed to fetch members");
-          return;
-        }
-
-        const data = await res.json();
+        // --- 4. USE AXIOSINSTANCE ---
+        const res = await axiosInstance.get("/Participantdata/Participant/");
+        const data = res.data;
+        // --- END OF CHANGES ---
         setAvailableMembers(data.map((member) => member.name));
       } catch (err) {
         console.error("Error fetching members:", err);

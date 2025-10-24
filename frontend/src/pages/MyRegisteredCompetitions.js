@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../utils/axiosInstance";
 
 // --- Assets ---
 import OrangeLine from "../assets/orange -line.svg";
@@ -16,33 +17,29 @@ function MyRegistrations() {
   // }, []);
 
   useEffect(() => {
-  const fetchCompetitions = async () => {
-    try {
-      const token = localStorage.getItem("access"); // JWT access token stored after login
-      const response = await fetch("http://127.0.0.1:8000/api/my-registered-competitions/", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+    const fetchCompetitions = async () => {
+      try {
+        // --- 2. USE AXIOSINSTANCE ---
+        // It already has the base URL and auth headers
+        const response = await axiosInstance.get(
+          "/api/my-registered-competitions/"
+        );
 
-      if (!response.ok) {
-        throw new Error(`Error ${response.status}: Failed to fetch registered competitions`);
+        // 3. GET DATA FROM response.data
+        const data = response.data;
+        console.log("Fetched competitions:", data); // helpful for debugging
+        setCompetitions(data);
+        // --- END OF CHANGES ---
+      } catch (error) {
+        console.error("Error fetching competitions:", error);
+        // The axiosInstance interceptor will handle 401 errors
+      } finally {
+        setLoading(false);
       }
+    };
 
-      const data = await response.json();
-      console.log("Fetched competitions:", data); // helpful for debugging
-      setCompetitions(data);
-    } catch (error) {
-      console.error("Error fetching competitions:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  fetchCompetitions();
-}, []);
+    fetchCompetitions();
+  }, []);
 
 
   return (

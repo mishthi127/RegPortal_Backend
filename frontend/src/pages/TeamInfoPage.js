@@ -8,6 +8,7 @@ import DecoratedButton from '../components/AuthPage/DecoratedButton.js';
 import Stepper from '../components/AuthPage/Stepper.js';
 import OtpModal from '../components/AuthPage/OtpModal.js';
 
+
 const BASE_URL = 'http://localhost:8000';
 
 const TeamInfoPage = () => {
